@@ -30,7 +30,7 @@ export const ROUTES = {
 export const CATEGORIES = [
   { key: 'love', label: '爱情', icon: '♡', color: '#E57373' },
   { key: 'career', label: '事业', icon: '★', color: '#4FC3F7' },
-  { key: 'wealth', label: '财运', icon: '♛', color: '#FFD54F' },
+  { key: 'finance', label: '财运', icon: '♛', color: '#FFD54F' },
   { key: 'health', label: '健康', icon: '☘', color: '#81C784' },
   { key: 'general', label: '综合', icon: '◈', color: '#BA68C8' },
 ] as const
@@ -48,7 +48,7 @@ export const PRESET_QUESTIONS: Record<string, string[]> = {
     '这份工作的发展前景如何？',
     '我应该选择哪个方向发展？',
   ],
-  wealth: [
+  finance: [
     '我的财运走势如何？',
     '最近适合投资吗？',
     '我该如何提升收入？',

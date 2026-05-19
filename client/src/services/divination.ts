@@ -4,30 +4,29 @@ import http from './http'
  * 占卜相关 API
  */
 
-/** 开始占卜参数 */
-interface StartDivinationParams {
-  question: string
-  category: string
-  spreadType: 'single' | 'three'
+/** 抽牌参数 */
+interface DrawParams {
+  question_category: string
+  question_text: string
+  spread_type: 'single' | 'three'
 }
 
 /** 抽牌结果 */
 interface DrawResult {
   sessionId: string
-  cardCount: number
+  recordId: string
+  spread_type: string
   cards: Array<{
     id: string
+    name: string
+    nameEn: string
     position: number
-    isUpright: boolean
+    positionName: string
+    isReversed: boolean
+    keywords: string
+    imageUrl: string
   }>
-}
-
-/** 解读参数 */
-interface InterpretParams {
-  sessionId: string
-  question: string
-  cards: Array<{ id: string; name: string; isUpright: boolean; position?: string }>
-  spreadType: 'single' | 'three'
+  quotaType: string
 }
 
 /** 历史记录列表 */
@@ -37,26 +36,10 @@ interface HistoryListParams {
 }
 
 /**
- * 开始占卜（检查配额 + 生成牌序）
+ * 抽牌（检查配额 + Fisher-Yates 洗牌 + 正逆位）
  */
-export async function startDivination(params: StartDivinationParams) {
-  const result = await http.post<DrawResult>('/api/divination/start', params)
-  return result.data
-}
-
-/**
- * 请求 AI 解读
- */
-export async function interpretDivination(params: InterpretParams) {
-  const result = await http.post('/api/divination/interpret', params)
-  return result.data
-}
-
-/**
- * 保存占卜记录
- */
-export async function saveDivinationRecord(sessionId: string) {
-  const result = await http.post('/api/divination/save', { sessionId })
+export async function drawCards(params: DrawParams): Promise<DrawResult> {
+  const result = await http.post<DrawResult>('/api/divination/draw', params)
   return result.data
 }
 
@@ -64,7 +47,7 @@ export async function saveDivinationRecord(sessionId: string) {
  * 获取历史记录列表
  */
 export async function getHistoryList(params: HistoryListParams) {
-  const result = await http.get('/api/divination/history', params)
+  const result = await http.get('/api/divination/records', params)
   return result.data
 }
 
@@ -72,6 +55,6 @@ export async function getHistoryList(params: HistoryListParams) {
  * 获取历史记录详情
  */
 export async function getHistoryDetail(recordId: string) {
-  const result = await http.get(`/api/divination/history/${recordId}`)
+  const result = await http.get(`/api/divination/records/${recordId}`)
   return result.data
 }

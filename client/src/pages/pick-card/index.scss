@@ -20,6 +20,29 @@
     padding: $spacing-lg $page-padding;
   }
 
+  &__loading {
+    flex: 1;
+    @include flex-center;
+    &-text {
+      font-size: $font-h3;
+      color: $color-text-secondary;
+    }
+  }
+
+  &__error {
+    flex: 1;
+    @include flex-col-center;
+    gap: $spacing-lg;
+    &-text {
+      font-size: $font-body;
+      color: $color-error;
+    }
+    &-retry {
+      font-size: $font-body;
+      color: $color-accent;
+    }
+  }
+
   &__hint {
     display: block;
     text-align: center;
