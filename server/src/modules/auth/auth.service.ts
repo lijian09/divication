@@ -1,7 +1,22 @@
 import { Injectable, UnauthorizedException, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import axios from 'axios';
 import { UserService } from '../user/user.service';
+import { DisclaimerLog } from './entities/disclaimer-log.entity';
+
+/**
+ * 微信 code2Session 接口响应
+ */
+interface WxCode2SessionResponse {
+  openid: string;
+  session_key: string;
+  unionid?: string;
+  errcode?: number;
+  errmsg?: string;
+}
 
 /**
  * 认证服务
@@ -15,6 +30,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly userService: UserService,
+    @InjectRepository(DisclaimerLog)
+    private readonly disclaimerLogRepository: Repository<DisclaimerLog>,
   ) {}
 
   /**
@@ -26,17 +43,18 @@ export class AuthService {
   async wxLogin(code: string) {
     this.logger.log(`[DEBUG] 微信登录，code: ${code}`);
 
-    // TODO: 调用微信 code2Session 接口
-    // const wxResponse = await this.callWxCode2Session(code);
-    // const { openid, session_key } = wxResponse;
-
-    // 骨架：使用模拟数据
-    const openid = `mock_openid_${code}`;
+    // 调用微信 code2Session 接口
+    const wxResponse = await this.callWxCode2Session(code);
+    const { openid, session_key, unionid } = wxResponse;
 
     // 查询或创建用户
     let user = await this.userService.findByOpenid(openid);
     if (!user) {
-      user = await this.userService.create({ openid });
+      user = await this.userService.create({
+        openid,
+        unionid: unionid || null,
+      });
+      this.logger.log(`[DEBUG] 新用户注册，openid: ${openid}`);
     }
 
     // 签发 Token
@@ -44,6 +62,9 @@ export class AuthService {
 
     // 更新最后登录时间
     await this.userService.updateLastLogin(user.id);
+
+    // session_key 暂不持久化（后续可存 Redis）
+    this.logger.log(`[DEBUG] 用户登录成功，userId: ${user.id}`);
 
     return {
       ...tokens,
@@ -84,6 +105,38 @@ export class AuthService {
   }
 
   /**
+   * 确认免责协议
+   * 1. 更新用户 agreement_accepted 状态
+   * 2. 写入 disclaimer_logs 日志（含 IP、UA、版本）
+   */
+  async acceptAgreement(
+    userId: string,
+    agreementVersion: string,
+    ipAddress: string,
+    userAgent: string,
+  ) {
+    // 更新用户状态
+    await this.userService.acceptAgreement(userId);
+
+    // 写入确认日志
+    const log = this.disclaimerLogRepository.create({
+      user_id: userId,
+      ip_address: ipAddress || null,
+      user_agent: userAgent || null,
+      agreement_version: agreementVersion,
+    });
+    await this.disclaimerLogRepository.save(log);
+
+    this.logger.log(`[DEBUG] 用户 ${userId} 确认免责协议 v${agreementVersion}`);
+
+    return {
+      message: '已确认免责协议',
+      agreement_accepted: true,
+      agreement_version: agreementVersion,
+    };
+  }
+
+  /**
    * 生成 JWT 和 refresh_token
    */
   private async generateTokens(userId: string, openid: string) {
@@ -104,18 +157,56 @@ export class AuthService {
   }
 
   /**
-   * 调用微信 code2Session 接口（骨架）
+   * 调用微信 code2Session 接口
+   * 将 wx.login() 获取的临时 code 换取 openid 和 session_key
    */
-  private async callWxCode2Session(code: string) {
+  private async callWxCode2Session(code: string): Promise<WxCode2SessionResponse> {
     const appId = this.configService.get<string>('wechat.appId');
     const secret = this.configService.get<string>('wechat.secret');
-    const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${appId}&secret=${secret}&js_code=${code}&grant_type=authorization_code`;
 
-    // TODO: 使用 axios 调用微信接口
-    // const response = await axios.get(url);
-    // return response.data;
+    if (!appId || !secret) {
+      this.logger.error('[FATAL] 微信 appId 或 secret 未配置，使用 mock 数据');
+      // 开发环境降级：未配置时返回 mock 数据
+      return { openid: `mock_openid_${code}`, session_key: 'mock_session_key' };
+    }
 
-    this.logger.warn(`[骨架] 调用微信接口: ${url}`);
-    return { openid: `mock_openid_${code}`, session_key: 'mock_session_key' };
+    const url = 'https://api.weixin.qq.com/sns/jscode2session';
+
+    try {
+      const response = await axios.get<WxCode2SessionResponse>(url, {
+        params: {
+          appid: appId,
+          secret,
+          js_code: code,
+          grant_type: 'authorization_code',
+        },
+        timeout: 5000,
+      });
+
+      const data = response.data;
+
+      // 微信接口返回错误
+      if (data.errcode) {
+        this.logger.error(`[DEBUG] 微信 code2Session 失败: ${data.errcode} - ${data.errmsg}`);
+        throw new UnauthorizedException(`微信登录失败: ${data.errmsg}`);
+      }
+
+      this.logger.log(`[DEBUG] 微信 code2Session 成功，openid: ${data.openid}`);
+      return data;
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      }
+
+      this.logger.error(`[DEBUG] 调用微信接口异常: ${error.message}`);
+
+      // 开发环境降级：网络异常时使用 mock 数据
+      if (process.env.NODE_ENV !== 'production') {
+        this.logger.warn('[DEBUG] 开发环境降级，使用 mock openid');
+        return { openid: `mock_openid_${code}`, session_key: 'mock_session_key' };
+      }
+
+      throw new UnauthorizedException('微信服务暂时不可用，请稍后重试');
+    }
   }
 }

@@ -1,10 +1,12 @@
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { FC } from 'react'
+import { FC, useState, useEffect } from 'react'
 
 import StarBackground from '@components/StarBackground'
 import QuotaBadge from '@components/QuotaBadge'
-import { useQuotaStore } from '@store/index'
+import DisclaimerModal from '@components/DisclaimerModal'
+import { useQuotaStore, useUserStore } from '@store/index'
+import { acceptAgreement } from '@/services/auth'
 import { ROUTES, CATEGORIES } from '@utils/constants'
 
 import './index.scss'
@@ -16,6 +18,35 @@ import './index.scss'
  */
 const HomePage: FC = () => {
   const { freeSingleRemaining, freeThreeRemaining } = useQuotaStore()
+  const { userInfo, setAgreementAccepted } = useUserStore()
+  const [showDisclaimer, setShowDisclaimer] = useState(false)
+
+  /** 检查是否需要展示免责弹窗 */
+  useEffect(() => {
+    if (userInfo && !userInfo.agreementAccepted) {
+      setShowDisclaimer(true)
+    }
+  }, [userInfo])
+
+  /** 同意免责协议 */
+  const handleAgree = async () => {
+    try {
+      await acceptAgreement('1.0')
+      setAgreementAccepted()
+      setShowDisclaimer(false)
+      console.log('[DEBUG] 免责协议确认成功')
+    } catch (error: any) {
+      console.error('[DEBUG] 免责协议确认失败:', error.message)
+      // 即使接口失败也允许使用，下次再提示
+      setShowDisclaimer(false)
+    }
+  }
+
+  /** 不同意免责协议 */
+  const handleDisagree = () => {
+    setShowDisclaimer(false)
+    Taro.showToast({ title: '需同意协议才可使用', icon: 'none' })
+  }
 
   /** 点击"开始占卜" */
   const handleStart = () => {
@@ -86,6 +117,13 @@ const HomePage: FC = () => {
         {/* 底部免责 */}
         <Text className="home-page__disclaimer">· 仅供娱乐参考 ·</Text>
       </ScrollView>
+
+      {/* 免责协议弹窗 */}
+      <DisclaimerModal
+        visible={showDisclaimer}
+        onAgree={handleAgree}
+        onDisagree={handleDisagree}
+      />
     </View>
   )
 }

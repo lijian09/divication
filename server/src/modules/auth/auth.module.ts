@@ -2,10 +2,12 @@ import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { UserModule } from '../user/user.module';
+import { DisclaimerLog } from './entities/disclaimer-log.entity';
 
 /**
  * 认证模块
@@ -14,6 +16,7 @@ import { UserModule } from '../user/user.module';
 @Module({
   imports: [
     UserModule,
+    TypeOrmModule.forFeature([DisclaimerLog]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       inject: [ConfigService],

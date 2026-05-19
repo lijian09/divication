@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro'
-import { getToken, getRefreshToken, setToken } from '@utils/auth'
+import { getToken, getRefreshToken, setToken, removeToken } from '@utils/auth'
 
 /**
  * API 基础地址
@@ -56,19 +56,20 @@ async function request<T = any>(options: RequestOptions): Promise<ApiResponse<T>
 
     const result = response.data as ApiResponse<T>
 
-    // 401 无感刷新
-    if (result.code === 401) {
+    // 401 无感刷新（后端异常过滤器返回 code: HTTP 状态码）
+    if (response.statusCode === 401 || result.code === 401) {
       const refreshed = await refreshToken()
       if (refreshed) {
         // 重试原请求
         return request(options)
       }
-      // 刷新失败，跳转登录
-      Taro.navigateTo({ url: '/pages/home/index' })
+      // 刷新失败，清除 token
+      removeToken()
       throw new Error('登录已过期，请重新登录')
     }
 
-    if (result.code !== 200) {
+    // 后端成功响应 code: 0，失败响应 code: HTTP 状态码
+    if (result.code !== 0) {
       throw new Error(result.message || '请求失败')
     }
 

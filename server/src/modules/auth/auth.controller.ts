@@ -1,13 +1,22 @@
-import { Controller, Post, Body, UseGuards, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Req,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { Request } from 'express';
 import { AuthService } from './auth.service';
 import { WxLoginDto } from './dto/login.dto';
+import { AcceptAgreementDto } from './dto/accept-agreement.dto';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { Public } from '../../common/constants';
 
 /**
  * 认证控制器
- * 处理微信登录、Token 刷新、登出
+ * 处理微信登录、Token 刷新、登出、免责协议
  */
 @ApiTags('auth')
 @Controller('auth')
@@ -50,5 +59,27 @@ export class AuthController {
   @ApiResponse({ status: 200, description: '登出成功' })
   async logout(@CurrentUser('id') userId: string) {
     return this.authService.logout(userId);
+  }
+
+  /**
+   * 确认免责协议
+   * 记录用户确认行为（IP、UA、协议版本）
+   */
+  @Post('accept-agreement')
+  @ApiBearerAuth('JWT-auth')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: '确认免责协议', description: '用户确认免责协议，记录确认日志' })
+  @ApiResponse({ status: 200, description: '确认成功' })
+  async acceptAgreement(
+    @CurrentUser('id') userId: string,
+    @Body() dto: AcceptAgreementDto,
+    @Req() req: Request,
+  ) {
+    const ip = (req.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim()
+      || req.socket.remoteAddress
+      || '';
+    const userAgent = req.headers['user-agent'] || '';
+
+    return this.authService.acceptAgreement(userId, dto.agreement_version, ip, userAgent);
   }
 }

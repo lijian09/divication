@@ -1,26 +1,28 @@
 import Taro from '@tarojs/taro'
 import http from './http'
+import { setToken } from '@utils/auth'
 
 /**
  * 登录相关 API
  */
 
-/** 微信登录请求参数 */
-interface WxLoginParams {
-  code: string
-}
-
 /** 登录响应 */
 interface LoginResponse {
   token: string
-  refreshToken: string
+  refresh_token: string
   userInfo: {
-    userId: string
+    id: string
     nickname: string
-    avatarUrl: string
-    isNewUser: boolean
-    agreementAccepted: boolean
+    avatar_url: string | null
+    agreement_accepted: boolean
   }
+}
+
+/** 确认协议响应 */
+interface AcceptAgreementResponse {
+  message: string
+  agreement_accepted: boolean
+  agreement_version: string
 }
 
 /**
@@ -40,6 +42,22 @@ export async function wxLogin(): Promise<LoginResponse> {
     code: loginRes.code,
   })
 
+  // 登录成功，持久化 token
+  setToken(result.data.token, result.data.refresh_token)
+
+  return result.data
+}
+
+/**
+ * 确认免责协议
+ */
+export async function acceptAgreement(
+  agreementVersion: string = '1.0',
+): Promise<AcceptAgreementResponse> {
+  const result = await http.post<AcceptAgreementResponse>(
+    '/api/auth/accept-agreement',
+    { agreement_version: agreementVersion },
+  )
   return result.data
 }
 
@@ -47,7 +65,7 @@ export async function wxLogin(): Promise<LoginResponse> {
  * 刷新 Token
  */
 export async function refreshTokenApi(refreshToken: string) {
-  const result = await http.post('/api/auth/refresh', { refreshToken })
+  const result = await http.post('/api/auth/refresh', { refresh_token: refreshToken })
   return result.data
 }
 

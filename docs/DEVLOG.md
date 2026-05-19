@@ -213,3 +213,8 @@
 | 类型 | 标题 | 时间 | 说明 |
 |------|------|------|------|
 | `fix` | 补全 quota 模块 DTO | 2026-05-19 | 新增 query-quota.dto.ts，完成 server 模块完整性 |
+| `feat` | F-201 后端微信登录接口 | 2026-05-19 | auth.service.ts 实现真实 code2Session 调用，开发环境降级 mock |
+| `feat` | F-202 前端微信登录对接 | 2026-05-19 | app.ts 自动登录 + auth service 对接后端接口 + token 持久化 |
+| `feat` | F-203 前端免责协议弹窗 | 2026-05-19 | 首页接入 DisclaimerModal，未同意时自动弹出，调 API 确认 |
+| `feat` | F-204 后端免责协议接口 | 2026-05-19 | accept-agreement 端点 + DisclaimerLog 实体 + IP/UA 记录 |
+| `fix` | 前端 http 适配后端响应格式 | 2026-05-19 | 成功判断改为 code===0，401 判断同时检查 HTTP 状态码 |
