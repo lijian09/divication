@@ -1,0 +1,48 @@
+/**
+ * 次数徽章样式
+ */
+
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.quota-badge {
+  width: 100%;
+  padding: $spacing-md $spacing-lg;
+  border-radius: $radius-md;
+  background: rgba($color-accent, 0.08);
+  border: 1rpx solid rgba($color-accent, 0.2);
+  @include flex-between;
+  flex-wrap: wrap;
+  gap: $spacing-xs;
+
+  &--exhausted {
+    background: rgba($color-error, 0.08);
+    border-color: rgba($color-error, 0.2);
+  }
+
+  &__label {
+    font-size: $font-caption;
+    color: $color-text-secondary;
+  }
+
+  &__counts {
+    @include flex-row-center;
+    gap: $spacing-xs;
+  }
+
+  &__count {
+    font-size: $font-caption;
+    color: $color-accent;
+    font-weight: $font-weight-semibold;
+  }
+
+  &__divider {
+    color: $color-text-hint;
+    font-size: $font-caption;
+  }
+
+  &__link {
+    font-size: $font-caption;
+    color: $color-accent;
+  }
+}

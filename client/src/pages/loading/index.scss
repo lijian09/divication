@@ -1,0 +1,19 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.loading-page {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  &__nav {
+    @include flex-between;
+    padding: $spacing-xl $page-padding;
+    padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top, 44px));
+
+    &-back { font-size: $font-body; color: $color-text-secondary; }
+    &-title { font-size: $font-h3; color: $color-text-primary; font-weight: $font-weight-semibold; }
+    &-placeholder { width: 60rpx; }
+  }
+}

@@ -1,0 +1,67 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.error-page {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  &__nav {
+    padding: $spacing-xl $page-padding;
+    padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top, 44px));
+
+    &-back {
+      font-size: $font-body;
+      color: $color-text-secondary;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    @include flex-col-center;
+    justify-content: center;
+    gap: $spacing-lg;
+    padding: $spacing-xl $page-padding;
+  }
+
+  &__icon {
+    width: 320rpx;
+    height: 320rpx;
+    @include flex-center;
+    margin-bottom: $spacing-md;
+
+    &-text {
+      font-size: 120rpx;
+    }
+  }
+
+  &__title {
+    font-size: $font-h2;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+  }
+
+  &__desc {
+    font-size: $font-body;
+    color: $color-text-secondary;
+    text-align: center;
+  }
+
+  &__retry {
+    width: 100%;
+    @include btn-primary;
+    margin-top: $spacing-lg;
+
+    &-text {
+      font-size: $font-h3;
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  &__back {
+    font-size: $font-body;
+    color: $color-text-hint;
+    padding: $spacing-sm;
+  }
+}

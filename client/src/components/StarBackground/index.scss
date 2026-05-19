@@ -1,0 +1,38 @@
+/**
+ * 星空背景组件样式
+ * 固定定位 + 星星闪烁动画
+ */
+
+@import '../../styles/variables.scss';
+
+.star-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background: $gradient-bg;
+  overflow: hidden;
+
+  // 单颗星星
+  &__star {
+    position: absolute;
+    background: radial-gradient(circle, #ffffff 0%, rgba(255, 255, 255, 0) 70%);
+    border-radius: 50%;
+    animation: star-twinkle ease-in-out infinite;
+    pointer-events: none;
+  }
+}
+
+// 星星闪烁关键帧
+@keyframes star-twinkle {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}

@@ -1,0 +1,83 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.onboarding-page {
+  min-height: 100vh;
+  background: $gradient-bg;
+  @include flex-col-center;
+  padding: $spacing-xl $page-padding;
+  position: relative;
+
+  &__skip {
+    position: absolute;
+    top: $spacing-xl;
+    right: $spacing-xl;
+    font-size: $font-body;
+    color: $color-text-secondary;
+    padding: $spacing-sm;
+    z-index: 10;
+  }
+
+  &__swiper {
+    width: 100%;
+    height: 600rpx;
+  }
+
+  &__slide {
+    @include flex-col-center;
+    gap: $spacing-xl;
+    padding-top: $spacing-xxxl;
+  }
+
+  &__illustration {
+    width: 480rpx;
+    height: 480rpx;
+    @include flex-center;
+
+    &-icon {
+      font-size: 180rpx;
+    }
+  }
+
+  &__title {
+    font-size: $font-h1;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+  }
+
+  &__desc {
+    font-size: $font-body;
+    color: $color-text-secondary;
+    text-align: center;
+    max-width: 480rpx;
+  }
+
+  &__dots {
+    @include flex-row-center;
+    gap: $spacing-sm;
+    margin: $spacing-xl 0;
+  }
+
+  &__dot {
+    width: 16rpx;
+    height: 16rpx;
+    border-radius: 50%;
+    background: $color-text-hint;
+    transition: all 0.2s;
+
+    &--active {
+      background: $color-accent;
+      transform: scale(1.2);
+    }
+  }
+
+  &__btn {
+    width: 100%;
+    @include btn-primary;
+
+    &-text {
+      font-size: $font-h3;
+      font-weight: $font-weight-bold;
+    }
+  }
+}

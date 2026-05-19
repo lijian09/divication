@@ -1,0 +1,91 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.payment-result-page {
+  min-height: 100vh;
+  position: relative;
+  @include flex-center;
+  padding: $spacing-xl $page-padding;
+
+  &__success,
+  &__fail {
+    @include flex-col-center;
+    gap: $spacing-lg;
+    width: 100%;
+  }
+
+  &__icon {
+    width: 160rpx;
+    height: 160rpx;
+    border-radius: 50%;
+    @include flex-center;
+    margin-bottom: $spacing-md;
+
+    &--success {
+      background: rgba($color-success, 0.15);
+      border: 4rpx solid $color-success;
+      animation: success-bounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+      .payment-result-page__icon-text {
+        color: $color-success;
+        font-size: 72rpx;
+      }
+    }
+
+    &--fail {
+      background: rgba($color-error, 0.15);
+      border: 4rpx solid $color-error;
+      animation: error-shake 0.6s ease-out;
+
+      .payment-result-page__icon-text {
+        color: $color-error;
+        font-size: 72rpx;
+      }
+    }
+
+    &-text {
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  &__title {
+    font-size: $font-h1;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+  }
+
+  &__summary {
+    @include card-base;
+    width: 100%;
+    @include flex-col-center;
+    gap: $spacing-sm;
+  }
+
+  &__summary-item {
+    font-size: $font-body;
+    color: $color-text-secondary;
+  }
+
+  &__hint {
+    font-size: $font-body;
+    color: $color-text-secondary;
+    text-align: center;
+  }
+
+  &__cta {
+    width: 100%;
+    @include btn-primary;
+    margin-top: $spacing-lg;
+
+    &-text {
+      font-size: $font-h3;
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  &__back {
+    font-size: $font-body;
+    color: $color-text-hint;
+    padding: $spacing-sm;
+  }
+}

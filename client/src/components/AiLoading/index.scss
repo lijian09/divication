@@ -1,0 +1,93 @@
+/**
+ * AI 加载动画组件样式
+ */
+
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.ai-loading {
+  @include flex-col-center;
+  justify-content: center;
+  gap: $spacing-xl;
+  padding: $spacing-xxxl;
+  min-height: 60vh;
+
+  // 星形旋转
+  &__star {
+    animation: star-spin 1.2s linear infinite;
+  }
+
+  &__star-icon {
+    font-size: 72rpx;
+    color: $color-accent;
+  }
+
+  // 标题
+  &__title {
+    font-size: $font-h2;
+    color: $color-text-primary;
+    font-weight: $font-weight-bold;
+  }
+
+  // 诗句轮播
+  &__quote {
+    @include flex-col-center;
+    gap: $spacing-xs;
+    max-width: 560rpx;
+    animation: fade-in 0.3s ease-out;
+  }
+
+  &__quote-text {
+    font-size: $font-body;
+    color: $color-text-secondary;
+    text-align: center;
+    font-style: italic;
+    line-height: 1.8;
+  }
+
+  &__quote-author {
+    font-size: $font-caption;
+    color: $color-text-hint;
+  }
+
+  // 超时提示
+  &__timeout {
+    @include flex-col-center;
+    gap: $spacing-md;
+  }
+
+  &__timeout-text {
+    font-size: $font-body;
+    color: $color-text-secondary;
+  }
+
+  &__cancel {
+    font-size: $font-body;
+    color: $color-accent;
+    margin-top: $spacing-sm;
+    text-decoration: underline;
+  }
+
+  // 进度条
+  &__progress {
+    width: 100%;
+    max-width: 560rpx;
+    height: 8rpx;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: $radius-round;
+    overflow: hidden;
+  }
+
+  &__progress-bar {
+    height: 100%;
+    background: $gradient-gold;
+    border-radius: $radius-round;
+    transition: width 0.5s ease-out;
+  }
+
+  // 预期时间提示
+  &__hint {
+    font-size: $font-caption;
+    color: $color-text-hint;
+  }
+}

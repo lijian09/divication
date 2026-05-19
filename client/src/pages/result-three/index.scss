@@ -1,0 +1,102 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.result-three-page {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  &__nav {
+    @include flex-between;
+    padding: $spacing-xl $page-padding;
+    padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top, 44px));
+
+    &-back { font-size: $font-body; color: $color-text-secondary; }
+    &-title { font-size: $font-h3; color: $color-text-primary; font-weight: $font-weight-semibold; }
+  }
+
+  &__scroll { flex: 1; height: 100vh; }
+
+  &__cards {
+    @include flex-row-center;
+    justify-content: space-around;
+    padding: $spacing-xl $page-padding;
+  }
+
+  &__card-item {
+    @include flex-col-center;
+    gap: $spacing-sm;
+  }
+
+  &__card-label {
+    font-size: $font-caption;
+    color: $color-text-secondary;
+  }
+
+  &__question {
+    @include card-base;
+    margin: 0 $page-padding $spacing-xl;
+    &-text { font-size: $font-body; color: $color-text-secondary; }
+  }
+
+  &__section {
+    @include card-base;
+    margin: 0 $page-padding $spacing-md;
+
+    &-title {
+      display: block;
+      font-size: $font-body;
+      color: $color-text-primary;
+      font-weight: $font-weight-bold;
+      margin-bottom: $spacing-sm;
+    }
+
+    &-content {
+      font-size: $font-body;
+      color: $color-text-secondary;
+      line-height: 1.8;
+    }
+  }
+
+  &__summary {
+    @include card-base;
+    margin: $spacing-lg $page-padding;
+
+    &-title {
+      display: block;
+      font-size: $font-body;
+      color: $color-accent;
+      font-weight: $font-weight-bold;
+      margin-bottom: $spacing-sm;
+    }
+
+    &-content {
+      font-size: $font-body;
+      color: $color-text-primary;
+      line-height: 1.8;
+    }
+  }
+
+  &__disclaimer {
+    display: block;
+    font-size: $font-caption;
+    color: $color-text-hint;
+    margin-top: $spacing-lg;
+    padding-top: $spacing-md;
+    border-top: 1rpx solid rgba(255, 255, 255, 0.06);
+  }
+
+  &__actions {
+    padding: 0 $page-padding $spacing-xxxl;
+  }
+
+  &__view-card-btn { @include btn-secondary; margin-bottom: $spacing-lg; }
+  &__view-card-text { font-size: $font-body; }
+
+  &__btn-row { display: flex; gap: $spacing-md; }
+  &__retry-btn { flex: 1; @include btn-secondary; }
+  &__retry-text { font-size: $font-body; }
+  &__save-btn { flex: 1; @include btn-primary; }
+  &__save-text { font-size: $font-body; font-weight: $font-weight-bold; }
+}

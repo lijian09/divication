@@ -1,0 +1,42 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.shuffle-page {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  &__nav {
+    @include flex-between;
+    padding: $spacing-xl $page-padding;
+    padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top, 44px));
+
+    &-back { font-size: $font-body; color: $color-text-secondary; }
+    &-title { font-size: $font-h3; color: $color-text-primary; font-weight: $font-weight-semibold; }
+    &-progress { font-size: $font-caption; color: $color-text-hint; }
+  }
+
+  &__hint {
+    display: block;
+    text-align: center;
+    font-size: $font-body;
+    color: $color-text-secondary;
+    margin: $spacing-lg 0;
+  }
+
+  &__pick-btn {
+    position: fixed;
+    bottom: 0;
+    left: $page-padding;
+    right: $page-padding;
+    padding-bottom: env(safe-area-inset-bottom, 34px);
+    @include btn-primary;
+    animation: slide-up-in 0.3s ease-out;
+
+    &-text {
+      font-size: $font-h3;
+      font-weight: $font-weight-bold;
+    }
+  }
+}

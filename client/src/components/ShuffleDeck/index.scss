@@ -1,0 +1,102 @@
+/**
+ * 洗牌动画组件样式
+ * 牌面交错位移 + 旋转动画
+ */
+
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.shuffle-deck {
+  width: 100%;
+  @include flex-col-center;
+  gap: $spacing-lg;
+  padding: $spacing-lg;
+  touch-action: none; // 阻止默认滚动，响应自定义手势
+
+  // 牌堆容器
+  &__pile {
+    position: relative;
+    width: 100%;
+    min-height: 500rpx;
+    @include flex-center;
+    flex-wrap: wrap;
+    gap: 4rpx;
+  }
+
+  // 单张牌
+  &__card {
+    width: $card-small-width;
+    height: $card-small-height;
+    border-radius: $radius-sm;
+    transition: transform $duration-shuffle ease-in-out;
+    flex-shrink: 0;
+
+    // 洗牌中：持续交错动画
+    &--shuffling {
+      animation: shuffle-card $duration-shuffle ease-in-out infinite alternate;
+    }
+
+    // 洗牌完成：静止排列
+    &--idle {
+      animation: none;
+    }
+  }
+
+  // 牌背面
+  &__card-back {
+    width: 100%;
+    height: 100%;
+    border-radius: $radius-sm;
+    background: linear-gradient(135deg, #1a1a3e, #2d1b4e);
+    border: 1rpx solid rgba($color-accent, 0.2);
+    @include flex-center;
+    overflow: hidden;
+  }
+
+  &__card-pattern {
+    width: 80%;
+    height: 80%;
+    border: 1rpx solid rgba($color-accent, 0.15);
+    border-radius: 4rpx;
+    background: repeating-conic-gradient(
+      rgba($color-accent, 0.03) 0% 25%,
+      transparent 0% 50%
+    );
+    background-size: 16rpx 16rpx;
+  }
+
+  // 进度条
+  &__progress {
+    width: 100%;
+    height: 8rpx;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: $radius-round;
+    overflow: hidden;
+  }
+
+  &__progress-bar {
+    height: 100%;
+    background: $gradient-gold;
+    border-radius: $radius-round;
+    transition: width 0.1s ease-out;
+  }
+}
+
+// 牌面交错关键帧（已在 animation.scss 定义，此处引用确保可用）
+@keyframes shuffle-card {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(15rpx, -10rpx) rotate(6deg);
+  }
+  50% {
+    transform: translate(-10rpx, 12rpx) rotate(-4deg);
+  }
+  75% {
+    transform: translate(8rpx, -15rpx) rotate(7deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}

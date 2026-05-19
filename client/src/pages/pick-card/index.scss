@@ -1,0 +1,87 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.pick-card-page {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  &__nav {
+    @include flex-between;
+    padding: $spacing-xl $page-padding;
+    padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top, 44px));
+
+    &-back { font-size: $font-body; color: $color-text-secondary; }
+    &-title { font-size: $font-h3; color: $color-text-primary; font-weight: $font-weight-semibold; }
+  }
+
+  &__selected {
+    padding: $spacing-lg $page-padding;
+  }
+
+  &__hint {
+    display: block;
+    text-align: center;
+    font-size: $font-body;
+    color: $color-text-secondary;
+    margin: $spacing-lg 0;
+  }
+
+  &__deck {
+    @include flex-center;
+    flex-wrap: wrap;
+    gap: $spacing-md;
+    padding: $spacing-lg;
+
+    &-card {
+      animation: shuffle-card 0.3s ease-in-out infinite alternate;
+    }
+
+    &-back {
+      width: $card-small-width;
+      height: $card-small-height;
+      border-radius: $radius-sm;
+      background: linear-gradient(135deg, #1a1a3e, #2d1b4e);
+      border: 1rpx solid rgba($color-accent, 0.2);
+      @include flex-center;
+    }
+
+    &-symbol {
+      font-size: 32rpx;
+      color: $color-accent;
+      opacity: 0.6;
+    }
+  }
+
+  &__action {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: $spacing-lg $page-padding;
+    padding-bottom: calc(#{$spacing-lg} + env(safe-area-inset-bottom, 34px));
+    background: linear-gradient(transparent, $color-bg-primary);
+    @include flex-between;
+
+    &-count {
+      font-size: $font-body;
+      color: $color-text-secondary;
+    }
+
+    &-btn {
+      @include btn-primary;
+
+      &--disabled {
+        opacity: 0.4;
+        background: #444;
+        color: #888;
+      }
+
+      &-text {
+        font-size: $font-h3;
+        font-weight: $font-weight-bold;
+      }
+    }
+  }
+}

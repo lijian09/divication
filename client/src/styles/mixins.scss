@@ -1,0 +1,143 @@
+/**
+ * SCSS Mixin 工具集
+ * 常用样式模式封装
+ */
+
+// ==================== 布局 ====================
+
+// Flex 居中
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Flex 水平排列 + 居中
+@mixin flex-row-center {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+// Flex 垂直排列 + 居中
+@mixin flex-col-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+// Flex 两端对齐
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// ==================== 文字 ====================
+
+// 文字截断（单行）
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// 文字截断（多行）
+@mixin text-clamp($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// ==================== 按钮 ====================
+
+// 主按钮样式（金色渐变）
+@mixin btn-primary {
+  height: $btn-primary-height;
+  border-radius: $btn-primary-radius;
+  background: $gradient-gold;
+  color: $color-bg-primary;
+  font-size: $font-h3;
+  font-weight: $font-weight-bold;
+  @include flex-center;
+  border: none;
+  padding: 0 $spacing-xl;
+
+  &:disabled {
+    opacity: 0.4;
+    background: #444;
+    color: #888;
+  }
+}
+
+// 次按钮样式（边框）
+@mixin btn-secondary {
+  height: $btn-secondary-height;
+  border-radius: $btn-secondary-radius;
+  background: transparent;
+  color: $color-accent;
+  font-size: $font-h3;
+  @include flex-center;
+  border: 2rpx solid $color-accent;
+  padding: 0 $spacing-xl;
+}
+
+// ==================== 卡片 ====================
+
+// 半透明卡片
+@mixin card-base {
+  background: $color-card-bg;
+  border-radius: $radius-lg;
+  border: 2rpx solid rgba(255, 255, 255, 0.06);
+  padding: $spacing-lg;
+}
+
+// 金色边框卡片
+@mixin card-gold {
+  @include card-base;
+  border: 2rpx solid rgba($color-accent, 0.3);
+}
+
+// ==================== 遮罩 ====================
+
+// 蒙层（全屏）
+@mixin overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $color-overlay;
+  z-index: $z-index-overlay;
+}
+
+// ==================== 安全区 ====================
+
+// 顶部安全区占位
+@mixin safe-top {
+  padding-top: calc(#{$status-bar-height} * 2rpx / 1px);
+}
+
+// 底部安全区占位
+@mixin safe-bottom {
+  padding-bottom: calc(#{$tab-bar-height} * 2rpx / 1px);
+}
+
+// ==================== 响应式 ====================
+
+// rpx 适配（px 转 rpx）
+@mixin size-rpx($w, $h) {
+  width: #{$w * 2}rpx;
+  height: #{$h * 2}rpx;
+}
+
+// ==================== 渐变文字 ====================
+
+@mixin gradient-text {
+  background: $gradient-gold;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

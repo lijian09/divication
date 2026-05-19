@@ -1,0 +1,103 @@
+/**
+ * SCSS 变量定义
+ * 包含色彩系统、字体层级、间距规范
+ * 基于原型图设计规范
+ */
+
+// ==================== 色彩系统 ====================
+
+// 主色调
+$color-bg-primary: #1A0A2E;       // 深紫背景
+$color-bg-secondary: #0D1B3E;     // 深蓝背景（导航栏、卡片）
+
+// 强调色
+$color-accent: #D4A843;           // 金色（按钮、高亮、品牌）
+$color-accent-light: #F0D68A;     // 浅金（次要强调、边框）
+
+// 文字颜色
+$color-text-primary: #FFFFFF;     // 主文字（深色背景上）
+$color-text-secondary: #A8A3B8;   // 辅助文字
+$color-text-hint: #6B6580;        // 提示文字、免责声明
+
+// 背景色
+$color-card-bg: rgba(255, 255, 255, 0.08);   // 半透明卡片背景
+$color-overlay: rgba(0, 0, 0, 0.6);          // 蒙层
+
+// 状态色
+$color-success: #4CAF50;          // 成功
+$color-error: #E53935;            // 错误
+$color-warning: #FF9800;          // 警告
+
+// 渐变色
+$gradient-gold: linear-gradient(135deg, #D4A843, #F0D68A);
+$gradient-bg: linear-gradient(180deg, #1A0A2E 0%, #0D1B3E 100%);
+$gradient-card: linear-gradient(135deg, rgba(212, 168, 67, 0.15), rgba(13, 27, 62, 0.6));
+
+// ==================== 字体层级 ====================
+
+$font-h1: 48rpx;                  // 24px - 页面大标题
+$font-h2: 40rpx;                  // 20px - 卡片标题
+$font-h3: 32rpx;                  // 16px - 列表标题、按钮
+$font-body: 28rpx;                // 14px - 正文
+$font-caption: 24rpx;             // 12px - 辅助文字
+$font-micro: 20rpx;               // 10px - 标签、角标
+
+$font-weight-bold: bold;
+$font-weight-semibold: 600;
+$font-weight-regular: normal;
+
+// ==================== 间距规范 ====================
+
+$spacing-xs: 8rpx;
+$spacing-sm: 12rpx;
+$spacing-md: 16rpx;
+$spacing-lg: 20rpx;               // 页面水平内边距标准值
+$spacing-xl: 24rpx;
+$spacing-xxl: 32rpx;
+$spacing-xxxl: 40rpx;
+
+// ==================== 尺寸规范 ====================
+
+// 安全区域
+$status-bar-height: 88px;         // iOS 标准（状态栏+导航栏）
+$tab-bar-height: 84px;            // TabBar 50px + 安全区 34px
+
+// 牌面尺寸（rpx）
+$card-large-width: 400rpx;        // 结果页大牌 200px
+$card-large-height: 640rpx;       // 320px
+$card-medium-width: 200rpx;       // 三牌阵 100px
+$card-medium-height: 320rpx;      // 160px
+$card-small-width: 160rpx;        // 洗牌/选牌 80px
+$card-small-height: 256rpx;       // 128px
+
+// 按钮尺寸
+$btn-primary-height: 96rpx;       // 48px
+$btn-primary-radius: 48rpx;       // 24px
+$btn-secondary-height: 80rpx;     // 40px
+$btn-secondary-radius: 40rpx;     // 20px
+
+// 页面内边距
+$page-padding: 40rpx;             // 20px
+
+// ==================== 圆角 ====================
+
+$radius-sm: 8rpx;
+$radius-md: 12rpx;
+$radius-lg: 16rpx;
+$radius-xl: 24rpx;
+$radius-round: 999rpx;
+
+// ==================== 动画时长 ====================
+
+$duration-fast: 0.2s;
+$duration-normal: 0.3s;
+$duration-slow: 0.6s;
+$duration-card-flip: 0.6s;
+$duration-shuffle: 0.3s;
+
+// ==================== 层级 ====================
+
+$z-index-card: 10;
+$z-index-modal: 100;
+$z-index-toast: 200;
+$z-index-overlay: 50;

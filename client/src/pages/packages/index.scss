@@ -1,0 +1,111 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.packages-page {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  &__nav {
+    @include flex-between;
+    padding: $spacing-xl $page-padding;
+    padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top, 44px));
+
+    &-back { font-size: $font-body; color: $color-text-secondary; }
+    &-title { font-size: $font-h3; color: $color-text-primary; font-weight: $font-weight-semibold; }
+    &-placeholder { width: 60rpx; }
+  }
+
+  &__content {
+    flex: 1;
+    padding: 0 $page-padding;
+  }
+
+  &__title {
+    display: block;
+    font-size: $font-h2;
+    color: $color-text-primary;
+    margin-bottom: $spacing-xl;
+  }
+
+  &__card {
+    @include card-base;
+    margin-bottom: $spacing-lg;
+    padding: $spacing-xl;
+    position: relative;
+    @include flex-col-center;
+    gap: $spacing-xs;
+    transition: border-color 0.2s;
+
+    &--active {
+      border-color: $color-accent;
+      background: rgba($color-accent, 0.06);
+    }
+
+    &--recommended {
+      border-width: 4rpx;
+      border-color: rgba($color-accent, 0.4);
+    }
+
+    &-badge {
+      position: absolute;
+      top: -1rpx;
+      right: $spacing-md;
+      font-size: $font-micro;
+      color: $color-bg-primary;
+      background: $color-accent;
+      padding: 4rpx 16rpx;
+      border-radius: 0 0 $radius-sm $radius-sm;
+    }
+
+    &-name {
+      font-size: $font-h3;
+      color: $color-text-primary;
+      font-weight: $font-weight-bold;
+    }
+
+    &-content {
+      font-size: $font-body;
+      color: $color-text-secondary;
+    }
+
+    &-price {
+      font-size: $font-h1;
+      color: $color-accent;
+      font-weight: $font-weight-bold;
+    }
+
+    &-desc {
+      font-size: $font-caption;
+      color: $color-text-secondary;
+    }
+
+    &-per-unit {
+      font-size: $font-caption;
+      color: $color-accent;
+    }
+  }
+
+  &__disclaimer {
+    display: block;
+    text-align: center;
+    font-size: $font-caption;
+    color: $color-text-hint;
+    margin: $spacing-lg 0;
+  }
+
+  &__buy {
+    position: fixed;
+    bottom: 0;
+    left: $page-padding;
+    right: $page-padding;
+    padding-bottom: env(safe-area-inset-bottom, 34px);
+    @include btn-primary;
+
+    &-text {
+      font-size: $font-h3;
+      font-weight: $font-weight-bold;
+    }
+  }
+}

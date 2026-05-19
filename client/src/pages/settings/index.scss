@@ -1,0 +1,113 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.settings-page {
+  min-height: 100vh;
+  position: relative;
+  padding: $spacing-xl $page-padding;
+
+  &__nav {
+    @include flex-between;
+    padding-bottom: $spacing-xl;
+    padding-top: calc(env(safe-area-inset-top, 44px));
+
+    &-back { font-size: $font-body; color: $color-text-secondary; }
+    &-title { font-size: $font-h3; color: $color-text-primary; font-weight: $font-weight-semibold; }
+    &-placeholder { width: 60rpx; }
+  }
+
+  &__logo {
+    @include flex-col-center;
+    gap: $spacing-sm;
+    padding: $spacing-xxl 0;
+  }
+
+  &__logo-box {
+    width: 144rpx;
+    height: 144rpx;
+    border-radius: $radius-lg;
+    background: rgba($color-accent, 0.15);
+    border: 2rpx solid $color-accent;
+    @include flex-center;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__logo-text {
+    font-size: $font-h1;
+    color: $color-accent;
+    font-weight: $font-weight-bold;
+  }
+
+  &__version {
+    font-size: $font-caption;
+    color: $color-text-hint;
+  }
+
+  &__slogan {
+    font-size: $font-body;
+    color: $color-text-secondary;
+  }
+
+  // 功能菜单
+  &__menu {
+    @include card-base;
+    padding: 0;
+    margin-top: $spacing-xl;
+  }
+
+  &__menu-item {
+    @include flex-row-center;
+    padding: $spacing-lg $spacing-xl;
+    border-bottom: 1rpx solid rgba(255, 255, 255, 0.04);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &--danger {
+      border-bottom: none;
+    }
+  }
+
+  &__menu-icon {
+    font-size: 36rpx;
+    margin-right: $spacing-md;
+  }
+
+  &__menu-label {
+    flex: 1;
+    font-size: $font-h3;
+    color: $color-text-primary;
+
+    &--danger {
+      color: $color-error;
+    }
+  }
+
+  &__menu-arrow {
+    font-size: $font-body;
+    color: $color-text-hint;
+  }
+
+  // 危险区域
+  &__danger-zone {
+    margin-top: $spacing-xl;
+  }
+
+  &__danger-hint {
+    display: block;
+    font-size: $font-caption;
+    color: $color-text-hint;
+    text-align: center;
+    margin-top: $spacing-sm;
+  }
+
+  &__copyright {
+    display: block;
+    text-align: center;
+    font-size: $font-caption;
+    color: $color-text-hint;
+    margin-top: $spacing-xxl;
+    padding-bottom: env(safe-area-inset-bottom, 34px);
+  }
+}

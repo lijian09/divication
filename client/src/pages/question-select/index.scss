@@ -1,0 +1,126 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.question-page {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  &__nav {
+    @include flex-between;
+    padding: $spacing-xl $page-padding;
+    padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top, 44px));
+
+    &-back {
+      font-size: $font-body;
+      color: $color-text-secondary;
+    }
+
+    &-title {
+      font-size: $font-h3;
+      color: $color-text-primary;
+      font-weight: $font-weight-semibold;
+    }
+
+    &-progress {
+      font-size: $font-caption;
+      color: $color-text-hint;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    padding: 0 $page-padding;
+    overflow-y: auto;
+  }
+
+  &__section-title {
+    display: block;
+    font-size: $font-h2;
+    color: $color-text-primary;
+    margin-bottom: $spacing-lg;
+  }
+
+  &__categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-md;
+    margin-bottom: $spacing-xl;
+  }
+
+  &__presets {
+    margin-bottom: $spacing-xl;
+  }
+
+  &__preset {
+    @include card-base;
+    margin-bottom: $spacing-sm;
+    padding: $spacing-md $spacing-lg;
+
+    &--active {
+      border-left: 6rpx solid $color-accent;
+      background: rgba($color-accent, 0.08);
+    }
+
+    &-text {
+      font-size: $font-body;
+      color: $color-text-primary;
+    }
+  }
+
+  &__section-label {
+    display: block;
+    font-size: $font-body;
+    color: $color-text-secondary;
+    margin-bottom: $spacing-md;
+  }
+
+  &__input-wrap {
+    @include card-base;
+    margin-bottom: $spacing-xxl;
+  }
+
+  &__input {
+    width: 100%;
+    min-height: 160rpx;
+    font-size: $font-body;
+    color: $color-text-primary;
+  }
+
+  &__placeholder {
+    color: $color-text-hint;
+  }
+
+  &__counter {
+    display: block;
+    text-align: right;
+    font-size: $font-caption;
+    color: $color-text-hint;
+    margin-top: $spacing-xs;
+
+    &--warn {
+      color: $color-error;
+    }
+  }
+
+  &__next {
+    position: fixed;
+    bottom: 0;
+    left: $page-padding;
+    right: $page-padding;
+    padding-bottom: env(safe-area-inset-bottom, 34px);
+    @include btn-primary;
+
+    &--disabled {
+      opacity: 0.4;
+      background: #444;
+      color: #888;
+    }
+
+    &-text {
+      font-size: $font-h3;
+      font-weight: $font-weight-bold;
+    }
+  }
+}

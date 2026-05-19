@@ -1,0 +1,106 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.history-list-page {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  &__nav {
+    @include flex-between;
+    padding: $spacing-xl $page-padding;
+    padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top, 44px));
+
+    &-back { font-size: $font-body; color: $color-text-secondary; }
+    &-title { font-size: $font-h3; color: $color-text-primary; font-weight: $font-weight-semibold; }
+    &-placeholder { width: 60rpx; }
+  }
+
+  // 空状态
+  &__empty {
+    flex: 1;
+    @include flex-col-center;
+    justify-content: center;
+    gap: $spacing-lg;
+
+    &-icon {
+      width: 320rpx;
+      height: 320rpx;
+      @include flex-center;
+
+      &-text {
+        font-size: 120rpx;
+      }
+    }
+
+    &-title {
+      font-size: $font-h2;
+      color: $color-text-primary;
+    }
+
+    &-desc {
+      font-size: $font-body;
+      color: $color-text-secondary;
+      text-align: center;
+    }
+
+    &-cta {
+      @include btn-primary;
+      margin-top: $spacing-lg;
+
+      &-text {
+        font-size: $font-h3;
+        font-weight: $font-weight-bold;
+      }
+    }
+  }
+
+  // 记录列表
+  &__list {
+    flex: 1;
+    height: 100vh;
+    padding: 0 $page-padding;
+  }
+
+  &__month {
+    padding: $spacing-sm 0;
+    &-title {
+      font-size: $font-caption;
+      color: $color-text-hint;
+    }
+  }
+
+  &__item {
+    @include card-base;
+    margin-bottom: $spacing-md;
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    grid-template-rows: auto auto;
+    gap: $spacing-xs $spacing-md;
+    align-items: center;
+
+    &-date {
+      font-size: $font-caption;
+      color: $color-text-hint;
+    }
+
+    &-category {
+      font-size: $font-caption;
+      color: $color-accent;
+    }
+
+    &-question {
+      font-size: $font-body;
+      color: $color-text-primary;
+      @include text-ellipsis;
+      grid-column: 1 / -1;
+    }
+
+    &-spread {
+      font-size: $font-caption;
+      color: $color-text-hint;
+      grid-column: 1 / -1;
+    }
+  }
+}

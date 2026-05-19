@@ -1,0 +1,70 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.reveal-page {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  &__nav {
+    @include flex-between;
+    padding: $spacing-xl $page-padding;
+    padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top, 44px));
+
+    &-back { font-size: $font-body; color: $color-text-secondary; }
+    &-title { font-size: $font-h3; color: $color-text-primary; font-weight: $font-weight-semibold; }
+  }
+
+  &__cards {
+    @include flex-center;
+    flex-wrap: wrap;
+    gap: $spacing-xxl;
+    padding: $spacing-xxl $page-padding;
+  }
+
+  &__card-wrap {
+    @include flex-col-center;
+    gap: $spacing-md;
+  }
+
+  &__card-info {
+    @include flex-col-center;
+    gap: $spacing-xs;
+    animation: slide-up-in 0.3s ease-out;
+  }
+
+  &__card-name {
+    font-size: $font-body;
+    color: $color-text-primary;
+    font-weight: $font-weight-bold;
+  }
+
+  &__card-keywords {
+    font-size: $font-caption;
+    color: $color-accent;
+  }
+
+  &__flip-hint {
+    display: block;
+    text-align: center;
+    font-size: $font-body;
+    color: $color-text-secondary;
+    margin-top: $spacing-xxl;
+  }
+
+  &__result-btn {
+    position: fixed;
+    bottom: 0;
+    left: $page-padding;
+    right: $page-padding;
+    padding-bottom: env(safe-area-inset-bottom, 34px);
+    @include btn-primary;
+    animation: fade-in 0.3s ease-out;
+
+    &-text {
+      font-size: $font-h3;
+      font-weight: $font-weight-bold;
+    }
+  }
+}

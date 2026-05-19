@@ -1,0 +1,41 @@
+/**
+ * 分类标签样式
+ */
+
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.category-tag {
+  @include flex-col-center;
+  gap: $spacing-xs;
+  border-radius: $radius-md;
+  border: 2rpx solid transparent;
+  background: rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
+
+  // 尺寸变体
+  &--medium {
+    width: 160rpx;
+    height: 160rpx;
+    justify-content: center;
+  }
+
+  &--small {
+    padding: $spacing-xs $spacing-md;
+    flex-direction: row;
+  }
+
+  // 选中态
+  &--selected {
+    border-color: $color-accent;
+  }
+
+  &__icon {
+    font-size: 36rpx;
+  }
+
+  &__label {
+    font-size: $font-caption;
+    color: $color-text-primary;
+  }
+}

@@ -1,0 +1,59 @@
+/**
+ * 牌阵布局组件样式
+ */
+
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.card-spread {
+  width: 100%;
+
+  // 单牌阵居中
+  &--single {
+    @include flex-center;
+    padding: $spacing-xxl 0;
+  }
+
+  // 三牌阵等距排列
+  &--three {
+    @include flex-row-center;
+    justify-content: space-around;
+    padding: $spacing-xxl 0;
+  }
+
+  // 每张牌容器
+  &__item {
+    @include flex-col-center;
+    gap: $spacing-sm;
+  }
+
+  // 空卡槽（待选牌状态）
+  &__placeholder {
+    border: 2rpx dashed rgba($color-accent, 0.3);
+    border-radius: $radius-md;
+    background: rgba($color-accent, 0.03);
+    @include flex-center;
+
+    &--large {
+      width: $card-large-width;
+      height: $card-large-height;
+    }
+
+    &--medium {
+      width: $card-medium-width;
+      height: $card-medium-height;
+    }
+
+    &--small {
+      width: $card-small-width;
+      height: $card-small-height;
+    }
+  }
+
+  // 位置标签
+  &__label {
+    font-size: $font-caption;
+    color: $color-text-secondary;
+    margin-top: $spacing-xs;
+  }
+}

@@ -1,0 +1,113 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.history-detail-page {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  &__nav {
+    @include flex-between;
+    padding: $spacing-xl $page-padding;
+    padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top, 44px));
+
+    &-back { font-size: $font-body; color: $color-text-secondary; }
+    &-title { font-size: $font-h3; color: $color-text-primary; font-weight: $font-weight-semibold; }
+    &-placeholder { width: 60rpx; }
+  }
+
+  &__scroll {
+    flex: 1;
+    padding: 0 $page-padding;
+  }
+
+  &__timestamp {
+    display: block;
+    font-size: $font-caption;
+    color: $color-text-hint;
+    margin-bottom: $spacing-xs;
+  }
+
+  &__meta {
+    display: block;
+    font-size: $font-body;
+    color: $color-accent;
+    margin-bottom: $spacing-xl;
+  }
+
+  &__question {
+    @include card-base;
+    margin-bottom: $spacing-xl;
+
+    &-label {
+      display: block;
+      font-size: $font-caption;
+      color: $color-text-hint;
+      margin-bottom: $spacing-xs;
+    }
+
+    &-text {
+      font-size: $font-body;
+      color: $color-text-primary;
+    }
+  }
+
+  &__card-placeholder {
+    @include flex-center;
+    height: 640rpx;
+    margin-bottom: $spacing-xl;
+    border: 2rpx dashed rgba($color-accent, 0.2);
+    border-radius: $radius-lg;
+
+    &-text {
+      font-size: $font-body;
+      color: $color-text-hint;
+    }
+  }
+
+  &__interpretation {
+    @include card-base;
+    margin-bottom: $spacing-xl;
+
+    &-title {
+      display: block;
+      font-size: $font-h3;
+      color: $color-text-primary;
+      font-weight: $font-weight-bold;
+      margin-bottom: $spacing-sm;
+    }
+
+    &-keywords {
+      display: block;
+      font-size: $font-caption;
+      color: $color-accent;
+      margin-bottom: $spacing-md;
+    }
+
+    &-content {
+      display: block;
+      font-size: $font-body;
+      color: $color-text-primary;
+      line-height: 1.8;
+      margin-bottom: $spacing-md;
+    }
+  }
+
+  &__disclaimer {
+    display: block;
+    font-size: $font-caption;
+    color: $color-text-hint;
+    padding-top: $spacing-md;
+    border-top: 1rpx solid rgba(255, 255, 255, 0.06);
+  }
+
+  &__view-card-btn {
+    @include btn-secondary;
+    margin-bottom: $spacing-xxxl;
+
+    &-text {
+      font-size: $font-body;
+    }
+  }
+}

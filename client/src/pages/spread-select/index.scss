@@ -1,0 +1,109 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.spread-page {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  &__nav {
+    @include flex-between;
+    padding: $spacing-xl $page-padding;
+    padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top, 44px));
+
+    &-back { font-size: $font-body; color: $color-text-secondary; }
+    &-title { font-size: $font-h3; color: $color-text-primary; font-weight: $font-weight-semibold; }
+    &-progress { font-size: $font-caption; color: $color-text-hint; }
+  }
+
+  &__content {
+    flex: 1;
+    padding: 0 $page-padding;
+  }
+
+  &__title {
+    display: block;
+    font-size: $font-h2;
+    color: $color-text-primary;
+    margin-bottom: $spacing-xxl;
+  }
+
+  &__card {
+    @include card-base;
+    padding: $spacing-xl;
+    margin-bottom: $spacing-lg;
+    position: relative;
+    @include flex-col-center;
+    gap: $spacing-sm;
+    transition: border-color 0.2s;
+
+    &--active {
+      border-color: $color-accent;
+      background: rgba($color-accent, 0.06);
+    }
+
+    &-badge {
+      position: absolute;
+      top: $spacing-sm;
+      right: $spacing-md;
+      font-size: $font-micro;
+      color: $color-bg-primary;
+      background: $color-accent;
+      padding: 2rpx 12rpx;
+      border-radius: $radius-round;
+    }
+
+    &-name {
+      font-size: $font-h3;
+      font-weight: $font-weight-bold;
+      color: $color-text-primary;
+    }
+
+    &-desc {
+      font-size: $font-caption;
+      color: $color-text-secondary;
+    }
+
+    &-cost {
+      font-size: $font-caption;
+      color: $color-text-hint;
+    }
+  }
+
+  // 牌阵示意
+  &__card-single-icon,
+  &__card-three-icon {
+    @include flex-row-center;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__mini-card {
+    width: 80rpx;
+    height: 128rpx;
+    border-radius: $radius-sm;
+    background: linear-gradient(135deg, #2d1b4e, #1a1040);
+    border: 1rpx solid rgba($color-accent, 0.2);
+  }
+
+  &__start {
+    position: fixed;
+    bottom: 0;
+    left: $page-padding;
+    right: $page-padding;
+    padding-bottom: env(safe-area-inset-bottom, 34px);
+    @include btn-primary;
+
+    &--disabled {
+      opacity: 0.4;
+      background: #444;
+      color: #888;
+    }
+
+    &-text {
+      font-size: $font-h3;
+      font-weight: $font-weight-bold;
+    }
+  }
+}
