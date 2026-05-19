@@ -230,3 +230,5 @@
 | `feat` | F-213 前端抽牌流程串联 | 2026-05-19 | pick-card 对接真实 draw API，替换 mock 数据，加入 loading/错误状态 |
 | `fix` | 前后端类别字段统一 | 2026-05-19 | 前端 wealth→finance 对齐后端 DTO 枚举，避免校验失败 |
 | `chore` | GitHub CI/CD 自动化 | 2026-05-19 | CI 工作流 lint+test+build，Deploy 工作流 Docker 构建+SSH 部署 |
+| `feat` | F-214 后端牌义查询接口 | 2026-05-19 | card/:id/detail 端点，按 isReversed 返回对应关键词和含义 |
+| `feat` | F-215 前端牌义详情展示 | 2026-05-19 | 结果页对接 getCardDetail，展示完整牌义+关键词，修复路由 /cards→/card |

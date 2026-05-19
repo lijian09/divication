@@ -1,19 +1,19 @@
 import { View, Text, ScrollView } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { FC, useState } from 'react'
+import { FC, useState, useEffect } from 'react'
 
 import StarBackground from '@components/StarBackground'
 import AiLoading from '@components/AiLoading'
 import TarotCard from '@components/TarotCard'
 import { useDivinationStore } from '@store/index'
+import { getCardDetail } from '@services/card'
 import { ROUTES } from '@utils/constants'
 
 import './index.scss'
 
 /**
  * 结果页 - 单牌
- * 展示 AI 生成的单牌解读结果
- * 支持流式逐字显示
+ * 展示牌义 + AI 解读结果
  */
 const ResultSinglePage: FC = () => {
   const {
@@ -26,22 +26,41 @@ const ResultSinglePage: FC = () => {
   const card = selectedCards[0]
   const [isLoading, setIsLoading] = useState(!isInterpretationDone)
 
+  /** 牌义详情（从后端获取） */
+  const [cardDetail, setCardDetail] = useState<{
+    keywords: string
+    meaning: string
+  } | null>(null)
+
+  /** 获取牌义详情 */
+  useEffect(() => {
+    if (!card?.id) return
+
+    const fetchDetail = async () => {
+      try {
+        const detail = await getCardDetail(card.id, !card.isUpright)
+        setCardDetail({
+          keywords: detail.keywords,
+          meaning: detail.meaning,
+        })
+      } catch (err) {
+        console.error('[DEBUG] 获取牌义详情失败:', err)
+        // 降级：使用前端已有数据
+        setCardDetail({
+          keywords: card.keywords?.join(' · ') || '',
+          meaning: '',
+        })
+      }
+    }
+
+    fetchDetail()
+  }, [card?.id])
+
   /** 再来一次 */
   const handleRetry = () => {
     const store = useDivinationStore.getState()
     store.reset()
     Taro.navigateTo({ url: ROUTES.QUESTION_SELECT })
-  }
-
-  /** 保存到历史 */
-  const handleSave = () => {
-    // TODO: 调用保存 API
-    Taro.showToast({ title: '已保存', icon: 'success' })
-  }
-
-  /** 查看牌义详解 */
-  const handleViewCards = () => {
-    // TODO: 跳转牌义详情
   }
 
   if (isLoading) {
@@ -82,10 +101,20 @@ const ResultSinglePage: FC = () => {
         </Text>
 
         {/* 关键词 */}
-        {card?.keywords && (
+        {cardDetail?.keywords && (
           <Text className="result-single-page__keywords">
-            关键词：{card.keywords.join(' · ')}
+            关键词：{cardDetail.keywords}
           </Text>
+        )}
+
+        {/* 牌义解读 */}
+        {cardDetail?.meaning && (
+          <View className="result-single-page__meaning">
+            <Text className="result-single-page__meaning-label">牌义解读</Text>
+            <Text className="result-single-page__meaning-text">
+              {cardDetail.meaning}
+            </Text>
+          </View>
         )}
 
         {/* AI 解读 */}
@@ -105,16 +134,9 @@ const ResultSinglePage: FC = () => {
 
         {/* 操作按钮 */}
         <View className="result-single-page__actions">
-          <View className="result-single-page__view-card-btn" onClick={handleViewCards}>
-            <Text className="result-single-page__view-card-text">📖 查看牌义详解</Text>
-          </View>
-
           <View className="result-single-page__btn-row">
             <View className="result-single-page__retry-btn" onClick={handleRetry}>
               <Text className="result-single-page__retry-text">再来一次</Text>
-            </View>
-            <View className="result-single-page__save-btn" onClick={handleSave}>
-              <Text className="result-single-page__save-text">保存到历史</Text>
             </View>
           </View>
         </View>

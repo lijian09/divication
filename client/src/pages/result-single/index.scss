@@ -41,7 +41,27 @@
     text-align: center;
     font-size: $font-body;
     color: $color-accent;
+    margin-bottom: $spacing-lg;
+  }
+
+  &__meaning {
+    padding: 0 $page-padding;
     margin-bottom: $spacing-xl;
+
+    &-label {
+      display: block;
+      font-size: $font-body;
+      color: $color-text-secondary;
+      margin-bottom: $spacing-sm;
+    }
+
+    &-text {
+      @include card-base;
+      font-size: $font-body;
+      color: $color-text-primary;
+      line-height: 1.8;
+      padding: $spacing-lg;
+    }
   }
 
   &__interpretation {

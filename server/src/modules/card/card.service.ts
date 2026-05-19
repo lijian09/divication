@@ -56,6 +56,26 @@ export class CardService {
   }
 
   /**
+   * 获取格式化牌义（按正逆位返回对应关键词和含义）
+   */
+  async getFormattedDetail(id: string, isReversed: boolean) {
+    const card = await this.findOne(id);
+
+    return {
+      id: card.id,
+      nameCn: card.name_cn,
+      nameEn: card.name_en,
+      arcanaType: card.arcana_type,
+      suit: card.suit,
+      number: card.number,
+      imageUrl: card.image_url,
+      isReversed,
+      keywords: isReversed ? card.reversed_keywords : card.upright_keywords,
+      meaning: isReversed ? card.reversed_meaning : card.upright_meaning,
+    };
+  }
+
+  /**
    * 获取所有启用的牌阵
    */
   async getSpreads() {

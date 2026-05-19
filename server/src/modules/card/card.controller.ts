@@ -23,7 +23,7 @@ export class CardController {
   }
 
   /**
-   * 获取单张牌详情
+   * 获取单张牌详情（原始数据）
    */
   @Get(':id')
   @ApiOperation({ summary: '获取牌义详情' })
@@ -31,6 +31,21 @@ export class CardController {
   @ApiResponse({ status: 404, description: '牌不存在' })
   async findOne(@Param('id') id: string) {
     return this.cardService.findOne(id);
+  }
+
+  /**
+   * 获取格式化牌义（按正逆位返回对应关键词和含义）
+   * 前端结果页使用
+   */
+  @Get(':id/detail')
+  @ApiOperation({ summary: '获取格式化牌义', description: '根据正逆位返回对应的关键词和解读' })
+  @ApiResponse({ status: 200, description: '查询成功' })
+  async getCardDetail(
+    @Param('id') id: string,
+    @Query('reversed') reversed: string,
+  ) {
+    const isReversed = reversed === 'true';
+    return this.cardService.getFormattedDetail(id, isReversed);
   }
 
   /**

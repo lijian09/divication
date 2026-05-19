@@ -4,32 +4,27 @@ import http from './http'
  * 牌义相关 API
  */
 
-/** 牌义信息 */
-interface CardInfo {
+/** 格式化牌义信息（按正逆位） */
+interface FormattedCardDetail {
   id: string
-  name: string
+  nameCn: string
   nameEn: string
-  type: 'major' | 'minor'
+  arcanaType: string
+  suit: string | null
   number: number
-  uprightKeywords: string[]
-  reversedKeywords: string[]
-  uprightMeaning: string
-  reversedMeaning: string
   imageUrl: string
+  isReversed: boolean
+  keywords: string
+  meaning: string
 }
 
 /**
- * 获取全部牌义列表
+ * 获取格式化牌义详情（按正逆位返回对应关键词和含义）
  */
-export async function getAllCards() {
-  const result = await http.get<CardInfo[]>('/api/cards')
-  return result.data
-}
-
-/**
- * 获取单张牌义详情
- */
-export async function getCardDetail(cardId: string) {
-  const result = await http.get<CardInfo>(`/api/cards/${cardId}`)
+export async function getCardDetail(cardId: string, isReversed: boolean): Promise<FormattedCardDetail> {
+  const result = await http.get<FormattedCardDetail>(
+    `/api/card/${cardId}/detail`,
+    { reversed: String(isReversed) },
+  )
   return result.data
 }
