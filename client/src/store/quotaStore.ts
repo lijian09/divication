@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { getQuotaInfo } from '@/services/quota'
 
 /**
  * 配额状态管理
@@ -16,6 +17,8 @@ interface QuotaState {
   /** 是否正在加载 */
   loading: boolean
 
+  /** 从后端拉取配额 */
+  fetchQuota: () => Promise<void>
   /** 设置配额信息 */
   setQuota: (quota: {
     freeSingle: number
@@ -39,6 +42,24 @@ export const useQuotaStore = create<QuotaState>((set, get) => ({
   paidSingleRemaining: 0,
   paidThreeRemaining: 0,
   loading: false,
+
+  fetchQuota: async () => {
+    set({ loading: true })
+    try {
+      const data = await getQuotaInfo()
+      set({
+        freeSingleRemaining: data.free_single_remaining,
+        freeThreeRemaining: data.free_three_remaining,
+        paidSingleRemaining: data.paid_single_remaining,
+        paidThreeRemaining: data.paid_three_remaining,
+        loading: false,
+      })
+      console.log('[DEBUG] 配额拉取成功:', data)
+    } catch (error: any) {
+      console.error('[DEBUG] 配额拉取失败:', error.message)
+      set({ loading: false })
+    }
+  },
 
   setQuota: (quota) =>
     set({

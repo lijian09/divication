@@ -43,6 +43,10 @@
       background: rgba($color-accent, 0.06);
     }
 
+    &--disabled {
+      opacity: 0.4;
+    }
+
     &-badge {
       position: absolute;
       top: $spacing-sm;
@@ -65,9 +69,23 @@
       color: $color-text-secondary;
     }
 
+    &-cost-row {
+      @include flex-row-center;
+      gap: $spacing-md;
+    }
+
     &-cost {
       font-size: $font-caption;
       color: $color-text-hint;
+    }
+
+    &-remain {
+      font-size: $font-caption;
+      color: $color-accent;
+
+      &--empty {
+        color: $color-error;
+      }
     }
   }
 

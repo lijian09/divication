@@ -3,7 +3,7 @@ import Taro from '@tarojs/taro'
 import { FC, useState } from 'react'
 
 import StarBackground from '@components/StarBackground'
-import { useDivinationStore } from '@store/index'
+import { useDivinationStore, useQuotaStore } from '@store/index'
 import { ROUTES } from '@utils/constants'
 
 import './index.scss'
@@ -15,9 +15,17 @@ import './index.scss'
  */
 const SpreadSelectPage: FC = () => {
   const { setSpreadType, setStep } = useDivinationStore()
+  const { freeSingleRemaining, freeThreeRemaining, paidSingleRemaining, paidThreeRemaining } =
+    useQuotaStore()
   const [selected, setSelected] = useState<'single' | 'three' | null>(null)
 
+  const totalSingle = freeSingleRemaining + paidSingleRemaining
+  const totalThree = freeThreeRemaining + paidThreeRemaining
+
   const handleSelect = (type: 'single' | 'three') => {
+    // 检查对应类型是否有可用次数
+    if (type === 'single' && totalSingle <= 0) return
+    if (type === 'three' && totalThree <= 0) return
     setSelected(type)
   }
 
@@ -46,7 +54,9 @@ const SpreadSelectPage: FC = () => {
 
         {/* 单牌阵 */}
         <View
-          className={`spread-page__card ${selected === 'single' ? 'spread-page__card--active' : ''}`}
+          className={`spread-page__card ${
+            totalSingle <= 0 ? 'spread-page__card--disabled' : ''
+          } ${selected === 'single' ? 'spread-page__card--active' : ''}`}
           onClick={() => handleSelect('single')}
         >
           <View className="spread-page__card-single-icon">
@@ -54,12 +64,23 @@ const SpreadSelectPage: FC = () => {
           </View>
           <Text className="spread-page__card-name">单牌解读</Text>
           <Text className="spread-page__card-desc">简洁快速，一次指引</Text>
-          <Text className="spread-page__card-cost">消耗 1 次单牌额度</Text>
+          <View className="spread-page__card-cost-row">
+            <Text className="spread-page__card-cost">消耗 1 次单牌额度</Text>
+            <Text
+              className={`spread-page__card-remain ${
+                totalSingle <= 0 ? 'spread-page__card-remain--empty' : ''
+              }`}
+            >
+              剩余 {totalSingle} 次
+            </Text>
+          </View>
         </View>
 
         {/* 三牌阵 */}
         <View
-          className={`spread-page__card ${selected === 'three' ? 'spread-page__card--active' : ''}`}
+          className={`spread-page__card ${
+            totalThree <= 0 ? 'spread-page__card--disabled' : ''
+          } ${selected === 'three' ? 'spread-page__card--active' : ''}`}
           onClick={() => handleSelect('three')}
         >
           <Text className="spread-page__card-badge">★ 推荐</Text>
@@ -70,7 +91,16 @@ const SpreadSelectPage: FC = () => {
           </View>
           <Text className="spread-page__card-name">三牌阵</Text>
           <Text className="spread-page__card-desc">过去 / 现在 / 未来，深度解读</Text>
-          <Text className="spread-page__card-cost">消耗 1 次三牌额度</Text>
+          <View className="spread-page__card-cost-row">
+            <Text className="spread-page__card-cost">消耗 1 次三牌额度</Text>
+            <Text
+              className={`spread-page__card-remain ${
+                totalThree <= 0 ? 'spread-page__card-remain--empty' : ''
+              }`}
+            >
+              剩余 {totalThree} 次
+            </Text>
+          </View>
         </View>
       </View>
 
