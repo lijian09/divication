@@ -232,3 +232,7 @@
 | `chore` | GitHub CI/CD 自动化 | 2026-05-19 | CI 工作流 lint+test+build，Deploy 工作流 Docker 构建+SSH 部署 |
 | `feat` | F-214 后端牌义查询接口 | 2026-05-19 | card/:id/detail 端点，按 isReversed 返回对应关键词和含义 |
 | `feat` | F-215 前端牌义详情展示 | 2026-05-19 | 结果页对接 getCardDetail，展示完整牌义+关键词，修复路由 /cards→/card |
+| `feat` | F-301 Prompt 模板引擎 | 2026-05-19 | 单牌/三牌阵 System Prompt 模板 + 牌义注入（查询 CardService 注入关键词+含义） |
+| `feat` | F-302 AI 解读接口 | 2026-05-19 | Claude Messages API 调用 + GPT 降级 + 流式 SSE + 解读记录保存 |
+| `feat` | F-303 输出安全过滤 | 2026-05-19 | 7 组绝对化表述替换 + 3 类专业领域检测引导 + 免责声明拼接 |
+| `feat` | F-304 LLM 降级方案 | 2026-05-19 | Claude/GPT 均失败时返回 10 条预设模板解读（按类别随机选择） |

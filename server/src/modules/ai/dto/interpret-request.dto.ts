@@ -27,6 +27,11 @@ class CardInfoDto {
  * AI 解读请求 DTO
  */
 export class InterpretRequestDto {
+  @ApiProperty({ description: '占卜记录 ID', example: 'uuid-xxx' })
+  @IsString()
+  @IsNotEmpty({ message: '占卜记录 ID 不能为空' })
+  recordId: string;
+
   @ApiProperty({
     description: '问题类别',
     enum: ['love', 'career', 'finance', 'health', 'general'],
