@@ -241,3 +241,7 @@
 | `chore` | 移除 NestJS 后端 | 2026-05-26 | 删除 server 目录（Dockerfile/源码/配置），项目全面转向微信云开发 |
 | `chore` | 移除自动部署 | 2026-05-26 | 删除 deploy.yml，CI 改为仅 PR 触发 |
 | `docs` | 更新 README | 2026-05-26 | 架构图/技术选型/项目结构/快速开始 全面更新为云开发模式 |
+| `feat` | F-305 结果页-单牌 AI 解读对接 | 2026-05-26 | 触发 interpretDivination 调用 + 展示 AI 解读结果 + 模型标识 + 错误重试 |
+| `feat` | F-306 结果页-三牌阵 AI 解读对接 | 2026-05-26 | 批量调用 interpretDivination + 智能分段展示 + 展开/收起 + 综合建议 |
+| `feat` | F-307 AI 解读 Loading 状态 | 2026-05-26 | 15s 超时检测 + 取消回调 + 诗句轮播 + 进度条联动 |
+| `refactor` | divinationStore 重构 | 2026-05-26 | recordId/interpretation/interpretationModel 状态管理，移除未使用的流式/会话字段 |

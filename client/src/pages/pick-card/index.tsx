@@ -19,7 +19,7 @@ import './index.scss'
  * 流程：进入页面 → 调用后端抽牌 API → 用户点击牌堆 → 逐张翻开选中的牌
  */
 const PickCardPage: FC = () => {
-  const { spreadType, category, question, addSelectedCard, selectedCards, setStep } =
+  const { spreadType, category, question, addSelectedCard, selectedCards, setStep, setRecordId } =
     useDivinationStore()
   const { fetchQuota } = useQuotaStore()
   const maxCount = spreadType === 'three' ? 3 : 1
@@ -42,6 +42,7 @@ const PickCardPage: FC = () => {
         })
 
         setDrawnCards(result.cards)
+        setRecordId(result.recordId)
         // 同步更新配额
         fetchQuota()
         console.log('[DEBUG] 抽牌成功，后端已扣减配额，类型:', result.quotaType)

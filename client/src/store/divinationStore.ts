@@ -46,12 +46,16 @@ interface DivinationState {
   spreadType: SpreadType | null
   /** 抽到的牌 */
   selectedCards: CardInfo[]
-  /** 完整的占卜会话 */
-  currentSession: DivinationSession | null
-  /** AI 解读内容（流式） */
-  streamingInterpretation: string
+  /** 占卜记录 ID（云函数返回） */
+  recordId: string
+  /** AI 解读内容 */
+  interpretation: string
+  /** 解读使用的模型 */
+  interpretationModel: string
   /** 解读是否完成 */
   isInterpretationDone: boolean
+  /** 解读是否出错 */
+  interpretationError: string
 
   /** 设置当前步骤 */
   setStep: (step: DivinationState['step']) => void
@@ -63,12 +67,12 @@ interface DivinationState {
   addSelectedCard: (card: CardInfo) => void
   /** 重置选牌 */
   resetSelectedCards: () => void
-  /** 设置流式解读 */
-  setStreamingInterpretation: (text: string) => void
-  /** 设置解读完成 */
-  setInterpretationDone: (done: boolean) => void
-  /** 完成占卜会话 */
-  completeSession: (session: DivinationSession) => void
+  /** 设置占卜记录 ID */
+  setRecordId: (id: string) => void
+  /** 设置 AI 解读结果 */
+  setInterpretation: (content: string, model: string) => void
+  /** 设置解读错误 */
+  setInterpretationError: (error: string) => void
   /** 重置整个占卜流程 */
   reset: () => void
 }
@@ -79,9 +83,11 @@ export const useDivinationStore = create<DivinationState>((set) => ({
   question: '',
   spreadType: null,
   selectedCards: [],
-  currentSession: null,
-  streamingInterpretation: '',
+  recordId: '',
+  interpretation: '',
+  interpretationModel: '',
   isInterpretationDone: false,
+  interpretationError: '',
 
   setStep: (step) => set({ step }),
 
@@ -94,12 +100,13 @@ export const useDivinationStore = create<DivinationState>((set) => ({
 
   resetSelectedCards: () => set({ selectedCards: [] }),
 
-  setStreamingInterpretation: (text) => set({ streamingInterpretation: text }),
+  setRecordId: (id) => set({ recordId: id }),
 
-  setInterpretationDone: (done) => set({ isInterpretationDone: done }),
+  setInterpretation: (content, model) =>
+    set({ interpretation: content, interpretationModel: model, isInterpretationDone: true }),
 
-  completeSession: (session) =>
-    set({ currentSession: session, isInterpretationDone: true }),
+  setInterpretationError: (error) =>
+    set({ interpretationError: error, isInterpretationDone: true }),
 
   reset: () =>
     set({
@@ -108,8 +115,10 @@ export const useDivinationStore = create<DivinationState>((set) => ({
       question: '',
       spreadType: null,
       selectedCards: [],
-      currentSession: null,
-      streamingInterpretation: '',
+      recordId: '',
+      interpretation: '',
+      interpretationModel: '',
       isInterpretationDone: false,
+      interpretationError: '',
     }),
 }))
