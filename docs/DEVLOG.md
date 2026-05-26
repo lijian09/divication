@@ -245,3 +245,5 @@
 | `feat` | F-306 结果页-三牌阵 AI 解读对接 | 2026-05-26 | 批量调用 interpretDivination + 智能分段展示 + 展开/收起 + 综合建议 |
 | `feat` | F-307 AI 解读 Loading 状态 | 2026-05-26 | 15s 超时检测 + 取消回调 + 诗句轮播 + 进度条联动 |
 | `refactor` | divinationStore 重构 | 2026-05-26 | recordId/interpretation/interpretationModel 状态管理，移除未使用的流式/会话字段 |
+| `feat` | F-310 历史记录列表页 | 2026-05-26 | 对接 getHistoryList，卡片式布局 + 分类标签 + 时间 + 分页加载 + 空状态 |
+| `feat` | F-311 历史记录详情页 | 2026-05-26 | 对接 getHistoryDetail，牌面展示 + AI 解读回显 + 模型标识 + 加载/错误状态 |
