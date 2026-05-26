@@ -247,3 +247,6 @@
 | `refactor` | divinationStore 重构 | 2026-05-26 | recordId/interpretation/interpretationModel 状态管理，移除未使用的流式/会话字段 |
 | `feat` | F-310 历史记录列表页 | 2026-05-26 | 对接 getHistoryList，卡片式布局 + 分类标签 + 时间 + 分页加载 + 空状态 |
 | `feat` | F-311 历史记录详情页 | 2026-05-26 | 对接 getHistoryDetail，牌面展示 + AI 解读回显 + 模型标识 + 加载/错误状态 |
+| `feat` | F-315 每日免费次数重置 | 2026-05-26 | quota 云函数 getQuota 增加跨天重置逻辑（free_reset_date 比对） |
+| `feat` | F-314 配额不足弹窗引导 | 2026-05-26 | 首页 handleStart 接入 PayWallModal，免费用尽时引导购买 |
+| `feat` | F-312 个人中心页完善 | 2026-05-26 | 昵称编辑弹窗（前端 UI + 本地保存）、菜单点击兜底提示 |

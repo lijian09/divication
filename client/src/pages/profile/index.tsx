@@ -1,6 +1,6 @@
-import { View, Text, Image } from '@tarojs/components'
+import { View, Text, Input } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 
 import StarBackground from '@components/StarBackground'
 import { useUserStore, useQuotaStore } from '@store/index'
@@ -24,16 +24,44 @@ const MENU_ITEMS = [
 ]
 
 const ProfilePage: FC = () => {
-  const { userInfo } = useUserStore()
+  const { userInfo, updateUserInfo } = useUserStore()
   const { freeSingleRemaining, freeThreeRemaining, paidSingleRemaining, paidThreeRemaining } =
     useQuotaStore()
 
   const totalSingle = freeSingleRemaining + paidSingleRemaining
   const totalThree = freeThreeRemaining + paidThreeRemaining
 
-  const handleMenuClick = (route: string) => {
+  const [showNicknameInput, setShowNicknameInput] = useState(false)
+  const [nicknameValue, setNicknameValue] = useState(userInfo?.nickname || '')
+
+  /** 打开昵称编辑 */
+  const handleEditNickname = () => {
+    setNicknameValue(userInfo?.nickname || '')
+    setShowNicknameInput(true)
+  }
+
+  /** 保存昵称 */
+  const handleSaveNickname = () => {
+    const trimmed = nicknameValue.trim()
+    if (!trimmed) {
+      Taro.showToast({ title: '昵称不能为空', icon: 'none' })
+      return
+    }
+    if (trimmed.length > 20) {
+      Taro.showToast({ title: '昵称不能超过20个字', icon: 'none' })
+      return
+    }
+    updateUserInfo({ nickname: trimmed })
+    setShowNicknameInput(false)
+    Taro.showToast({ title: '昵称已更新', icon: 'success' })
+  }
+
+  /** 菜单点击 */
+  const handleMenuClick = (route: string, label: string) => {
     if (route) {
       Taro.navigateTo({ url: route })
+    } else {
+      Taro.showToast({ title: `${label}功能开发中`, icon: 'none' })
     }
   }
 
@@ -44,7 +72,7 @@ const ProfilePage: FC = () => {
       <Text className="profile-page__title">我的</Text>
 
       {/* 用户信息区 */}
-      <View className="profile-page__user">
+      <View className="profile-page__user" onClick={handleEditNickname}>
         <View className="profile-page__avatar">
           <Text className="profile-page__avatar-text">
             {userInfo?.nickname?.[0] || '灵'}
@@ -54,7 +82,7 @@ const ProfilePage: FC = () => {
           <Text className="profile-page__nickname">
             {userInfo?.nickname || '灵谕用户'}
           </Text>
-          <Text className="profile-page__edit-hint">编辑昵称 &gt;</Text>
+          <Text className="profile-page__edit-hint">点击编辑昵称 &gt;</Text>
         </View>
       </View>
 
@@ -86,7 +114,7 @@ const ProfilePage: FC = () => {
           <View
             key={item.label}
             className="profile-page__menu-item"
-            onClick={() => handleMenuClick(item.route)}
+            onClick={() => handleMenuClick(item.route, item.label)}
           >
             <Text className="profile-page__menu-icon">{item.icon}</Text>
             <Text className="profile-page__menu-label">{item.label}</Text>
@@ -97,6 +125,38 @@ const ProfilePage: FC = () => {
 
       {/* 版本号 */}
       <Text className="profile-page__version">v1.0.0</Text>
+
+      {/* 昵称编辑弹窗 */}
+      {showNicknameInput && (
+        <View className="profile-page__modal-overlay">
+          <View className="profile-page__modal">
+            <Text className="profile-page__modal-title">编辑昵称</Text>
+            <Input
+              className="profile-page__modal-input"
+              value={nicknameValue}
+              onInput={(e) => setNicknameValue(e.detail.value)}
+              maxlength={20}
+              placeholder="输入新昵称"
+              placeholderClass="profile-page__modal-placeholder"
+              autoFocus
+            />
+            <View className="profile-page__modal-actions">
+              <Text
+                className="profile-page__modal-cancel"
+                onClick={() => setShowNicknameInput(false)}
+              >
+                取消
+              </Text>
+              <Text
+                className="profile-page__modal-confirm"
+                onClick={handleSaveNickname}
+              >
+                保存
+              </Text>
+            </View>
+          </View>
+        </View>
+      )}
     </View>
   )
 }

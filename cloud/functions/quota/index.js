@@ -33,6 +33,7 @@ exports.main = async (event, context) => {
 
 /**
  * 获取用户配额
+ * 自动初始化 + 每日免费次数重置
  */
 async function getQuota(openid) {
   let quota = await db.collection('quotas')
@@ -40,9 +41,10 @@ async function getQuota(openid) {
     .limit(1)
     .get()
 
+  const today = new Date().toISOString().split('T')[0]
+
   if (quota.data.length === 0) {
     // 自动初始化
-    const today = new Date().toISOString().split('T')[0]
     await db.collection('quotas').add({
       data: {
         _openid: openid,
@@ -58,6 +60,24 @@ async function getQuota(openid) {
       .where({ _openid: openid })
       .limit(1)
       .get()
+  } else {
+    // 每日重置：检查 free_reset_date 是否跨天
+    const q = quota.data[0]
+    if (q.free_reset_date !== today) {
+      await db.collection('quotas')
+        .where({ _openid: openid })
+        .update({
+          data: {
+            free_single_remaining: 1,
+            free_three_remaining: 0,
+            free_reset_date: today,
+          },
+        })
+      quota = await db.collection('quotas')
+        .where({ _openid: openid })
+        .limit(1)
+        .get()
+    }
   }
 
   const q = quota.data[0]

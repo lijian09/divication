@@ -5,6 +5,7 @@ import { FC, useState, useEffect } from 'react'
 import StarBackground from '@components/StarBackground'
 import QuotaBadge from '@components/QuotaBadge'
 import DisclaimerModal from '@components/DisclaimerModal'
+import PayWallModal from '@components/PayWallModal'
 import { useQuotaStore, useUserStore } from '@store/index'
 import { acceptAgreement } from '@/services/auth'
 import { ROUTES, CATEGORIES } from '@utils/constants'
@@ -20,6 +21,7 @@ const HomePage: FC = () => {
   const { freeSingleRemaining, freeThreeRemaining } = useQuotaStore()
   const { userInfo, setAgreementAccepted } = useUserStore()
   const [showDisclaimer, setShowDisclaimer] = useState(false)
+  const [showPayWall, setShowPayWall] = useState(false)
 
   /** 检查是否需要展示免责弹窗 */
   useEffect(() => {
@@ -52,10 +54,16 @@ const HomePage: FC = () => {
   const handleStart = () => {
     const totalSingle = freeSingleRemaining + freeThreeRemaining
     if (totalSingle <= 0) {
-      // TODO: 弹出付费引导
+      setShowPayWall(true)
       return
     }
     Taro.navigateTo({ url: ROUTES.QUESTION_SELECT })
+  }
+
+  /** 购买套餐回调 */
+  const handlePurchase = (packageId: string) => {
+    setShowPayWall(false)
+    Taro.navigateTo({ url: `${ROUTES.PACKAGES}?selected=${packageId}` })
   }
 
   /** 点击快捷分类 */
@@ -123,6 +131,13 @@ const HomePage: FC = () => {
         visible={showDisclaimer}
         onAgree={handleAgree}
         onDisagree={handleDisagree}
+      />
+
+      {/* 付费引导弹窗 */}
+      <PayWallModal
+        visible={showPayWall}
+        onPurchase={handlePurchase}
+        onClose={() => setShowPayWall(false)}
       />
     </View>
   )

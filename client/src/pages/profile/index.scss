@@ -143,4 +143,71 @@
     margin-top: $spacing-xxl;
     padding-bottom: calc(#{$tab-bar-height} + env(safe-area-inset-bottom, 34px));
   }
+
+  // 昵称编辑弹窗
+  &__modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    @include flex-center;
+    z-index: 100;
+  }
+
+  &__modal {
+    width: 560rpx;
+    background: $color-bg-card;
+    border-radius: $radius-lg;
+    padding: $spacing-xl;
+  }
+
+  &__modal-title {
+    display: block;
+    text-align: center;
+    font-size: $font-h3;
+    color: $color-text-primary;
+    font-weight: $font-weight-bold;
+    margin-bottom: $spacing-lg;
+  }
+
+  &__modal-input {
+    width: 100%;
+    height: 80rpx;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1rpx solid rgba(255, 255, 255, 0.1);
+    border-radius: $radius-sm;
+    padding: 0 $spacing-md;
+    font-size: $font-body;
+    color: $color-text-primary;
+    margin-bottom: $spacing-lg;
+    box-sizing: border-box;
+  }
+
+  &__modal-placeholder {
+    color: $color-text-hint;
+  }
+
+  &__modal-actions {
+    @include flex-row-center;
+    gap: $spacing-lg;
+  }
+
+  &__modal-cancel {
+    flex: 1;
+    text-align: center;
+    font-size: $font-body;
+    color: $color-text-secondary;
+    padding: $spacing-sm 0;
+  }
+
+  &__modal-confirm {
+    flex: 1;
+    text-align: center;
+    font-size: $font-body;
+    color: $color-accent;
+    font-weight: $font-weight-bold;
+    padding: $spacing-sm 0;
+  }
 }
