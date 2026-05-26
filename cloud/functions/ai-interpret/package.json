@@ -1,0 +1,9 @@
+{
+  "name": "ai-interpret",
+  "version": "1.0.0",
+  "description": "AI 塔罗解读云函数",
+  "dependencies": {
+    "wx-server-sdk": "latest",
+    "axios": "^1.6.0"
+  }
+}

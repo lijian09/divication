@@ -1,10 +1,11 @@
-import http from './http'
+import { callFunction } from './cloud'
 
 /**
  * 配额相关 API
+ * 通过云函数实现
  */
 
-/** 配额信息（后端返回 snake_case） */
+/** 配额信息 */
 interface QuotaResponse {
   free_single_remaining: number
   free_three_remaining: number
@@ -17,6 +18,7 @@ interface QuotaResponse {
  * 获取用户配额信息
  */
 export async function getQuotaInfo(): Promise<QuotaResponse> {
-  const result = await http.get<QuotaResponse>('/api/quota')
-  return result.data
+  return callFunction<QuotaResponse>('quota', {
+    action: 'getQuota',
+  })
 }

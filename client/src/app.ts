@@ -1,7 +1,7 @@
 import { Component, PropsWithChildren } from 'react'
 import Taro from '@tarojs/taro'
+import { initCloud } from './services/cloud'
 import { wxLogin } from './services/auth'
-import { setToken, hasToken } from './utils/auth'
 import { useUserStore } from './store/userStore'
 import { useQuotaStore } from './store/quotaStore'
 
@@ -9,12 +9,12 @@ import './app.scss'
 
 /**
  * 应用入口组件
- * 负责全局生命周期管理：自动登录、配额拉取
+ * 负责全局生命周期管理：初始化云开发、自动登录、配额拉取
  */
 class App extends Component<PropsWithChildren> {
   componentDidMount() {
     console.log('[DEBUG] App mounted')
-    this.autoLogin()
+    this.initApp()
   }
 
   componentDidShow() {
@@ -31,16 +31,17 @@ class App extends Component<PropsWithChildren> {
   }
 
   /**
-   * 自动登录 + 拉取配额
-   * App 启动时调用 wx.login() 静默获取 token
+   * 初始化应用
+   * 1. 初始化云开发环境
+   * 2. 自动登录
+   * 3. 拉取配额
    */
-  async autoLogin() {
+  async initApp() {
     try {
-      // 已有 token 直接拉配额
-      if (hasToken()) {
-        console.log('[DEBUG] Token 已存在，拉取配额')
-        const { fetchQuota } = useQuotaStore.getState()
-        await fetchQuota()
+      // 1. 初始化云开发
+      const cloudReady = initCloud()
+      if (!cloudReady) {
+        console.error('[DEBUG] 云开发初始化失败')
         return
       }
 
@@ -49,11 +50,11 @@ class App extends Component<PropsWithChildren> {
 
       // 同步到 Zustand Store
       const { setLogin } = useUserStore.getState()
-      setLogin(loginData.token, loginData.refresh_token, {
+      setLogin(loginData.token, '', {
         userId: loginData.userInfo.id,
         nickname: loginData.userInfo.nickname,
         avatarUrl: loginData.userInfo.avatar_url || '',
-        isNewUser: !loginData.userInfo.agreement_accepted,
+        isNewUser: loginData.userInfo.isNewUser,
         agreementAccepted: loginData.userInfo.agreement_accepted,
       })
 

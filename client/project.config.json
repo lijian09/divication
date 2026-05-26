@@ -1,5 +1,6 @@
 {
   "miniprogramRoot": "dist/",
+  "cloudfunctionRoot": "cloud/functions/",
   "projectname": "lingyu-miniapp",
   "description": "灵谕 - AI 塔罗牌小程序",
   "appid": "wxxxxxxxxxxxxxxx",
@@ -8,52 +9,14 @@
     "es6": true,
     "enhance": true,
     "postcss": true,
-    "preloadBackgroundData": false,
     "minified": true,
-    "newFeature": true,
-    "autoAudits": false,
-    "coverView": true,
-    "showShadowRootInWxmpPanel": true,
-    "scopeDataCheck": false,
-    "uglifyFileName": false,
-    "checkInvalidKey": true,
-    "checkSiteMap": true,
-    "uploadWithSourceMap": true,
-    "compileHotReLoad": false,
-    "babelSetting": {
-      "ignore": [],
-      "disablePlugins": [],
-      "outputPath": ""
-    },
     "useIsolateContext": false,
     "useCompilerModule": false,
-    "userConfirmedUseCompilerModuleSwitch": false,
-    "useMultipleFrame": false,
-    "useApiHook": true,
-    "useApiHostProcess": true,
-    "showES6CompileOption": false,
     "minifyWXSS": true,
-    "showImportEntrance": false,
-    "useCompilerPlugins": false
+    "useApiHook": true,
+    "useApiHostProcess": true
   },
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
-  "condition": {
-    "search": {
-      "list": []
-    },
-    "conversation": {
-      "list": []
-    },
-    "plugin": {
-      "list": []
-    },
-    "game": {
-      "list": []
-    },
-    "miniprogram": {
-      "list": []
-    }
-  },
-  "srcMiniprogramRoot": "dist/"
+  "condition": {}
 }

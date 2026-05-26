@@ -1,0 +1,8 @@
+{
+  "name": "divination",
+  "version": "1.0.0",
+  "description": "占卜抽牌云函数",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

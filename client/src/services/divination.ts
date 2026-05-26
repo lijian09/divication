@@ -1,7 +1,8 @@
-import http from './http'
+import { callFunction } from './cloud'
 
 /**
  * 占卜相关 API
+ * 通过云函数实现
  */
 
 /** 抽牌参数 */
@@ -13,7 +14,6 @@ interface DrawParams {
 
 /** 抽牌结果 */
 interface DrawResult {
-  sessionId: string
   recordId: string
   spread_type: string
   cards: Array<{
@@ -29,32 +29,65 @@ interface DrawResult {
   quotaType: string
 }
 
-/** 历史记录列表 */
-interface HistoryListParams {
-  page: number
-  pageSize: number
+/** AI 解读参数 */
+interface InterpretParams {
+  recordId: string
+  questionCategory: string
+  questionText: string
+  spreadType: 'single' | 'three'
+  cards: Array<{
+    card_id: string
+    position: number
+    is_reversed: boolean
+  }>
+}
+
+/** AI 解读结果 */
+interface InterpretResult {
+  content: string
+  cardNames: string[]
+  model: string
+  status: string
 }
 
 /**
  * 抽牌（检查配额 + Fisher-Yates 洗牌 + 正逆位）
  */
 export async function drawCards(params: DrawParams): Promise<DrawResult> {
-  const result = await http.post<DrawResult>('/api/divination/draw', params)
-  return result.data
+  return callFunction<DrawResult>('divination', {
+    action: 'draw',
+    spreadType: params.spread_type,
+    questionCategory: params.question_category,
+    questionText: params.question_text,
+  })
+}
+
+/**
+ * 请求 AI 解读
+ */
+export async function interpretDivination(params: InterpretParams): Promise<InterpretResult> {
+  return callFunction<InterpretResult>('ai-interpret', {
+    action: 'interpret',
+    ...params,
+  })
 }
 
 /**
  * 获取历史记录列表
  */
-export async function getHistoryList(params: HistoryListParams) {
-  const result = await http.get('/api/divination/records', params)
-  return result.data
+export async function getHistoryList(params: { page: number; pageSize: number }) {
+  return callFunction('divination', {
+    action: 'getHistory',
+    ...params,
+  })
 }
 
 /**
  * 获取历史记录详情
  */
 export async function getHistoryDetail(recordId: string) {
-  const result = await http.get(`/api/divination/records/${recordId}`)
-  return result.data
+  return callFunction('divination', {
+    action: 'getDetail',
+    recordId,
+  })
 }

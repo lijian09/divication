@@ -1,11 +1,12 @@
-import http from './http'
+import { callFunction } from './cloud'
 
 /**
  * 牌义相关 API
+ * 通过云函数实现
  */
 
 /** 格式化牌义信息（按正逆位） */
-interface FormattedCardDetail {
+interface CardDetail {
   id: string
   nameCn: string
   nameEn: string
@@ -21,10 +22,10 @@ interface FormattedCardDetail {
 /**
  * 获取格式化牌义详情（按正逆位返回对应关键词和含义）
  */
-export async function getCardDetail(cardId: string, isReversed: boolean): Promise<FormattedCardDetail> {
-  const result = await http.get<FormattedCardDetail>(
-    `/api/card/${cardId}/detail`,
-    { reversed: String(isReversed) },
-  )
-  return result.data
+export async function getCardDetail(cardId: string, isReversed: boolean): Promise<CardDetail> {
+  return callFunction<CardDetail>('card', {
+    action: 'detail',
+    cardId,
+    reversed: String(isReversed),
+  })
 }

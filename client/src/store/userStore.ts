@@ -20,10 +20,8 @@ interface UserState {
   isLogin: boolean
   /** 用户信息 */
   userInfo: UserInfo | null
-  /** Token */
+  /** openid（云函数用） */
   token: string | null
-  /** Refresh Token */
-  refreshToken: string | null
 
   /** 设置登录信息 */
   setLogin: (token: string, refreshToken: string, userInfo: UserInfo) => void
@@ -39,10 +37,9 @@ export const useUserStore = create<UserState>((set) => ({
   isLogin: false,
   userInfo: null,
   token: null,
-  refreshToken: null,
 
-  setLogin: (token, refreshToken, userInfo) =>
-    set({ isLogin: true, token, refreshToken, userInfo }),
+  setLogin: (token, _refreshToken, userInfo) =>
+    set({ isLogin: true, token, userInfo }),
 
   updateUserInfo: (info) =>
     set((state) => ({
@@ -50,7 +47,7 @@ export const useUserStore = create<UserState>((set) => ({
     })),
 
   logout: () =>
-    set({ isLogin: false, userInfo: null, token: null, refreshToken: null }),
+    set({ isLogin: false, userInfo: null, token: null }),
 
   setAgreementAccepted: () =>
     set((state) => ({
