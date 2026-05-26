@@ -236,3 +236,8 @@
 | `feat` | F-302 AI 解读接口 | 2026-05-19 | Claude Messages API 调用 + GPT 降级 + 流式 SSE + 解读记录保存 |
 | `feat` | F-303 输出安全过滤 | 2026-05-19 | 7 组绝对化表述替换 + 3 类专业领域检测引导 + 免责声明拼接 |
 | `feat` | F-304 LLM 降级方案 | 2026-05-19 | Claude/GPT 均失败时返回 10 条预设模板解读（按类别随机选择） |
+| `feat` | Sprint 3.2 云开发部署 | 2026-05-26 | 6 个微信云函数（login/card/divination/ai-interpret/quota/order）+ 云数据库 cards.json |
+| `feat` | 前端云开发适配 | 2026-05-26 | cloud.ts 服务封装，auth/card/divination/quota 服务层重构 |
+| `chore` | 移除 NestJS 后端 | 2026-05-26 | 删除 server 目录（Dockerfile/源码/配置），项目全面转向微信云开发 |
+| `chore` | 移除自动部署 | 2026-05-26 | 删除 deploy.yml，CI 改为仅 PR 触发 |
+| `docs` | 更新 README | 2026-05-26 | 架构图/技术选型/项目结构/快速开始 全面更新为云开发模式 |

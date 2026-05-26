@@ -12,23 +12,16 @@
 │  React 18 + TypeScript + Zustand + SCSS         │
 ├──────────┬──────────┬───────────┬───────────────┤
 │  17 页面  │  9 组件   │  4 Store  │   6 Service   │
-└──────────┴────┬─────┴───────────┴───────────────┘
-                │ HTTPS (JWT Auth)
-┌───────────────▼─────────────────────────────────┐
-│              后端 API (NestJS 10)                │
-│  TypeORM + Passport JWT + class-validator       │
+├──────────┴──────────┴───────────┴───────────────┤
+│           微信云开发 (CloudBase)                  │
+│  云函数 (Node.js) + 云数据库 (JSON)              │
 ├─────────┬────────┬────────┬────────┬────────────┤
-│  auth   │  card  │  divi- │ quota  │   order    │
+│  login  │  card  │  divi- │ quota  │   order    │
 │  用户认证 │  牌义   │  占卜   │  配额   │   支付     │
 ├─────────┴────────┴────────┴────────┴────────────┤
 │  ai (Claude/GPT API)                            │
 │  Prompt 模板 → LLM 调用 → 安全过滤 → 存储        │
-└─────────┬───────────────────────┬───────────────┘
-          │                      │
-    ┌─────▼─────┐         ┌─────▼─────┐
-    │   MySQL   │         │   Redis   │
-    │   8.0     │         │   7       │
-    └───────────┘         └───────────┘
+└─────────────────────────────────────────────────┘
 ```
 
 ### 技术选型
@@ -38,14 +31,11 @@
 | 前端框架 | Taro + React | 3.6 / 18 |
 | 状态管理 | Zustand | 4.x |
 | 样式 | SCSS | - |
-| 后端框架 | NestJS | 10.x |
-| ORM | TypeORM | 0.3.x |
-| 数据库 | MySQL | 8.0 |
-| 缓存 | Redis | 7 |
-| 认证 | JWT (Passport) | - |
+| 后端 | 微信云开发 (云函数) | Node.js 18 |
+| 数据库 | 云数据库 (JSON) | - |
+| 认证 | 微信登录 + JWT | - |
 | AI | Claude / GPT API | - |
-| 部署 | Docker + PM2 | - |
-| CI/CD | GitHub Actions | - |
+| CI | GitHub Actions | - |
 
 ## 项目结构
 
@@ -78,21 +68,19 @@ divination/
 │       │   ├── QuotaBadge/        # 配额徽章
 │       │   └── CategoryTag/       # 分类标签
 │       ├── store/             # 4 个 Zustand Store
-│       ├── services/          # 6 个 API 服务
+│       ├── services/          # 7 个服务（含 cloud.ts 云开发封装）
 │       └── utils/
 │
-├── server/                    # 后端 API
-│   └── src/
-│       ├── modules/
-│       │   ├── auth/              # 微信登录 + JWT + 免责协议
-│       │   ├── user/              # 用户信息
-│       │   ├── card/              # 78 张牌义 + 牌阵定义
-│       │   ├── divination/        # 抽牌 + 占卜记录
-│       │   ├── quota/             # 配额管理（免费+付费）
-│       │   ├── order/             # 订单 + 支付
-│       │   └── ai/                # AI 解读（开发中）
-│       ├── common/            # 拦截器 / 过滤器 / 守卫 / 装饰器
-│       └── database/          # 数据源 + 种子数据
+├── cloud/                     # 微信云开发
+│   ├── functions/             # 6 个云函数
+│   │   ├── login/                 # 微信登录 + JWT
+│   │   ├── card/                  # 牌义查询
+│   │   ├── divination/            # 抽牌 + 占卜记录
+│   │   ├── ai-interpret/          # AI 解读（Claude/GPT）
+│   │   ├── quota/                 # 配额管理
+│   │   └── order/                 # 订单 + 支付
+│   └── database/              # 云数据库
+│       └── cards.json             # 78 张牌数据
 │
 ├── docs/                      # 设计文档
 │   ├── market-research.md     # 市场调研
@@ -103,9 +91,8 @@ divination/
 │   ├── ui-design-spec.md      # UI/UX 规范
 │   └── DEVLOG.md              # 开发日志
 │
-└── .github/workflows/         # CI/CD
-    ├── ci.yml                     # Lint + Test + Build
-    └── deploy.yml                 # Docker 构建 + 部署
+└── .github/workflows/         # CI
+    └── ci.yml                     # Lint + Type Check + Build
 ```
 
 ## 已完成功能
@@ -132,33 +119,24 @@ divination/
 - 后端格式化牌义接口（按正逆位返回对应关键词和含义）
 - 单牌/三牌结果页展示完整牌义 + 关键词
 
+### Sprint 3.2 — 云开发部署 ✅
+- 6 个微信云函数（login/card/divination/ai-interpret/quota/order）
+- 云数据库 cards.json 牌库数据
+- 前端云开发适配（cloud.ts 服务封装）
+- 移除 NestJS 后端 + Docker 部署
+
 ### 基础设施 ✅
-- GitHub Actions CI（PR/push 自动 lint + type-check + build）
-- GitHub Actions Deploy（master 合并 → Docker 构建 → 服务器部署）
-- Docker 多阶段构建 + PM2 集群模式
+- GitHub Actions CI（PR 自动 lint + type-check + build）
 
 ## 快速开始
 
 ### 前置条件
 
 - Node.js >= 18
-- Docker + Docker Compose
 - 微信开发者工具
+- 已开通微信云开发环境
 
-### 后端启动
-
-```bash
-cd server
-
-# 启动 MySQL + Redis
-docker compose up -d mysql redis
-
-# 安装依赖 + 启动
-npm install
-npm run start:dev
-```
-
-### 前端启动
+### 启动
 
 ```bash
 cd client
@@ -167,7 +145,7 @@ npm install
 npm run dev:weapp
 ```
 
-用微信开发者工具打开 `client/dist` 目录预览。
+用微信开发者工具打开 `client/dist` 目录预览。云函数直接部署到微信云开发环境。
 
 ## 核心流程
 
@@ -176,9 +154,9 @@ npm run dev:weapp
   → 问题选择（5 类别 + 自定义）
     → 牌阵选择（单牌 / 三牌阵）
       → 洗牌动画
-        → 选牌（后端 Fisher-Yates + 随机正逆位）
+        → 选牌（云函数 Fisher-Yates + 随机正逆位）
           → 翻牌揭晓（3D 动画）
-            → 牌义展示 + AI 解读（开发中）
+            → 牌义展示 + AI 解读（Claude/GPT）
               → 保存历史
 ```
 
