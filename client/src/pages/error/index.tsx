@@ -1,5 +1,5 @@
 import { View, Text } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import Taro, { useRouter } from '@tarojs/taro'
 import { FC } from 'react'
 
 import StarBackground from '@components/StarBackground'
@@ -9,14 +9,9 @@ import './index.scss'
 /**
  * 错误页（全局兜底）
  * 网络错误 / 服务异常兜底展示
+ * 通过路由参数 type 区分错误类型
  */
 
-interface ErrorPageProps {
-  /** 错误类型 */
-  type?: 'network' | 'server' | 'timeout' | 'auth'
-}
-
-/** 错误类型配置 */
 const ERROR_CONFIG: Record<string, { title: string; desc: string; icon: string }> = {
   network: { title: '网络连接异常', desc: '请检查你的网络设置，稍后再试', icon: '📡' },
   server: { title: '服务暂时不可用', desc: '系统正在努力恢复中，请稍后再试', icon: '🖥️' },
@@ -24,11 +19,12 @@ const ERROR_CONFIG: Record<string, { title: string; desc: string; icon: string }
   auth: { title: '登录异常', desc: '请重新授权登录', icon: '🔑' },
 }
 
-const ErrorPage: FC<ErrorPageProps> = ({ type = 'network' }) => {
+const ErrorPage: FC = () => {
+  const router = useRouter()
+  const type = (router.params.type as string) || 'network'
   const config = ERROR_CONFIG[type] || ERROR_CONFIG.network
 
   const handleRetry = () => {
-    // TODO: 重试逻辑
     Taro.navigateBack()
   }
 
@@ -46,7 +42,6 @@ const ErrorPage: FC<ErrorPageProps> = ({ type = 'network' }) => {
       </View>
 
       <View className="error-page__content">
-        {/* 错误插画占位 */}
         <View className="error-page__icon">
           <Text className="error-page__icon-text">{config.icon}</Text>
         </View>
