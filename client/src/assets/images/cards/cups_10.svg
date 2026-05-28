@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 640" width="400" height="640">
+  <defs>
+    <!-- 背景渐变 -->
+    <linearGradient id="bg_cups_10" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A0A2E;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#0D1B3E;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1A0A2E;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- 金色边框渐变 -->
+    <linearGradient id="border_cups_10" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F0D68A;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#D4A843;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F0D68A;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- 装饰图案 -->
+    <pattern id="dots_cups_10" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="10" cy="10" r="0.5" fill="#D4A843" opacity="0.15"/>
+    </pattern>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="400" height="640" fill="url(#bg_cups_10)"/>
+  <rect width="400" height="640" fill="url(#dots_cups_10)"/>
+
+  <!-- 金色边框 -->
+  <rect x="4" y="4" width="392" height="632" rx="8" ry="8"
+        fill="none" stroke="url(#border_cups_10)" stroke-width="2"/>
+  <rect x="12" y="12" width="376" height="616" rx="5" ry="5"
+        fill="none" stroke="#D4A843" stroke-width="0.5" opacity="0.5"/>
+
+  <!-- 顶部装饰线 -->
+  <line x1="50" y1="60" x2="350" y2="60" stroke="#D4A843" stroke-width="0.5" opacity="0.5"/>
+
+  <!-- 顶部编号 -->
+  <text x="200" y="45" text-anchor="middle" font-family="Georgia, serif"
+        font-size="24" fill="#F0D68A" font-weight="bold" letter-spacing="3">
+    10
+  </text>
+
+  <!-- 中央符号区域 -->
+  <g transform="translate(0, 20)">
+    
+      <path d="M161.6 209.5 Q159.5 227 170 230.5 Q180.5 227 178.4 209.5 Z"
+            fill="#4A7FD4" opacity="0.6"/>
+      <ellipse cx="170" cy="209.5" rx="8.399999999999999" ry="2.8" fill="#4A7FD4" opacity="0.8"/>
+    
+      <path d="M191.6 209.5 Q189.5 227 200 230.5 Q210.5 227 208.4 209.5 Z"
+            fill="#4A7FD4" opacity="0.6"/>
+      <ellipse cx="200" cy="209.5" rx="8.399999999999999" ry="2.8" fill="#4A7FD4" opacity="0.8"/>
+    
+      <path d="M221.6 209.5 Q219.5 227 230 230.5 Q240.5 227 238.4 209.5 Z"
+            fill="#4A7FD4" opacity="0.6"/>
+      <ellipse cx="230" cy="209.5" rx="8.399999999999999" ry="2.8" fill="#4A7FD4" opacity="0.8"/>
+    
+      <path d="M156.6 249.5 Q154.5 267 165 270.5 Q175.5 267 173.4 249.5 Z"
+            fill="#4A7FD4" opacity="0.6"/>
+      <ellipse cx="165" cy="249.5" rx="8.399999999999999" ry="2.8" fill="#4A7FD4" opacity="0.8"/>
+    
+      <path d="M191.6 249.5 Q189.5 267 200 270.5 Q210.5 267 208.4 249.5 Z"
+            fill="#4A7FD4" opacity="0.6"/>
+      <ellipse cx="200" cy="249.5" rx="8.399999999999999" ry="2.8" fill="#4A7FD4" opacity="0.8"/>
+    
+      <path d="M226.6 249.5 Q224.5 267 235 270.5 Q245.5 267 243.4 249.5 Z"
+            fill="#4A7FD4" opacity="0.6"/>
+      <ellipse cx="235" cy="249.5" rx="8.399999999999999" ry="2.8" fill="#4A7FD4" opacity="0.8"/>
+    
+      <path d="M161.6 289.5 Q159.5 307 170 310.5 Q180.5 307 178.4 289.5 Z"
+            fill="#4A7FD4" opacity="0.6"/>
+      <ellipse cx="170" cy="289.5" rx="8.399999999999999" ry="2.8" fill="#4A7FD4" opacity="0.8"/>
+    
+      <path d="M191.6 289.5 Q189.5 307 200 310.5 Q210.5 307 208.4 289.5 Z"
+            fill="#4A7FD4" opacity="0.6"/>
+      <ellipse cx="200" cy="289.5" rx="8.399999999999999" ry="2.8" fill="#4A7FD4" opacity="0.8"/>
+    
+      <path d="M221.6 289.5 Q219.5 307 230 310.5 Q240.5 307 238.4 289.5 Z"
+            fill="#4A7FD4" opacity="0.6"/>
+      <ellipse cx="230" cy="289.5" rx="8.399999999999999" ry="2.8" fill="#4A7FD4" opacity="0.8"/>
+    
+      <path d="M191.6 329.5 Q189.5 347 200 350.5 Q210.5 347 208.4 329.5 Z"
+            fill="#4A7FD4" opacity="0.6"/>
+      <ellipse cx="200" cy="329.5" rx="8.399999999999999" ry="2.8" fill="#4A7FD4" opacity="0.8"/>
+    
+  </g>
+
+  <!-- 底部装饰线 -->
+  <line x1="50" y1="550" x2="350" y2="550" stroke="#D4A843" stroke-width="0.5" opacity="0.5"/>
+
+  <!-- 底部中文牌名 -->
+  <text x="200" y="585" text-anchor="middle" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif"
+        font-size="18" fill="#F0D68A" font-weight="500" letter-spacing="4">
+    Ten of 圣杯
+  </text>
+
+  <!-- 底部英文牌名 -->
+  <text x="200" y="610" text-anchor="middle" font-family="Georgia, serif"
+        font-size="10" fill="#D4A843" opacity="0.7" letter-spacing="1">
+    Ten of Cups
+  </text>
+
+  <!-- 角落装饰 -->
+  <circle cx="25" cy="25" r="3" fill="#D4A843" opacity="0.5"/>
+  <circle cx="375" cy="25" r="3" fill="#D4A843" opacity="0.5"/>
+  <circle cx="25" cy="615" r="3" fill="#D4A843" opacity="0.5"/>
+  <circle cx="375" cy="615" r="3" fill="#D4A843" opacity="0.5"/>
+</svg>

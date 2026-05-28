@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 640" width="400" height="640">
+  <defs>
+    <!-- 背景渐变 -->
+    <linearGradient id="bg_pentacles_08" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A0A2E;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#0D1B3E;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1A0A2E;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- 金色边框渐变 -->
+    <linearGradient id="border_pentacles_08" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F0D68A;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#D4A843;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F0D68A;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- 装饰图案 -->
+    <pattern id="dots_pentacles_08" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="10" cy="10" r="0.5" fill="#D4A843" opacity="0.15"/>
+    </pattern>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="400" height="640" fill="url(#bg_pentacles_08)"/>
+  <rect width="400" height="640" fill="url(#dots_pentacles_08)"/>
+
+  <!-- 金色边框 -->
+  <rect x="4" y="4" width="392" height="632" rx="8" ry="8"
+        fill="none" stroke="url(#border_pentacles_08)" stroke-width="2"/>
+  <rect x="12" y="12" width="376" height="616" rx="5" ry="5"
+        fill="none" stroke="#D4A843" stroke-width="0.5" opacity="0.5"/>
+
+  <!-- 顶部装饰线 -->
+  <line x1="50" y1="60" x2="350" y2="60" stroke="#D4A843" stroke-width="0.5" opacity="0.5"/>
+
+  <!-- 顶部编号 -->
+  <text x="200" y="45" text-anchor="middle" font-family="Georgia, serif"
+        font-size="24" fill="#F0D68A" font-weight="bold" letter-spacing="3">
+    8
+  </text>
+
+  <!-- 中央符号区域 -->
+  <g transform="translate(0, 20)">
+    
+      <circle cx="170" cy="225" r="11.25" fill="none" stroke="#6B9E4A" stroke-width="1.5"/>
+      <polygon points="170,216 173.75,222 179,222 175.25,227.25 176.75,234 170,230.25 163.25,234 164.75,227.25 161,222 166.25,222"
+               fill="#6B9E4A" opacity="0.5"/>
+    
+      <circle cx="230" cy="225" r="11.25" fill="none" stroke="#6B9E4A" stroke-width="1.5"/>
+      <polygon points="230,216 233.75,222 239,222 235.25,227.25 236.75,234 230,230.25 223.25,234 224.75,227.25 221,222 226.25,222"
+               fill="#6B9E4A" opacity="0.5"/>
+    
+      <circle cx="170" cy="260" r="11.25" fill="none" stroke="#6B9E4A" stroke-width="1.5"/>
+      <polygon points="170,251 173.75,257 179,257 175.25,262.25 176.75,269 170,265.25 163.25,269 164.75,262.25 161,257 166.25,257"
+               fill="#6B9E4A" opacity="0.5"/>
+    
+      <circle cx="230" cy="260" r="11.25" fill="none" stroke="#6B9E4A" stroke-width="1.5"/>
+      <polygon points="230,251 233.75,257 239,257 235.25,262.25 236.75,269 230,265.25 223.25,269 224.75,262.25 221,257 226.25,257"
+               fill="#6B9E4A" opacity="0.5"/>
+    
+      <circle cx="170" cy="295" r="11.25" fill="none" stroke="#6B9E4A" stroke-width="1.5"/>
+      <polygon points="170,286 173.75,292 179,292 175.25,297.25 176.75,304 170,300.25 163.25,304 164.75,297.25 161,292 166.25,292"
+               fill="#6B9E4A" opacity="0.5"/>
+    
+      <circle cx="230" cy="295" r="11.25" fill="none" stroke="#6B9E4A" stroke-width="1.5"/>
+      <polygon points="230,286 233.75,292 239,292 235.25,297.25 236.75,304 230,300.25 223.25,304 224.75,297.25 221,292 226.25,292"
+               fill="#6B9E4A" opacity="0.5"/>
+    
+      <circle cx="170" cy="330" r="11.25" fill="none" stroke="#6B9E4A" stroke-width="1.5"/>
+      <polygon points="170,321 173.75,327 179,327 175.25,332.25 176.75,339 170,335.25 163.25,339 164.75,332.25 161,327 166.25,327"
+               fill="#6B9E4A" opacity="0.5"/>
+    
+      <circle cx="230" cy="330" r="11.25" fill="none" stroke="#6B9E4A" stroke-width="1.5"/>
+      <polygon points="230,321 233.75,327 239,327 235.25,332.25 236.75,339 230,335.25 223.25,339 224.75,332.25 221,327 226.25,327"
+               fill="#6B9E4A" opacity="0.5"/>
+    
+  </g>
+
+  <!-- 底部装饰线 -->
+  <line x1="50" y1="550" x2="350" y2="550" stroke="#D4A843" stroke-width="0.5" opacity="0.5"/>
+
+  <!-- 底部中文牌名 -->
+  <text x="200" y="585" text-anchor="middle" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif"
+        font-size="18" fill="#F0D68A" font-weight="500" letter-spacing="4">
+    Eight of 星币
+  </text>
+
+  <!-- 底部英文牌名 -->
+  <text x="200" y="610" text-anchor="middle" font-family="Georgia, serif"
+        font-size="10" fill="#D4A843" opacity="0.7" letter-spacing="1">
+    Eight of Pentacles
+  </text>
+
+  <!-- 角落装饰 -->
+  <circle cx="25" cy="25" r="3" fill="#D4A843" opacity="0.5"/>
+  <circle cx="375" cy="25" r="3" fill="#D4A843" opacity="0.5"/>
+  <circle cx="25" cy="615" r="3" fill="#D4A843" opacity="0.5"/>
+  <circle cx="375" cy="615" r="3" fill="#D4A843" opacity="0.5"/>
+</svg>
