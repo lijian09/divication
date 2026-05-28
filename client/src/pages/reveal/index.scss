@@ -1,3 +1,8 @@
+/**
+ * 翻牌页样式 — F-502 视觉还原
+ * 对照 ui-design-spec.md §7.2/7.3 翻牌结果
+ */
+
 @import '../../styles/variables.scss';
 @import '../../styles/mixins.scss';
 
@@ -12,22 +17,35 @@
     padding: $spacing-xl $page-padding;
     padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top, 44px));
 
-    &-back { font-size: $font-body; color: $color-text-secondary; }
-    &-title { font-size: $font-h3; color: $color-text-primary; font-weight: $font-weight-semibold; }
+    &-back {
+      font-size: $font-body;
+      color: $color-text-secondary;
+      padding: $spacing-xs;
+    }
+
+    &-title {
+      font-size: $font-h3;
+      color: $color-text-primary;
+      font-weight: $font-weight-semibold;
+    }
   }
 
+  // 牌面展示区
   &__cards {
+    flex: 1;
     @include flex-center;
     flex-wrap: wrap;
-    gap: $spacing-xxl;
-    padding: $spacing-xxl $page-padding;
+    gap: 48rpx;
+    padding: 48rpx $page-padding;
   }
 
   &__card-wrap {
     @include flex-col-center;
     gap: $spacing-md;
+    animation: card-entry 0.4s ease-out;
   }
 
+  // 翻开后的牌信息
   &__card-info {
     @include flex-col-center;
     gap: $spacing-xs;
@@ -35,9 +53,10 @@
   }
 
   &__card-name {
-    font-size: $font-body;
+    font-size: $font-h3;
     color: $color-text-primary;
-    font-weight: $font-weight-bold;
+    font-weight: $font-weight-semibold;
+    letter-spacing: 2rpx;
   }
 
   &__card-keywords {
@@ -45,14 +64,17 @@
     color: $color-accent;
   }
 
+  // 翻牌引导
   &__flip-hint {
     display: block;
     text-align: center;
     font-size: $font-body;
     color: $color-text-secondary;
     margin-top: $spacing-xxl;
+    animation: breathe 2s ease-in-out infinite;
   }
 
+  // 查看解读按钮
   &__result-btn {
     position: fixed;
     bottom: 0;
@@ -60,11 +82,16 @@
     right: $page-padding;
     padding-bottom: env(safe-area-inset-bottom, 34px);
     @include btn-primary;
-    animation: fade-in 0.3s ease-out;
+    animation: slide-up-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 
     &-text {
       font-size: $font-h3;
       font-weight: $font-weight-bold;
+    }
+
+    &:active {
+      transform: scale(0.97);
+      transition: transform 0.1s;
     }
   }
 }

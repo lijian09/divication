@@ -1,5 +1,5 @@
 /**
- * AI 加载动画组件样式
+ * AI 加载动画组件样式 — F-503 视觉还原
  */
 
 @import '../../styles/variables.scss';
@@ -12,21 +12,37 @@
   padding: $spacing-xxxl;
   min-height: 60vh;
 
-  // 星形旋转
+  // 星形旋转 — 带金色光晕
   &__star {
     animation: star-spin 1.2s linear infinite;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120rpx;
+      height: 120rpx;
+      background: radial-gradient(circle, rgba($color-accent, 0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
   }
 
   &__star-icon {
     font-size: 72rpx;
     color: $color-accent;
+    position: relative;
+    z-index: 1;
   }
 
   // 标题
   &__title {
     font-size: $font-h2;
     color: $color-text-primary;
-    font-weight: $font-weight-bold;
+    font-weight: $font-weight-semibold;
+    letter-spacing: 4rpx;
   }
 
   // 诗句轮播
@@ -65,7 +81,7 @@
     font-size: $font-body;
     color: $color-accent;
     margin-top: $spacing-sm;
-    text-decoration: underline;
+    padding: $spacing-xs;
   }
 
   // 进度条
@@ -73,7 +89,7 @@
     width: 100%;
     max-width: 560rpx;
     height: 8rpx;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     border-radius: $radius-round;
     overflow: hidden;
   }
@@ -83,6 +99,7 @@
     background: $gradient-gold;
     border-radius: $radius-round;
     transition: width 0.5s ease-out;
+    box-shadow: 0 0 8rpx rgba($color-accent, 0.3);
   }
 
   // 预期时间提示

@@ -1,3 +1,7 @@
+/**
+ * 历史记录列表页样式 — F-504 视觉还原
+ */
+
 @import '../../styles/variables.scss';
 @import '../../styles/mixins.scss';
 
@@ -12,12 +16,22 @@
     padding: $spacing-xl $page-padding;
     padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top, 44px));
 
-    &-back { font-size: $font-body; color: $color-text-secondary; }
-    &-title { font-size: $font-h3; color: $color-text-primary; font-weight: $font-weight-semibold; }
+    &-back {
+      font-size: $font-body;
+      color: $color-text-secondary;
+      padding: $spacing-xs;
+    }
+
+    &-title {
+      font-size: $font-h3;
+      color: $color-text-primary;
+      font-weight: $font-weight-semibold;
+    }
+
     &-placeholder { width: 60rpx; }
   }
 
-  // 空状态
+  // ==================== 空状态 ====================
   &__empty {
     flex: 1;
     @include flex-col-center;
@@ -31,6 +45,7 @@
 
       &-text {
         font-size: 120rpx;
+        animation: breathe 3s ease-in-out infinite;
       }
     }
 
@@ -49,6 +64,11 @@
       @include btn-primary;
       margin-top: $spacing-lg;
 
+      &:active {
+        transform: scale(0.97);
+        transition: transform 0.1s;
+      }
+
       &-text {
         font-size: $font-h3;
         font-weight: $font-weight-bold;
@@ -56,7 +76,7 @@
     }
   }
 
-  // 记录列表
+  // ==================== 记录列表 ====================
   &__list {
     flex: 1;
     height: 100vh;
@@ -64,10 +84,12 @@
   }
 
   &__month {
-    padding: $spacing-sm 0;
+    padding: $spacing-sm 0 $spacing-xs;
+
     &-title {
       font-size: $font-caption;
       color: $color-text-hint;
+      letter-spacing: 2rpx;
     }
   }
 
@@ -79,6 +101,11 @@
     grid-template-rows: auto auto;
     gap: $spacing-xs $spacing-md;
     align-items: center;
+    transition: background 0.15s;
+
+    &:active {
+      background: rgba(255, 255, 255, 0.12);
+    }
 
     &-date {
       font-size: $font-caption;
@@ -88,6 +115,7 @@
     &-category {
       font-size: $font-caption;
       color: $color-accent;
+      font-weight: $font-weight-semibold;
     }
 
     &-question {

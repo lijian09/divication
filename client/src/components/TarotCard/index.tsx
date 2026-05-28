@@ -6,7 +6,7 @@ import './index.scss'
 /**
  * 塔罗牌组件
  * 支持正面/背面/3D 翻转动画
- * 使用 CSS transform: rotateY 实现 3D 翻牌效果
+ * CSS 3D transform + 光影扫过效果
  */
 
 interface TarotCardProps {
@@ -45,15 +45,24 @@ const TarotCard: FC<TarotCardProps> = ({
   style,
 }) => {
   const [isFlipped, setIsFlipped] = useState(!faceDown)
+  const [isAnimating, setIsAnimating] = useState(false)
 
   const handleTap = useCallback(() => {
     if (flippable && !isFlipped) {
+      setIsAnimating(true)
       setIsFlipped(true)
+      // 动画结束后移除动画状态
+      setTimeout(() => setIsAnimating(false), 700)
     }
     onClick?.()
   }, [flippable, isFlipped, onClick])
 
-  const cardClass = `tarot-card tarot-card--${size} ${isFlipped ? 'tarot-card--flipped' : ''}`
+  const cardClass = [
+    'tarot-card',
+    `tarot-card--${size}`,
+    isFlipped ? 'tarot-card--flipped' : '',
+    isAnimating ? 'tarot-card--animating' : '',
+  ].filter(Boolean).join(' ')
 
   return (
     <View className={cardClass} style={style} onClick={handleTap}>
@@ -82,6 +91,8 @@ const TarotCard: FC<TarotCardProps> = ({
             </Text>
           )}
         </View>
+        {/* 光影扫过层 */}
+        <View className="tarot-card__shine" />
       </View>
 
       {/* 位置标签 */}

@@ -1,5 +1,5 @@
 /**
- * 次数徽章样式
+ * 次数徽章样式 — F-504 视觉还原
  */
 
 @import '../../styles/variables.scss';
@@ -9,15 +9,19 @@
   width: 100%;
   padding: $spacing-md $spacing-lg;
   border-radius: $radius-md;
-  background: rgba($color-accent, 0.08);
-  border: 1rpx solid rgba($color-accent, 0.2);
+  background: rgba($color-accent, 0.06);
+  border: 1rpx solid rgba($color-accent, 0.15);
   @include flex-between;
   flex-wrap: wrap;
   gap: $spacing-xs;
 
   &--exhausted {
-    background: rgba($color-error, 0.08);
-    border-color: rgba($color-error, 0.2);
+    background: rgba($color-error, 0.06);
+    border-color: rgba($color-error, 0.15);
+
+    .quota-badge__count {
+      color: $color-error;
+    }
   }
 
   &__label {
@@ -44,5 +48,6 @@
   &__link {
     font-size: $font-caption;
     color: $color-accent;
+    padding: $spacing-xs;
   }
 }

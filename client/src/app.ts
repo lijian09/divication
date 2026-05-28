@@ -8,47 +8,34 @@ import { useQuotaStore } from './store/quotaStore'
 import './app.scss'
 
 /**
- * 应用入口组件
- * 负责全局生命周期管理：初始化云开发、自动登录、配额拉取
+ * 应用入口组件 — F-509/F-510 性能优化
+ * 关键路径：云初始化 → 登录 → 配额
+ * 性能检测在各组件内部按需调用
  */
 class App extends Component<PropsWithChildren> {
   componentDidMount() {
-    console.log('[DEBUG] App mounted')
     this.initApp()
   }
 
-  componentDidShow() {
-    console.log('[DEBUG] App show')
-  }
+  componentDidShow() {}
+  componentDidHide() {}
 
-  componentDidHide() {
-    console.log('[DEBUG] App hide')
-  }
-
-  /** 全局错误捕获 */
   onError(error: string) {
-    console.error('[DEBUG] App error:', error)
+    console.error('[App] error:', error)
   }
 
-  /**
-   * 初始化应用
-   * 1. 初始化云开发环境
-   * 2. 自动登录
-   * 3. 拉取配额
-   */
   async initApp() {
+    const startTime = Date.now()
+
     try {
-      // 1. 初始化云开发
       const cloudReady = initCloud()
       if (!cloudReady) {
-        console.error('[DEBUG] 云开发初始化失败')
+        console.error('[App] 云开发初始化失败')
         return
       }
 
-      console.log('[DEBUG] 开始自动登录...')
       const loginData = await wxLogin()
 
-      // 同步到 Zustand Store
       const { setLogin } = useUserStore.getState()
       setLogin(loginData.token, '', {
         userId: loginData.userInfo.id,
@@ -58,13 +45,15 @@ class App extends Component<PropsWithChildren> {
         agreementAccepted: loginData.userInfo.agreement_accepted,
       })
 
-      console.log('[DEBUG] 自动登录成功，userId:', loginData.userInfo.id)
-
-      // 登录成功后拉取配额
       const { fetchQuota } = useQuotaStore.getState()
       await fetchQuota()
+
+      const elapsed = Date.now() - startTime
+      if (elapsed > 2000) {
+        console.warn(`[App] 初始化耗时 ${elapsed}ms，超过 2s 阈值`)
+      }
     } catch (error: any) {
-      console.error('[DEBUG] 自动登录失败:', error.message)
+      console.error('[App] 初始化失败:', error.message)
     }
   }
 

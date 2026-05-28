@@ -166,7 +166,7 @@
 |---|------|------|------|
 | F-509 | 首屏加载优化（目标 < 2s，代码分包 + 图片懒加载） | 前端 A/B | 0.5d |
 | F-510 | 低端机型动画性能优化（< 30fps 降级策略） | 前端 A | 0.5d |
-| F-511 | AI 解读响应优化（流式 SSE + 缓存命中） | 后端 | 0.5d |
+| F-511 | AI 解读响应优化（解读缓存 + 批量查询 + 打字机效果） | 后端 | 0.5d |
 | F-512 | Prompt v3 调优（基于顾问反馈 + 50 条样本评分） | AI 工程师 | 0.5d |
 
 ---
@@ -233,7 +233,7 @@
 | `feat` | F-214 后端牌义查询接口 | 2026-05-19 | card/:id/detail 端点，按 isReversed 返回对应关键词和含义 |
 | `feat` | F-215 前端牌义详情展示 | 2026-05-19 | 结果页对接 getCardDetail，展示完整牌义+关键词，修复路由 /cards→/card |
 | `feat` | F-301 Prompt 模板引擎 | 2026-05-19 | 单牌/三牌阵 System Prompt 模板 + 牌义注入（查询 CardService 注入关键词+含义） |
-| `feat` | F-302 AI 解读接口 | 2026-05-19 | Claude Messages API 调用 + GPT 降级 + 流式 SSE + 解读记录保存 |
+| `feat` | F-302 AI 解读接口 | 2026-05-19 | Claude Messages API 调用 + GPT 降级 + 解读记录保存 |
 | `feat` | F-303 输出安全过滤 | 2026-05-19 | 7 组绝对化表述替换 + 3 类专业领域检测引导 + 免责声明拼接 |
 | `feat` | F-304 LLM 降级方案 | 2026-05-19 | Claude/GPT 均失败时返回 10 条预设模板解读（按类别随机选择） |
 | `feat` | Sprint 3.2 云开发部署 | 2026-05-26 | 6 个微信云函数（login/card/divination/ai-interpret/quota/order）+ 云数据库 cards.json |
@@ -255,3 +255,16 @@
 | `feat` | F-408 全链路联调 | 2026-05-26 | 登录→抽牌→AI解读→历史记录完整数据流检查，store 状态保持确认 |
 | `feat` | F-409 配额→付费→再抽牌 | 2026-05-26 | PayWallModal → 套餐页 → 支付 → 配额刷新 → 再抽牌链路验证 |
 | `feat` | F-410 异常处理兜底 UI | 2026-05-26 | CloudError 分类（网络/超时/业务/未知）+ error.ts 统一处理 + error 页路由参数 |
+| `style` | F-501 首页 UI 还原 | 2026-05-28 | 品牌区渐变文字+双星装饰、运势卡片左侧缩略图布局、快捷分类横滑卡片、CTA 按钮光晕扫过动效、StarBackground 星云光晕 |
+| `style` | F-502 抽牌流程 UI 还原 | 2026-05-28 | 洗牌页进度指示点+牌堆金色光晕、选牌页牌背内框装饰+底部渐变遮罩、翻牌页入场动画+牌名层级、ShuffleDeck/TarotCard 组件视觉精修 |
+| `style` | F-503 结果页 UI 还原 | 2026-05-28 | 单牌/三牌阵结果页金色光晕背景、AI 解读区左边框金色装饰、字体层级优化（h3→h3 semibold）、fade-in 递进动画、AiLoading 星形光晕 |
+| `style` | F-504 个人中心/历史记录 UI 还原 | 2026-05-28 | 个人中心配额卡片金色光晕、菜单按下态、历史记录空状态呼吸动画、历史详情左边框装饰、套餐页/牌阵选择页/问题选择页/支付结果页统一视觉打磨 |
+| `perf` | F-505 翻牌 3D 动效优化 | 2026-05-28 | TarotCard 翻转光影扫过效果（card-shine-sweep）、cubic-bezier 缓动曲线、翻转微弹 pop 动画、will-change GPU 加速、大尺寸牌面光晕延迟显示 |
+| `perf` | F-506 洗牌手势动效优化 | 2026-05-28 | ShuffleDeck 速度检测+阻尼衰减、滑动强度映射到牌堆偏移量、松手后强度平滑衰减、牌堆光晕随强度变化、黄金角分布避免整齐排列 |
+| `perf` | F-507 星空粒子背景动效 | 2026-05-28 | StarBackground 三种粒子尺寸（小/中/大）、独立闪烁+漂浮双动画叠加、大粒子金色光晕、星云背景+底部微光 |
+| `feat` | F-508 AI 逐字输出效果 | 2026-05-28 | 新增 TypewriterText 组件（逐字输出+光标闪烁）、集成到单牌/三牌阵结果页 AI 解读区、支持 speed/stant 参数 |
+| `perf` | F-509 首屏加载优化 | 2026-05-28 | webpack splitChunks（taro/react/zustand/vendors 四级分包）、filesystem 编译缓存、base64 阈值 2KB、生产环境 drop_console、app.ts 初始化耗时监控 |
+| `perf` | F-510 低端机型动画降级 | 2026-05-28 | 新增 performance.ts（设备性能检测 high/medium/low）、StarBackground 低端设备关闭粒子、animation.scss perf-low 降级规则（禁用无限循环/缩短过渡/隐藏光影） |
+| `perf` | F-511 AI 解读响应优化 | 2026-05-28 | ai-interpret 云函数新增解读缓存（5分钟TTL）、牌义批量查询（db.command.in）、客户端 TypewriterText 打字机效果弥补非流式体验 |
+| `test` | F-602 牌义数据验证 | 2026-05-28 | cards.json 78 张牌完整性验证（22 大+56 小、4 花色、无缺失字段、无重复 ID） |
+| `test` | F-604 冒烟测试 | 2026-05-28 | 核心路径检查：5 个服务层+6 个云函数+路由常量+错误处理，无 blocker |

@@ -1,6 +1,6 @@
 /**
- * 星空背景组件样式
- * 固定定位 + 星星闪烁动画
+ * 星空背景组件样式 — F-507 粒子动效优化
+ * 多层粒子 + 闪烁 + 漂浮 + 星云光晕
  */
 
 @import '../../styles/variables.scss';
@@ -12,20 +12,64 @@
   right: 0;
   bottom: 0;
   z-index: -1;
-  background: $gradient-bg;
+  background: linear-gradient(180deg, #1A0A2E 0%, #0F0620 50%, #0D1B3E 100%);
   overflow: hidden;
 
-  // 单颗星星
+  // 星云光晕 — 营造神秘氛围
+  &::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600rpx;
+    height: 400rpx;
+    background: radial-gradient(ellipse, rgba($color-accent, 0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  // 底部微光
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 300rpx;
+    background: linear-gradient(transparent, rgba($color-accent, 0.02));
+    pointer-events: none;
+  }
+
+  // 单颗星星 — 双动画叠加（闪烁 + 漂浮）
   &__star {
     position: absolute;
     background: radial-gradient(circle, #ffffff 0%, rgba(255, 255, 255, 0) 70%);
     border-radius: 50%;
-    animation: star-twinkle ease-in-out infinite;
     pointer-events: none;
+    will-change: opacity, transform;
+    // 同时执行闪烁和漂浮两个动画
+    animation:
+      star-twinkle ease-in-out infinite,
+      star-drift linear infinite;
+
+    // 小星星：纯白
+    &--small {
+      background: radial-gradient(circle, rgba(#fff, 0.9) 0%, transparent 70%);
+    }
+
+    // 中星星：微金
+    &--medium {
+      background: radial-gradient(circle, rgba(#F0D68A, 0.7) 0%, transparent 70%);
+    }
+
+    // 大星星：金色 + 更大光晕
+    &--large {
+      background: radial-gradient(circle, rgba($color-accent, 0.6) 0%, rgba($color-accent, 0.1) 50%, transparent 70%);
+    }
   }
 }
 
-// 星星闪烁关键帧
+// 星星闪烁
 @keyframes star-twinkle {
   0%, 100% {
     opacity: 0.2;
@@ -34,5 +78,24 @@
   50% {
     opacity: 1;
     transform: scale(1.2);
+  }
+}
+
+// 星星漂浮（缓慢上浮 + 左右漂移）
+@keyframes star-drift {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(3rpx, -5rpx);
+  }
+  50% {
+    transform: translate(-2rpx, -8rpx);
+  }
+  75% {
+    transform: translate(4rpx, -3rpx);
+  }
+  100% {
+    transform: translate(0, 0);
   }
 }

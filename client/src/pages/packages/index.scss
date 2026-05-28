@@ -1,3 +1,7 @@
+/**
+ * 套餐页样式 — F-504 视觉还原
+ */
+
 @import '../../styles/variables.scss';
 @import '../../styles/mixins.scss';
 
@@ -12,8 +16,18 @@
     padding: $spacing-xl $page-padding;
     padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top, 44px));
 
-    &-back { font-size: $font-body; color: $color-text-secondary; }
-    &-title { font-size: $font-h3; color: $color-text-primary; font-weight: $font-weight-semibold; }
+    &-back {
+      font-size: $font-body;
+      color: $color-text-secondary;
+      padding: $spacing-xs;
+    }
+
+    &-title {
+      font-size: $font-h3;
+      color: $color-text-primary;
+      font-weight: $font-weight-semibold;
+    }
+
     &-placeholder { width: 60rpx; }
   }
 
@@ -26,9 +40,11 @@
     display: block;
     font-size: $font-h2;
     color: $color-text-primary;
+    font-weight: $font-weight-semibold;
     margin-bottom: $spacing-xl;
   }
 
+  // 套餐卡片
   &__card {
     @include card-base;
     margin-bottom: $spacing-lg;
@@ -36,11 +52,16 @@
     position: relative;
     @include flex-col-center;
     gap: $spacing-xs;
-    transition: border-color 0.2s;
+    transition: all 0.2s ease;
+
+    &:active {
+      transform: scale(0.98);
+    }
 
     &--active {
       border-color: $color-accent;
       background: rgba($color-accent, 0.06);
+      box-shadow: 0 0 16rpx rgba($color-accent, 0.1);
     }
 
     &--recommended {
@@ -53,8 +74,9 @@
       top: -1rpx;
       right: $spacing-md;
       font-size: $font-micro;
+      font-weight: $font-weight-bold;
       color: $color-bg-primary;
-      background: $color-accent;
+      background: $gradient-gold;
       padding: 4rpx 16rpx;
       border-radius: 0 0 $radius-sm $radius-sm;
     }
@@ -71,9 +93,10 @@
     }
 
     &-price {
-      font-size: $font-h1;
+      font-size: 56rpx;
       color: $color-accent;
       font-weight: $font-weight-bold;
+      line-height: 1.2;
     }
 
     &-desc {
@@ -84,6 +107,7 @@
     &-per-unit {
       font-size: $font-caption;
       color: $color-accent;
+      font-weight: $font-weight-semibold;
     }
   }
 
@@ -95,6 +119,7 @@
     margin: $spacing-lg 0;
   }
 
+  // 购买按钮
   &__buy {
     position: fixed;
     bottom: 0;
@@ -102,6 +127,11 @@
     right: $page-padding;
     padding-bottom: env(safe-area-inset-bottom, 34px);
     @include btn-primary;
+
+    &:active {
+      transform: scale(0.97);
+      transition: transform 0.1s;
+    }
 
     &-text {
       font-size: $font-h3;

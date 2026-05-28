@@ -1,3 +1,8 @@
+/**
+ * 选牌页样式 — F-502 视觉还原
+ * 对照 ui-design-spec.md §7.2 选牌阶段
+ */
+
 @import '../../styles/variables.scss';
 @import '../../styles/mixins.scss';
 
@@ -12,14 +17,25 @@
     padding: $spacing-xl $page-padding;
     padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top, 44px));
 
-    &-back { font-size: $font-body; color: $color-text-secondary; }
-    &-title { font-size: $font-h3; color: $color-text-primary; font-weight: $font-weight-semibold; }
+    &-back {
+      font-size: $font-body;
+      color: $color-text-secondary;
+      padding: $spacing-xs;
+    }
+
+    &-title {
+      font-size: $font-h3;
+      color: $color-text-primary;
+      font-weight: $font-weight-semibold;
+    }
   }
 
+  // 已选区域
   &__selected {
     padding: $spacing-lg $page-padding;
   }
 
+  // 加载态
   &__loading {
     flex: 1;
     @include flex-center;
@@ -29,6 +45,7 @@
     }
   }
 
+  // 错误态
   &__error {
     flex: 1;
     @include flex-col-center;
@@ -40,22 +57,27 @@
     &-retry {
       font-size: $font-body;
       color: $color-accent;
+      padding: $spacing-xs;
     }
   }
 
+  // 引导提示
   &__hint {
     display: block;
     text-align: center;
     font-size: $font-body;
     color: $color-text-secondary;
-    margin: $spacing-lg 0;
+    margin: $spacing-md 0;
+    letter-spacing: 2rpx;
   }
 
+  // 牌堆区域
   &__deck {
     @include flex-center;
     flex-wrap: wrap;
     gap: $spacing-md;
     padding: $spacing-lg;
+    flex: 1;
 
     &-card {
       animation: shuffle-card 0.3s ease-in-out infinite alternate;
@@ -65,26 +87,40 @@
       width: $card-small-width;
       height: $card-small-height;
       border-radius: $radius-sm;
-      background: linear-gradient(135deg, #1a1a3e, #2d1b4e);
+      background: linear-gradient(135deg, #2A1A4E, #1A0A2E);
       border: 1rpx solid rgba($color-accent, 0.2);
       @include flex-center;
+      box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+
+      // 金色内框装饰
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 6rpx;
+        border: 1rpx solid rgba($color-accent, 0.12);
+        border-radius: 4rpx;
+        pointer-events: none;
+      }
     }
 
     &-symbol {
       font-size: 32rpx;
       color: $color-accent;
-      opacity: 0.6;
+      opacity: 0.5;
     }
   }
 
+  // 底部操作栏
   &__action {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    padding: $spacing-lg $page-padding;
-    padding-bottom: calc(#{$spacing-lg} + env(safe-area-inset-bottom, 34px));
-    background: linear-gradient(transparent, $color-bg-primary);
+    padding: $spacing-xl $page-padding;
+    padding-bottom: calc(#{$spacing-xl} + env(safe-area-inset-bottom, 34px));
+    background: linear-gradient(transparent, $color-bg-primary 40%);
     @include flex-between;
 
     &-count {
@@ -97,8 +133,13 @@
 
       &--disabled {
         opacity: 0.4;
-        background: #444;
-        color: #888;
+        background: linear-gradient(135deg, #555, #444);
+        color: rgba(255, 255, 255, 0.3);
+      }
+
+      &:active {
+        transform: scale(0.97);
+        transition: transform 0.1s;
       }
 
       &-text {

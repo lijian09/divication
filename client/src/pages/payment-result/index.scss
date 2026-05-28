@@ -1,3 +1,7 @@
+/**
+ * 支付结果页样式 — F-504 视觉还原
+ */
+
 @import '../../styles/variables.scss';
 @import '../../styles/mixins.scss';
 
@@ -59,6 +63,7 @@
     width: 100%;
     @include flex-col-center;
     gap: $spacing-sm;
+    padding: $spacing-xl;
   }
 
   &__summary-item {
@@ -76,6 +81,11 @@
     width: 100%;
     @include btn-primary;
     margin-top: $spacing-lg;
+
+    &:active {
+      transform: scale(0.97);
+      transition: transform 0.1s;
+    }
 
     &-text {
       font-size: $font-h3;

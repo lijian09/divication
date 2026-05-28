@@ -1,3 +1,8 @@
+/**
+ * 个人中心页样式 — F-504 视觉还原
+ * 对照 ui-design-spec.md §7.5 个人中心
+ */
+
 @import '../../styles/variables.scss';
 @import '../../styles/mixins.scss';
 
@@ -9,26 +14,29 @@
   &__title {
     display: block;
     text-align: center;
-    font-size: $font-h2;
+    font-size: $font-h3;
     color: $color-text-primary;
-    font-weight: $font-weight-bold;
+    font-weight: $font-weight-semibold;
     margin-bottom: $spacing-xl;
     padding-top: calc(env(safe-area-inset-top, 44px));
   }
 
+  // ==================== 用户信息区 (80px) ====================
   &__user {
     @include flex-row-center;
     gap: $spacing-lg;
     margin-bottom: $spacing-xl;
+    padding: $spacing-md 0;
   }
 
   &__avatar {
     width: 112rpx;
     height: 112rpx;
     border-radius: 50%;
-    background: rgba($color-accent, 0.2);
-    border: 2rpx solid $color-accent;
+    background: rgba($color-accent, 0.15);
+    border: 2rpx solid rgba($color-accent, 0.3);
     @include flex-center;
+    flex-shrink: 0;
 
     &-text {
       font-size: $font-h1;
@@ -46,15 +54,15 @@
   &__nickname {
     font-size: $font-h2;
     color: $color-text-primary;
-    font-weight: $font-weight-bold;
+    font-weight: $font-weight-semibold;
   }
 
   &__edit-hint {
     font-size: $font-caption;
-    color: $color-text-hint;
+    color: $color-text-secondary;
   }
 
-  // 配额卡片
+  // ==================== 配额卡片 (120px) ====================
   &__quota {
     @include card-gold;
     padding: $spacing-xl;
@@ -64,6 +72,7 @@
       display: block;
       font-size: $font-body;
       color: $color-accent;
+      font-weight: $font-weight-semibold;
       margin-bottom: $spacing-md;
     }
 
@@ -82,6 +91,7 @@
       font-size: 72rpx;
       font-weight: $font-weight-bold;
       color: $color-text-primary;
+      line-height: 1;
     }
 
     &-label {
@@ -92,7 +102,7 @@
     &-divider {
       width: 2rpx;
       height: 80rpx;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
     }
 
     &-buy {
@@ -100,10 +110,11 @@
       text-align: center;
       font-size: $font-caption;
       color: $color-accent;
+      padding: $spacing-xs 0;
     }
   }
 
-  // 功能菜单
+  // ==================== 功能菜单 ====================
   &__menu {
     @include card-base;
     padding: 0;
@@ -113,15 +124,22 @@
     @include flex-row-center;
     padding: $spacing-lg $spacing-xl;
     border-bottom: 1rpx solid rgba(255, 255, 255, 0.04);
+    transition: background 0.15s;
 
     &:last-child {
       border-bottom: none;
+    }
+
+    &:active {
+      background: rgba(255, 255, 255, 0.04);
     }
   }
 
   &__menu-icon {
     font-size: 36rpx;
     margin-right: $spacing-md;
+    width: 48rpx;
+    text-align: center;
   }
 
   &__menu-label {
@@ -135,32 +153,36 @@
     color: $color-text-hint;
   }
 
+  // ==================== 版本号 ====================
   &__version {
     display: block;
     text-align: center;
-    font-size: $font-caption;
+    font-size: 20rpx;
     color: $color-text-hint;
     margin-top: $spacing-xxl;
     padding-bottom: calc(#{$tab-bar-height} + env(safe-area-inset-bottom, 34px));
   }
 
-  // 昵称编辑弹窗
+  // ==================== 昵称编辑弹窗 ====================
   &__modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: $color-overlay;
     @include flex-center;
-    z-index: 100;
+    z-index: $z-index-modal;
+    animation: fade-in 0.2s ease-out;
   }
 
   &__modal {
     width: 560rpx;
-    background: $color-bg-card;
+    background: $color-bg-secondary;
     border-radius: $radius-lg;
     padding: $spacing-xl;
+    box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.5);
+    animation: modal-enter 0.25s ease-out;
   }
 
   &__modal-title {
@@ -168,7 +190,7 @@
     text-align: center;
     font-size: $font-h3;
     color: $color-text-primary;
-    font-weight: $font-weight-bold;
+    font-weight: $font-weight-semibold;
     margin-bottom: $spacing-lg;
   }
 
@@ -176,17 +198,21 @@
     width: 100%;
     height: 80rpx;
     background: rgba(255, 255, 255, 0.06);
-    border: 1rpx solid rgba(255, 255, 255, 0.1);
-    border-radius: $radius-sm;
+    border: 1rpx solid rgba(255, 255, 255, 0.15);
+    border-radius: $radius-md;
     padding: 0 $spacing-md;
     font-size: $font-body;
     color: $color-text-primary;
     margin-bottom: $spacing-lg;
     box-sizing: border-box;
+
+    &:focus {
+      border-color: $color-accent;
+    }
   }
 
   &__modal-placeholder {
-    color: $color-text-hint;
+    color: $color-text-secondary;
   }
 
   &__modal-actions {

@@ -9,21 +9,14 @@ import { ROUTES } from '@utils/constants'
 
 import './index.scss'
 
-/**
- * 洗牌页
- * 通过手势洗牌动画营造仪式感
- * 洗牌完成后进入选牌阶段
- */
 const ShufflePage: FC = () => {
   const { spreadType, setStep } = useDivinationStore()
   const [isShuffleComplete, setIsShuffleComplete] = useState(false)
 
-  /** 洗牌完成回调 */
   const handleShuffleComplete = () => {
     setIsShuffleComplete(true)
   }
 
-  /** 进入选牌页 */
   const handlePickCard = () => {
     setStep('shuffle')
     Taro.navigateTo({ url: ROUTES.PICK_CARD })
@@ -33,7 +26,7 @@ const ShufflePage: FC = () => {
     <View className="shuffle-page">
       <StarBackground />
 
-      {/* 导航栏 */}
+      {/* 导航栏 — 带进度指示点 */}
       <View className="shuffle-page__nav">
         <Text className="shuffle-page__nav-back" onClick={() => Taro.navigateBack()}>
           &lt; 返回
@@ -41,7 +34,13 @@ const ShufflePage: FC = () => {
         <Text className="shuffle-page__nav-title">
           {isShuffleComplete ? '选牌中' : '洗牌中'}
         </Text>
-        <Text className="shuffle-page__nav-progress">3/3 ●●●</Text>
+        <View className="shuffle-page__nav-progress">
+          <View className="shuffle-page__dots">
+            <View className="shuffle-page__dot shuffle-page__dot--done" />
+            <View className="shuffle-page__dot shuffle-page__dot--done" />
+            <View className={`shuffle-page__dot ${isShuffleComplete ? 'shuffle-page__dot--active' : ''}`} />
+          </View>
+        </View>
       </View>
 
       {/* 引导提示 */}

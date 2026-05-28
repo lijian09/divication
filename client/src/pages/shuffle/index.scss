@@ -1,3 +1,8 @@
+/**
+ * 洗牌页样式 — F-502 视觉还原
+ * 对照 ui-design-spec.md §7.2 洗牌/选牌页
+ */
+
 @import '../../styles/variables.scss';
 @import '../../styles/mixins.scss';
 
@@ -7,24 +12,66 @@
   display: flex;
   flex-direction: column;
 
+  // 导航栏
   &__nav {
     @include flex-between;
     padding: $spacing-xl $page-padding;
     padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top, 44px));
 
-    &-back { font-size: $font-body; color: $color-text-secondary; }
-    &-title { font-size: $font-h3; color: $color-text-primary; font-weight: $font-weight-semibold; }
-    &-progress { font-size: $font-caption; color: $color-text-hint; }
+    &-back {
+      font-size: $font-body;
+      color: $color-text-secondary;
+      padding: $spacing-xs;
+    }
+
+    &-title {
+      font-size: $font-h3;
+      color: $color-text-primary;
+      font-weight: $font-weight-semibold;
+    }
+
+    &-progress {
+      font-size: $font-caption;
+      color: $color-text-hint;
+      display: flex;
+      align-items: center;
+      gap: 6rpx;
+    }
   }
 
+  // 进度指示点
+  &__dots {
+    display: flex;
+    gap: 8rpx;
+  }
+
+  &__dot {
+    width: 12rpx;
+    height: 12rpx;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+
+    &--active {
+      background: $color-accent;
+      box-shadow: 0 0 8rpx rgba($color-accent, 0.4);
+    }
+
+    &--done {
+      background: $color-accent;
+    }
+  }
+
+  // 引导提示
   &__hint {
     display: block;
     text-align: center;
     font-size: $font-body;
     color: $color-text-secondary;
-    margin: $spacing-lg 0;
+    margin: $spacing-lg 0 $spacing-xl;
+    letter-spacing: 2rpx;
   }
 
+  // 底部按钮
   &__pick-btn {
     position: fixed;
     bottom: 0;
@@ -32,11 +79,16 @@
     right: $page-padding;
     padding-bottom: env(safe-area-inset-bottom, 34px);
     @include btn-primary;
-    animation: slide-up-in 0.3s ease-out;
+    animation: slide-up-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 
     &-text {
       font-size: $font-h3;
       font-weight: $font-weight-bold;
+    }
+
+    &:active {
+      transform: scale(0.97);
+      transition: transform 0.1s;
     }
   }
 }

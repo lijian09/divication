@@ -1,0 +1,40 @@
+/**
+ * 打字机效果组件样式 — F-508
+ * 逐字输出 + 光标闪烁
+ */
+
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.typewriter {
+  display: inline;
+  position: relative;
+
+  &__text {
+    font-size: $font-body;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.8;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  // 闪烁光标
+  &__cursor {
+    display: inline-block;
+    width: 3rpx;
+    height: $font-body;
+    background: $color-accent;
+    margin-left: 2rpx;
+    vertical-align: text-bottom;
+    animation: cursor-blink 0.5s step-end infinite;
+  }
+}
+
+@keyframes cursor-blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}

@@ -1,3 +1,8 @@
+/**
+ * 三牌阵结果页样式 — F-503 视觉还原
+ * 对照 ui-design-spec.md §7.4 三牌阵结果页
+ */
+
 @import '../../styles/variables.scss';
 @import '../../styles/mixins.scss';
 
@@ -12,87 +17,178 @@
     padding: $spacing-xl $page-padding;
     padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top, 44px));
 
-    &-back { font-size: $font-body; color: $color-text-secondary; }
-    &-title { font-size: $font-h3; color: $color-text-primary; font-weight: $font-weight-semibold; }
+    &-back {
+      font-size: $font-body;
+      color: $color-text-secondary;
+      padding: $spacing-xs;
+    }
+
+    &-title {
+      font-size: $font-h3;
+      color: $color-text-primary;
+      font-weight: $font-weight-semibold;
+    }
   }
 
   &__scroll { flex: 1; height: 100vh; }
 
+  // ==================== 三牌横向排列 ====================
   &__cards {
     @include flex-row-center;
     justify-content: space-around;
-    padding: $spacing-xl $page-padding;
+    padding: 48rpx $page-padding;
+    position: relative;
+
+    // 金色光晕背景
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500rpx;
+      height: 300rpx;
+      background: radial-gradient(ellipse, rgba($color-accent, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
   }
 
   &__card-item {
     @include flex-col-center;
     gap: $spacing-sm;
+    animation: card-entry 0.4s ease-out;
+
+    &:nth-child(2) { animation-delay: 0.1s; }
+    &:nth-child(3) { animation-delay: 0.2s; }
   }
 
   &__card-label {
     font-size: $font-caption;
     color: $color-text-secondary;
+    display: flex;
+    align-items: center;
+    gap: 4rpx;
   }
 
+  &__card-label-icon {
+    font-size: 20rpx;
+    color: $color-accent;
+  }
+
+  // ==================== 问题回显区 ====================
   &__question {
     @include card-base;
     margin: 0 $page-padding $spacing-xl;
-    &-text { font-size: $font-body; color: $color-text-secondary; }
+    padding: $spacing-md $spacing-lg;
+
+    &-text {
+      font-size: $font-body;
+      color: $color-text-secondary;
+    }
   }
 
+  // ==================== 分段解读区 ====================
   &__section {
     @include card-base;
     margin: 0 $page-padding $spacing-md;
+    padding: $spacing-lg;
+    position: relative;
+    overflow: hidden;
+
+    // 微弱左边框装饰
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4rpx;
+      background: $gradient-gold;
+      border-radius: 2rpx;
+    }
+  }
+
+  &__section-header {
+    @include flex-between;
+    cursor: pointer;
+    padding: 4rpx 0;
+  }
+
+  &__section-title {
+    display: block;
+    font-size: $font-h3;
+    color: $color-text-primary;
+    font-weight: $font-weight-semibold;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__section-toggle {
+    font-size: $font-caption;
+    color: $color-text-hint;
+    flex-shrink: 0;
+    padding: $spacing-xs;
+  }
+
+  &__section-keywords {
+    display: block;
+    font-size: $font-caption;
+    color: $color-accent;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__section-meaning {
+    display: block;
+    font-size: $font-body;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.8;
+    margin-bottom: $spacing-sm;
+    padding-bottom: $spacing-sm;
+    border-bottom: 1rpx solid rgba(255, 255, 255, 0.06);
+  }
+
+  &__section-content {
+    font-size: $font-body;
+    color: $color-text-secondary;
+    line-height: 1.8;
+  }
+
+  &__section-typewriter {
+    display: block;
+    margin-top: $spacing-xs;
+  }
+
+  // ==================== 综合建议 ====================
+  &__summary {
+    @include card-gold;
+    margin: $spacing-lg $page-padding;
+    padding: $spacing-xl;
 
     &-title {
       display: block;
-      font-size: $font-body;
-      color: $color-text-primary;
+      font-size: $font-h3;
+      color: $color-accent;
       font-weight: $font-weight-bold;
       margin-bottom: $spacing-sm;
     }
 
-    &-keywords {
-      display: block;
-      font-size: $font-caption;
-      color: $color-accent;
-      margin-bottom: $spacing-sm;
-    }
-
-    &-meaning {
-      display: block;
-      font-size: $font-body;
-      color: $color-text-primary;
-      line-height: 1.8;
-      margin-bottom: $spacing-sm;
-      padding-bottom: $spacing-sm;
-      border-bottom: 1rpx solid rgba(255, 255, 255, 0.06);
-    }
-
     &-content {
       font-size: $font-body;
-      color: $color-text-secondary;
+      color: rgba(255, 255, 255, 0.9);
       line-height: 1.8;
     }
   }
 
-  &__summary {
-    @include card-base;
-    margin: $spacing-lg $page-padding;
+  &__summary-typewriter {
+    display: block;
+    margin-top: $spacing-sm;
+  }
+  }
 
-    &-title {
-      display: block;
-      font-size: $font-body;
-      color: $color-accent;
-      font-weight: $font-weight-bold;
-      margin-bottom: $spacing-sm;
-    }
-
-    &-content {
-      font-size: $font-body;
-      color: $color-text-primary;
-      line-height: 1.8;
-    }
+  &__model {
+    display: block;
+    font-size: $font-caption;
+    color: $color-text-hint;
+    margin-top: $spacing-md;
   }
 
   &__disclaimer {
@@ -104,16 +200,33 @@
     border-top: 1rpx solid rgba(255, 255, 255, 0.06);
   }
 
+  // ==================== 操作按钮区 ====================
   &__actions {
     padding: 0 $page-padding $spacing-xxxl;
   }
 
-  &__view-card-btn { @include btn-secondary; margin-bottom: $spacing-lg; }
+  &__view-card-btn {
+    @include btn-secondary;
+    margin-bottom: $spacing-lg;
+  }
+
   &__view-card-text { font-size: $font-body; }
 
   &__btn-row { display: flex; gap: $spacing-md; }
-  &__retry-btn { flex: 1; @include btn-secondary; }
+
+  &__retry-btn {
+    flex: 1;
+    @include btn-secondary;
+    &:active { background: rgba($color-accent, 0.1); }
+  }
+
   &__retry-text { font-size: $font-body; }
-  &__save-btn { flex: 1; @include btn-primary; }
+
+  &__save-btn {
+    flex: 1;
+    @include btn-primary;
+    &:active { transform: scale(0.97); transition: transform 0.1s; }
+  }
+
   &__save-text { font-size: $font-body; font-weight: $font-weight-bold; }
 }

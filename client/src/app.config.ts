@@ -3,7 +3,6 @@
  * 页面路由、TabBar、窗口样式
  */
 export default defineAppConfig({
-  // 全局窗口配置（神秘深色主题）
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#1A0A2E',
@@ -11,7 +10,6 @@ export default defineAppConfig({
     navigationBarTextStyle: 'white',
     backgroundColor: '#1A0A2E',
   },
-  // 页面路由注册
   pages: [
     'pages/home/index',
     'pages/onboarding/index',
@@ -31,7 +29,6 @@ export default defineAppConfig({
     'pages/loading/index',
     'pages/error/index',
   ],
-  // 底部 TabBar：首页 / 抽牌 / 我的
   tabBar: {
     custom: false,
     color: '#6B6580',
@@ -46,7 +43,7 @@ export default defineAppConfig({
         selectedIconPath: 'assets/images/icons/tab-home-active.png',
       },
       {
-        pagePath: 'pages/shuffle/index',
+        pagePath: 'pages/home/index',
         text: '抽牌',
         iconPath: 'assets/images/icons/tab-draw.png',
         selectedIconPath: 'assets/images/icons/tab-draw-active.png',
@@ -61,7 +58,6 @@ export default defineAppConfig({
   },
 })
 
-/** Taro app.config.ts 的类型辅助 */
 function defineAppConfig(config: any) {
   return config
 }

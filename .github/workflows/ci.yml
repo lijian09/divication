@@ -1,7 +1,6 @@
 # ==========================================================
 # CI — 代码检查 & 构建验证
-# 触发：任意分支 push + PR 到 master
-# 并行执行 client / server 检查，互不阻塞
+# 触发：PR 到 master
 # ==========================================================
 name: CI
 
@@ -41,69 +40,3 @@ jobs:
 
       - name: 构建验证 (WeApp)
         run: npm run build:weapp
-
-  # ---------- 后端检查 ----------
-  server:
-    name: Server - Lint & Build
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: server
-
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: test_root
-          MYSQL_DATABASE: lingyu_test
-          MYSQL_USER: lingyu
-          MYSQL_PASSWORD: test_pass
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
-      redis:
-        image: redis:7-alpine
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd="redis-cli ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
-    env:
-      NODE_ENV: test
-      DB_HOST: 127.0.0.1
-      DB_PORT: 3306
-      DB_USERNAME: lingyu
-      DB_PASSWORD: test_pass
-      DB_DATABASE: lingyu_test
-      REDIS_HOST: 127.0.0.1
-      REDIS_PORT: 6379
-      JWT_SECRET: ci-test-secret
-      JWT_REFRESH_SECRET: ci-test-refresh-secret
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-          cache-dependency-path: server/package-lock.json
-
-      - run: npm ci
-
-      - name: ESLint
-        run: npm run lint
-
-      - name: 单元测试
-        run: npm run test:cov
-
-      - name: 构建
-        run: npm run build

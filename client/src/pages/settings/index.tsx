@@ -3,6 +3,7 @@ import Taro from '@tarojs/taro'
 import { FC } from 'react'
 
 import StarBackground from '@components/StarBackground'
+import { callFunction } from '@services/cloud'
 
 import './index.scss'
 
@@ -20,10 +21,18 @@ const SettingsPage: FC = () => {
       confirmText: '确认注销',
       confirmColor: '#E53935',
       cancelText: '再想想',
-      success: (res) => {
+      success: async (res) => {
         if (res.confirm) {
-          // TODO: 调用注销 API
-          Taro.showToast({ title: '注销请求已提交', icon: 'none' })
+          try {
+            await callFunction('login', { action: 'deleteAccount' })
+            Taro.showToast({ title: '账号已注销', icon: 'success' })
+            // 清除本地状态并跳转首页
+            setTimeout(() => {
+              Taro.reLaunch({ url: '/pages/home/index' })
+            }, 1500)
+          } catch (err: any) {
+            Taro.showToast({ title: err.message || '注销失败', icon: 'none' })
+          }
         }
       },
     })

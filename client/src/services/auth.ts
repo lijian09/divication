@@ -41,3 +41,12 @@ export async function acceptAgreement(
     agreementVersion,
   })
 }
+
+/**
+ * 注销账号
+ */
+export async function deleteAccount(): Promise<void> {
+  await callFunction('login', {
+    action: 'deleteAccount',
+  })
+}

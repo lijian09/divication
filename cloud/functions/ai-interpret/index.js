@@ -70,6 +70,14 @@ exports.main = async (event, context) => {
       return { code: -1, message: '牌信息不能为空' }
     }
 
+    // 0. 检查缓存（同一用户 + 同一组牌 + 同类别，5 分钟内命中缓存）
+    const cacheKey = `${OPENID}_${questionCategory}_${cards.map(c => `${c.card_id}_${c.is_reversed}`).join(',')}`
+    const cached = await getCachedInterpretation(cacheKey)
+    if (cached) {
+      console.log('[ai-interpret] 缓存命中')
+      return { code: 0, data: cached }
+    }
+
     // 1. 查询牌义
     const cardDetails = await queryCardDetails(cards)
 
@@ -105,15 +113,17 @@ exports.main = async (event, context) => {
       .where({ _id: recordId })
       .update({ data: { status: 'completed' } })
 
-    return {
-      code: 0,
-      data: {
-        content: finalContent,
-        cardNames: cardDetails.map(c => c.nameCn),
-        model,
-        status,
-      },
+    const resultData = {
+      content: finalContent,
+      cardNames: cardDetails.map(c => c.nameCn),
+      model,
+      status,
     }
+
+    // 7. 写入缓存（5 分钟有效）
+    await setCachedInterpretation(cacheKey, resultData)
+
+    return { code: 0, data: resultData }
   } catch (err) {
     console.error('[ai-interpret] 错误:', err)
 
@@ -142,31 +152,35 @@ exports.main = async (event, context) => {
 }
 
 /**
- * 查询牌义详情
+ * 查询牌义详情（批量查询，避免 N 次循环）
  */
 async function queryCardDetails(cards) {
-  const results = []
-  for (const card of cards) {
-    const res = await db.collection('cards')
-      .where({ card_id: card.card_id })
-      .limit(1)
-      .get()
+  const cardIds = cards.map(c => c.card_id)
 
-    if (res.data.length > 0) {
-      const c = res.data[0]
-      const isReversed = card.is_reversed
-      results.push({
-        ...card,
-        nameCn: c.name_cn,
-        nameEn: c.name_en,
-        arcanaType: c.arcana_type,
-        suit: c.suit,
-        keywords: isReversed ? c.reversed_keywords : c.upright_keywords,
-        meaning: isReversed ? c.reversed_meaning : c.upright_meaning,
-      })
-    }
+  // 批量查询（云数据库 where in 最多 20 条，塔罗阵最多 3 张，足够）
+  const res = await db.collection('cards')
+    .where({ card_id: db.command.in(cardIds) })
+    .get()
+
+  const cardMap = {}
+  for (const c of res.data) {
+    cardMap[c.card_id] = c
   }
-  return results
+
+  return cards.map(card => {
+    const c = cardMap[card.card_id]
+    if (!c) return card
+    const isReversed = card.is_reversed
+    return {
+      ...card,
+      nameCn: c.name_cn,
+      nameEn: c.name_en,
+      arcanaType: c.arcana_type,
+      suit: c.suit,
+      keywords: isReversed ? c.reversed_keywords : c.upright_keywords,
+      meaning: isReversed ? c.reversed_meaning : c.upright_meaning,
+    }
+  })
 }
 
 /**
@@ -321,4 +335,50 @@ function filterContent(content) {
  */
 function appendDisclaimer(content) {
   return `${content}\n\n---\n*以上解读由 AI 生成，仅供娱乐参考，不构成任何专业建议。请理性对待塔罗牌的指引，生活的选择权始终在你手中。*`
+}
+
+// ==================== 缓存机制 ====================
+
+const CACHE_TTL_MS = 5 * 60 * 1000 // 5 分钟
+
+/**
+ * 获取缓存的解读结果
+ */
+async function getCachedInterpretation(cacheKey) {
+  try {
+    const res = await db.collection('interpretation_cache')
+      .where({ cache_key: cacheKey })
+      .limit(1)
+      .get()
+
+    if (res.data.length > 0) {
+      const cached = res.data[0]
+      const age = Date.now() - new Date(cached.created_at).getTime()
+      if (age < CACHE_TTL_MS) {
+        return cached.result_data
+      }
+      // 过期则删除
+      await db.collection('interpretation_cache').doc(cached._id).remove()
+    }
+  } catch (err) {
+    console.warn('[cache] 读取缓存失败:', err.message)
+  }
+  return null
+}
+
+/**
+ * 写入解读缓存
+ */
+async function setCachedInterpretation(cacheKey, resultData) {
+  try {
+    await db.collection('interpretation_cache').add({
+      data: {
+        cache_key: cacheKey,
+        result_data: resultData,
+        created_at: db.serverDate(),
+      },
+    })
+  } catch (err) {
+    console.warn('[cache] 写入缓存失败:', err.message)
+  }
 }

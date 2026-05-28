@@ -1,6 +1,6 @@
 /**
- * 塔罗牌组件样式
- * 3D 翻转动画 + 多尺寸支持
+ * 塔罗牌组件样式 — F-505 翻牌 3D 动效优化
+ * 3D 翻转 + 光影扫过 + 缓动曲线
  */
 
 @import '../../styles/variables.scss';
@@ -8,7 +8,7 @@
 
 .tarot-card {
   position: relative;
-  perspective: 1000rpx;
+  perspective: 800px;
   cursor: pointer;
   flex-shrink: 0;
 
@@ -36,46 +36,78 @@
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     border-radius: $radius-md;
     overflow: hidden;
-    transition: transform $duration-card-flip ease-out;
-    box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.3);
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+    box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.4);
   }
 
-  // 牌背面（默认显示）
+  // 牌背面
   &__back {
-    background: linear-gradient(135deg, #1a1a3e, #2d1b4e);
-    border: 2rpx solid rgba($color-accent, 0.3);
+    background: linear-gradient(135deg, #2A1A4E 0%, #1A0A2E 50%, #0D1B3E 100%);
+    border: 2rpx solid rgba($color-accent, 0.25);
     transform: rotateY(0deg);
     @include flex-center;
+    position: relative;
+
+    // 金色内框装饰
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 8rpx;
+      border: 1rpx solid rgba($color-accent, 0.12);
+      border-radius: 6rpx;
+      pointer-events: none;
+    }
 
     &-pattern {
-      width: 80%;
-      height: 80%;
-      border: 2rpx solid rgba($color-accent, 0.2);
+      width: 70%;
+      height: 70%;
+      border: 1rpx solid rgba($color-accent, 0.15);
       border-radius: $radius-sm;
       @include flex-center;
-      background: repeating-conic-gradient(
-        rgba($color-accent, 0.05) 0% 25%,
-        transparent 0% 50%
-      );
-      background-size: 20rpx 20rpx;
+      position: relative;
     }
 
     &-symbol {
       font-size: 48rpx;
       color: $color-accent;
       animation: breathe 2s ease-in-out infinite;
+      position: relative;
+      z-index: 1;
     }
   }
 
-  // 牌正面（初始隐藏，翻转后显示）
+  // 牌正面
   &__front {
     background: linear-gradient(180deg, #1a1040, #0d1b3e);
     border: 2rpx solid rgba($color-accent, 0.15);
     transform: rotateY(180deg);
     @include flex-col-center;
     justify-content: space-between;
+    position: relative;
+  }
+
+  // 光影扫过层
+  &__shine {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.08) 40%,
+      rgba($color-accent, 0.12) 50%,
+      rgba(255, 255, 255, 0.08) 60%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
   }
 
   // 翻转后
@@ -85,6 +117,44 @@
     }
     .tarot-card__front {
       transform: rotateY(0deg);
+    }
+  }
+
+  // 翻转动画中 — 光影扫过
+  &--animating {
+    .tarot-card__face {
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .tarot-card__shine {
+      animation: card-shine-sweep 0.7s ease-out 0.15s forwards;
+    }
+
+    // 翻转时牌面微放大
+    .tarot-card__front {
+      animation: card-flip-pop 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+
+  // 金色光晕（大尺寸牌面）
+  &--large {
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(circle, rgba($color-accent, 0.1) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    &.tarot-card--flipped::after {
+      opacity: 1;
     }
   }
 
@@ -99,6 +169,8 @@
     width: 100%;
     padding: 8rpx;
     text-align: center;
+    position: relative;
+    z-index: 2;
   }
 
   &__name {
@@ -129,5 +201,33 @@
     font-size: $font-caption;
     color: $color-text-secondary;
     white-space: nowrap;
+  }
+}
+
+// 光影扫过关键帧
+@keyframes card-shine-sweep {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    left: 150%;
+    opacity: 0;
+  }
+}
+
+// 翻转时微弹效果
+@keyframes card-flip-pop {
+  0% {
+    transform: rotateY(180deg) scale(1);
+  }
+  50% {
+    transform: rotateY(90deg) scale(1.03);
+  }
+  100% {
+    transform: rotateY(0deg) scale(1);
   }
 }

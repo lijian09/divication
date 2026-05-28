@@ -5,6 +5,7 @@ import { FC, useState, useEffect, useRef } from 'react'
 import StarBackground from '@components/StarBackground'
 import AiLoading from '@components/AiLoading'
 import TarotCard from '@components/TarotCard'
+import TypewriterText from '@components/TypewriterText'
 import { useDivinationStore } from '@store/index'
 import { getCardDetail } from '@services/card'
 import { interpretDivination } from '@services/divination'
@@ -240,9 +241,11 @@ const ResultThreePage: FC = () => {
 
                   {/* AI 解读分段 */}
                   {sectionContent && (
-                    <Text className="result-three-page__section-content">
-                      {sectionContent}
-                    </Text>
+                    <TypewriterText
+                      content={sectionContent}
+                      speed={25}
+                      className="result-three-page__section-typewriter"
+                    />
                   )}
                 </>
               )}
@@ -254,9 +257,11 @@ const ResultThreePage: FC = () => {
         {interpretation && (
           <View className="result-three-page__summary">
             <Text className="result-three-page__summary-title">✦ 综合建议</Text>
-            <Text className="result-three-page__summary-content">
-              {getSummaryContent() || interpretation}
-            </Text>
+            <TypewriterText
+              content={getSummaryContent() || interpretation}
+              speed={25}
+              className="result-three-page__summary-typewriter"
+            />
 
             {interpretationModel && (
               <Text className="result-three-page__model">

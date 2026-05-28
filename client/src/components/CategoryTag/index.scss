@@ -1,5 +1,5 @@
 /**
- * 分类标签样式
+ * 分类标签样式 — F-504 视觉还原
  */
 
 @import '../../styles/variables.scss';
@@ -12,6 +12,10 @@
   border: 2rpx solid transparent;
   background: rgba(255, 255, 255, 0.05);
   transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.95);
+  }
 
   // 尺寸变体
   &--medium {
@@ -28,6 +32,8 @@
   // 选中态
   &--selected {
     border-color: $color-accent;
+    background: rgba($color-accent, 0.08);
+    box-shadow: 0 0 12rpx rgba($color-accent, 0.15);
   }
 
   &__icon {

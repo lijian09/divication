@@ -1,3 +1,7 @@
+/**
+ * 牌阵选择页样式 — F-502 视觉还原
+ */
+
 @import '../../styles/variables.scss';
 @import '../../styles/mixins.scss';
 
@@ -12,9 +16,22 @@
     padding: $spacing-xl $page-padding;
     padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top, 44px));
 
-    &-back { font-size: $font-body; color: $color-text-secondary; }
-    &-title { font-size: $font-h3; color: $color-text-primary; font-weight: $font-weight-semibold; }
-    &-progress { font-size: $font-caption; color: $color-text-hint; }
+    &-back {
+      font-size: $font-body;
+      color: $color-text-secondary;
+      padding: $spacing-xs;
+    }
+
+    &-title {
+      font-size: $font-h3;
+      color: $color-text-primary;
+      font-weight: $font-weight-semibold;
+    }
+
+    &-progress {
+      font-size: $font-caption;
+      color: $color-text-hint;
+    }
   }
 
   &__content {
@@ -26,9 +43,11 @@
     display: block;
     font-size: $font-h2;
     color: $color-text-primary;
+    font-weight: $font-weight-semibold;
     margin-bottom: $spacing-xxl;
   }
 
+  // 牌阵卡片
   &__card {
     @include card-base;
     padding: $spacing-xl;
@@ -36,15 +55,21 @@
     position: relative;
     @include flex-col-center;
     gap: $spacing-sm;
-    transition: border-color 0.2s;
+    transition: all 0.2s ease;
+
+    &:active {
+      transform: scale(0.98);
+    }
 
     &--active {
       border-color: $color-accent;
       background: rgba($color-accent, 0.06);
+      box-shadow: 0 0 16rpx rgba($color-accent, 0.1);
     }
 
     &--disabled {
       opacity: 0.4;
+      pointer-events: none;
     }
 
     &-badge {
@@ -52,9 +77,10 @@
       top: $spacing-sm;
       right: $spacing-md;
       font-size: $font-micro;
+      font-weight: $font-weight-bold;
       color: $color-bg-primary;
-      background: $color-accent;
-      padding: 2rpx 12rpx;
+      background: $gradient-gold;
+      padding: 4rpx 16rpx;
       border-radius: $radius-round;
     }
 
@@ -67,6 +93,7 @@
     &-desc {
       font-size: $font-caption;
       color: $color-text-secondary;
+      text-align: center;
     }
 
     &-cost-row {
@@ -82,6 +109,7 @@
     &-remain {
       font-size: $font-caption;
       color: $color-accent;
+      font-weight: $font-weight-semibold;
 
       &--empty {
         color: $color-error;
@@ -101,10 +129,12 @@
     width: 80rpx;
     height: 128rpx;
     border-radius: $radius-sm;
-    background: linear-gradient(135deg, #2d1b4e, #1a1040);
+    background: linear-gradient(135deg, #2A1A4E, #1A0A2E);
     border: 1rpx solid rgba($color-accent, 0.2);
+    box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.3);
   }
 
+  // 开始按钮
   &__start {
     position: fixed;
     bottom: 0;
@@ -115,8 +145,13 @@
 
     &--disabled {
       opacity: 0.4;
-      background: #444;
-      color: #888;
+      background: linear-gradient(135deg, #555, #444);
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    &:active {
+      transform: scale(0.97);
+      transition: transform 0.1s;
     }
 
     &-text {

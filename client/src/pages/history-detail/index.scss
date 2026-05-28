@@ -1,3 +1,7 @@
+/**
+ * 历史记录详情页样式 — F-504 视觉还原
+ */
+
 @import '../../styles/variables.scss';
 @import '../../styles/mixins.scss';
 
@@ -12,8 +16,18 @@
     padding: $spacing-xl $page-padding;
     padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top, 44px));
 
-    &-back { font-size: $font-body; color: $color-text-secondary; }
-    &-title { font-size: $font-h3; color: $color-text-primary; font-weight: $font-weight-semibold; }
+    &-back {
+      font-size: $font-body;
+      color: $color-text-secondary;
+      padding: $spacing-xs;
+    }
+
+    &-title {
+      font-size: $font-h3;
+      color: $color-text-primary;
+      font-weight: $font-weight-semibold;
+    }
+
     &-placeholder { width: 60rpx; }
   }
 
@@ -33,9 +47,11 @@
     display: block;
     font-size: $font-body;
     color: $color-accent;
+    font-weight: $font-weight-semibold;
     margin-bottom: $spacing-xl;
   }
 
+  // 问题卡片
   &__question {
     @include card-base;
     margin-bottom: $spacing-xl;
@@ -53,12 +69,27 @@
     }
   }
 
+  // 牌面展示区
   &__card-placeholder {
     @include flex-center;
     height: 640rpx;
     margin-bottom: $spacing-xl;
     border: 2rpx dashed rgba($color-accent, 0.2);
     border-radius: $radius-lg;
+    position: relative;
+
+    // 微弱金色光晕
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300rpx;
+      height: 300rpx;
+      background: radial-gradient(circle, rgba($color-accent, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
 
     &-text {
       font-size: $font-body;
@@ -66,15 +97,30 @@
     }
   }
 
+  // 解读区
   &__interpretation {
     @include card-base;
     margin-bottom: $spacing-xl;
+    position: relative;
+    overflow: hidden;
+
+    // 金色左边框装饰
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4rpx;
+      background: $gradient-gold;
+      border-radius: 2rpx;
+    }
 
     &-title {
       display: block;
       font-size: $font-h3;
       color: $color-text-primary;
-      font-weight: $font-weight-bold;
+      font-weight: $font-weight-semibold;
       margin-bottom: $spacing-sm;
     }
 
@@ -88,7 +134,7 @@
     &-content {
       display: block;
       font-size: $font-body;
-      color: $color-text-primary;
+      color: rgba(255, 255, 255, 0.9);
       line-height: 1.8;
       margin-bottom: $spacing-md;
     }
@@ -105,6 +151,10 @@
   &__view-card-btn {
     @include btn-secondary;
     margin-bottom: $spacing-xxxl;
+
+    &:active {
+      background: rgba($color-accent, 0.1);
+    }
 
     &-text {
       font-size: $font-body;

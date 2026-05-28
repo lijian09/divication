@@ -22,6 +22,8 @@ exports.main = async (event, context) => {
         return await handleLogin(OPENID)
       case 'acceptAgreement':
         return await acceptAgreement(OPENID, agreementVersion)
+      case 'deleteAccount':
+        return await deleteAccount(OPENID)
       default:
         return { code: -1, message: '未知操作' }
     }
@@ -118,4 +120,33 @@ async function acceptAgreement(openid, agreementVersion) {
   })
 
   return { code: 0, message: '已确认免责协议' }
+}
+
+/**
+ * 注销账号
+ * 删除用户相关所有数据：用户、配额、记录、解读、订单
+ */
+async function deleteAccount(openid) {
+  const collections = ['users', 'quotas', 'records', 'interpretations', 'orders']
+
+  for (const col of collections) {
+    try {
+      const res = await db.collection(col).where({ _openid: openid }).get()
+      for (const doc of res.data) {
+        await db.collection(col).doc(doc._id).remove()
+      }
+    } catch (err) {
+      console.warn(`[deleteAccount] 清理 ${col} 失败:`, err.message)
+    }
+  }
+
+  // 记录注销日志（保留用于审计）
+  await db.collection('delete_account_logs').add({
+    data: {
+      _openid: openid,
+      deleted_at: db.serverDate(),
+    },
+  })
+
+  return { code: 0, message: '账号已注销' }
 }

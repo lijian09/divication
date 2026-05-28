@@ -5,6 +5,7 @@ import { FC, useState, useEffect, useRef } from 'react'
 import StarBackground from '@components/StarBackground'
 import AiLoading from '@components/AiLoading'
 import TarotCard from '@components/TarotCard'
+import TypewriterText from '@components/TypewriterText'
 import { useDivinationStore } from '@store/index'
 import { getCardDetail } from '@services/card'
 import { interpretDivination } from '@services/divination'
@@ -198,9 +199,12 @@ const ResultSinglePage: FC = () => {
               </Text>
             </View>
           ) : (
-            <Text className="result-single-page__interpretation-text">
-              {interpretation || '（暂无解读内容）'}
-            </Text>
+            <View className="result-single-page__interpretation-card">
+              <TypewriterText
+                content={interpretation || '（暂无解读内容）'}
+                speed={25}
+              />
+            </View>
           )}
         </View>
 

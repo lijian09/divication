@@ -1,7 +1,46 @@
 /**
- * 动画关键帧定义
+ * 动画关键帧定义 — F-510 性能优化
  * 洗牌、翻牌、星星、弹窗等动画
+ * 低端设备自动降级
  */
+
+// ==================== 性能降级 ====================
+
+// 低端设备：禁用昂贵动画
+.perf-low {
+  // 禁用所有无限循环动画
+  .star-background__star,
+  .tarot-card__back-symbol,
+  .quota-badge__star {
+    animation: none !important;
+  }
+
+  // 翻牌动画缩短
+  .tarot-card__face {
+    transition-duration: 0.2s !important;
+  }
+
+  // 禁用光影扫过
+  .tarot-card__shine {
+    display: none !important;
+  }
+
+  // 洗牌动画简化
+  .shuffle-deck__card {
+    animation: none !important;
+    transition-duration: 0.1s !important;
+  }
+
+  // 禁用按钮光晕
+  .home-page__cta::after {
+    display: none !important;
+  }
+
+  // 打字机效果：立即显示
+  .typewriter__cursor {
+    display: none !important;
+  }
+}
 
 // ==================== 洗牌动画 ====================
 
