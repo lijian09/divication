@@ -25,11 +25,11 @@ interface PayWallModalProps {
   onClose: () => void
 }
 
-/** 默认套餐选项 */
+/** 默认套餐选项 — 与 order 云函数 PACKAGES 保持一致 */
 const DEFAULT_PACKAGES: PackageOption[] = [
-  { id: 'pkg_small', name: '小确幸包', icon: '☘', price: 690, totalQuota: 7 },
-  { id: 'pkg_medium', name: '知心包', icon: '★', price: 1990, totalQuota: 23 },
-  { id: 'pkg_large', name: '深度包', icon: '◈', price: 3990, totalQuota: 60 },
+  { id: 'single_5', name: '单牌 5 次', icon: '☘', price: 980, totalQuota: 5 },
+  { id: 'three_5', name: '三牌阵 5 次', icon: '★', price: 1980, totalQuota: 5 },
+  { id: 'mix_10', name: '混合 10 次', icon: '◈', price: 2980, totalQuota: 10 },
 ]
 
 const PayWallModal: FC<PayWallModalProps> = ({

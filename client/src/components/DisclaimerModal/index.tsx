@@ -1,5 +1,5 @@
 import { View, Text, ScrollView } from '@tarojs/components'
-import { FC, useState, useRef, useCallback } from 'react'
+import { FC, useState, useCallback } from 'react'
 
 import './index.scss'
 

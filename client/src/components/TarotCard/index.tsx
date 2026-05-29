@@ -1,5 +1,5 @@
 import { View, Image, Text } from '@tarojs/components'
-import { CSSProperties, FC, useState, useCallback } from 'react'
+import { CSSProperties, FC, useState, useCallback, useRef, useEffect } from 'react'
 
 import './index.scss'
 
@@ -46,13 +46,20 @@ const TarotCard: FC<TarotCardProps> = ({
 }) => {
   const [isFlipped, setIsFlipped] = useState(!faceDown)
   const [isAnimating, setIsAnimating] = useState(false)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // 组件卸载时清理 timer
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current)
+    }
+  }, [])
 
   const handleTap = useCallback(() => {
     if (flippable && !isFlipped) {
       setIsAnimating(true)
       setIsFlipped(true)
-      // 动画结束后移除动画状态
-      setTimeout(() => setIsAnimating(false), 700)
+      timerRef.current = setTimeout(() => setIsAnimating(false), 700)
     }
     onClick?.()
   }, [flippable, isFlipped, onClick])

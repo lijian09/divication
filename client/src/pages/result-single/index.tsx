@@ -106,7 +106,7 @@ const ResultSinglePage: FC = () => {
   /** 再来一次 */
   const handleRetry = () => {
     useDivinationStore.getState().reset()
-    Taro.navigateTo({ url: ROUTES.QUESTION_SELECT })
+    Taro.redirectTo({ url: ROUTES.QUESTION_SELECT })
   }
 
   /** 查看牌义详解 */
@@ -191,6 +191,7 @@ const ResultSinglePage: FC = () => {
                 className="result-single-page__error-retry"
                 onClick={() => {
                   calledRef.current = false
+                  setInterpretationError('')
                   setIsLoading(true)
                   setIsTimeout(false)
                 }}

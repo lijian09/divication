@@ -13,7 +13,7 @@ import { ROUTES, CATEGORIES } from '@utils/constants'
 import './index.scss'
 
 const HomePage: FC = () => {
-  const { freeSingleRemaining, freeThreeRemaining } = useQuotaStore()
+  const { freeSingleRemaining, freeThreeRemaining, paidSingleRemaining, paidThreeRemaining } = useQuotaStore()
   const { userInfo, setAgreementAccepted } = useUserStore()
   const [showDisclaimer, setShowDisclaimer] = useState(false)
   const [showPayWall, setShowPayWall] = useState(false)
@@ -41,8 +41,8 @@ const HomePage: FC = () => {
   }
 
   const handleStart = () => {
-    const totalSingle = freeSingleRemaining + freeThreeRemaining
-    if (totalSingle <= 0) {
+    const totalQuota = freeSingleRemaining + freeThreeRemaining + paidSingleRemaining + paidThreeRemaining
+    if (totalQuota <= 0) {
       setShowPayWall(true)
       return
     }
@@ -60,7 +60,7 @@ const HomePage: FC = () => {
     })
   }
 
-  const totalQuota = freeSingleRemaining + freeThreeRemaining
+  const totalQuota = freeSingleRemaining + freeThreeRemaining + paidSingleRemaining + paidThreeRemaining
 
   return (
     <View className="home-page">
@@ -110,8 +110,8 @@ const HomePage: FC = () => {
 
         {/* 次数提示 */}
         <QuotaBadge
-          singleCount={freeSingleRemaining}
-          threeCount={freeThreeRemaining}
+          singleCount={freeSingleRemaining + paidSingleRemaining}
+          threeCount={freeThreeRemaining + paidThreeRemaining}
           isExhausted={totalQuota <= 0}
         />
 

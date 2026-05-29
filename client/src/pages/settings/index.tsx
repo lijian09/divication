@@ -3,7 +3,7 @@ import Taro from '@tarojs/taro'
 import { FC } from 'react'
 
 import StarBackground from '@components/StarBackground'
-import { callFunction } from '@services/cloud'
+import { deleteAccount } from '@services/auth'
 
 import './index.scss'
 
@@ -24,7 +24,7 @@ const SettingsPage: FC = () => {
       success: async (res) => {
         if (res.confirm) {
           try {
-            await callFunction('login', { action: 'deleteAccount' })
+            await deleteAccount()
             Taro.showToast({ title: '账号已注销', icon: 'success' })
             // 清除本地状态并跳转首页
             setTimeout(() => {

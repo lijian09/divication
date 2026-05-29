@@ -4,8 +4,7 @@ import { FC, useState, useEffect, useCallback } from 'react'
 
 import StarBackground from '@components/StarBackground'
 import CardSpread from '@components/CardSpread'
-import { useDivinationStore } from '@store/index'
-import { useQuotaStore } from '@store/index'
+import { useDivinationStore, useQuotaStore } from '@store/index'
 import { drawCards } from '@services/divination'
 import { ROUTES } from '@utils/constants'
 

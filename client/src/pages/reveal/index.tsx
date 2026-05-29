@@ -4,7 +4,6 @@ import { FC, useState } from 'react'
 
 import StarBackground from '@components/StarBackground'
 import TarotCard from '@components/TarotCard'
-import CardSpread from '@components/CardSpread'
 import { useDivinationStore } from '@store/index'
 import { ROUTES } from '@utils/constants'
 

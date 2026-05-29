@@ -1,5 +1,5 @@
 import { View } from '@tarojs/components'
-import { FC, useState, useRef, useCallback } from 'react'
+import { FC, useState, useRef, useCallback, useEffect } from 'react'
 
 import './index.scss'
 
@@ -21,11 +21,21 @@ const ShuffleDeck: FC<ShuffleDeckProps> = ({
 }) => {
   const [progress, setProgress] = useState(0)
   const [isShuffling, setIsShuffling] = useState(true)
-  const [swipeIntensity, setSwipeIntensity] = useState(0) // 0-1 滑动强度
+  const [swipeIntensity, setSwipeIntensity] = useState(0)
   const lastY = useRef(0)
   const lastTime = useRef(0)
   const totalDistance = useRef(0)
-  const velocity = useRef(0) // 速度（px/ms）
+  const velocity = useRef(0)
+  const animFrameRef = useRef<number>(0)
+
+  // 组件卸载时取消动画帧
+  useEffect(() => {
+    return () => {
+      if (animFrameRef.current) {
+        cancelAnimationFrame(animFrameRef.current)
+      }
+    }
+  }, [])
 
   /** 处理触摸滑动 — 带速度检测和阻尼 */
   const handleTouchMove = useCallback(
@@ -68,15 +78,14 @@ const ShuffleDeck: FC<ShuffleDeckProps> = ({
 
   /** 触摸结束 — 强度衰减 */
   const handleTouchEnd = useCallback(() => {
-    // 松手后强度快速衰减
     const decay = () => {
       setSwipeIntensity((prev) => {
         if (prev < 0.01) return 0
-        requestAnimationFrame(decay)
+        animFrameRef.current = requestAnimationFrame(decay)
         return prev * 0.85
       })
     }
-    requestAnimationFrame(decay)
+    animFrameRef.current = requestAnimationFrame(decay)
   }, [])
 
   /** 生成牌堆 — 根据滑动强度动态计算偏移 */

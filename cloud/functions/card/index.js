@@ -69,7 +69,10 @@ async function getCardDetail(cardId, isReversed) {
     if (res2.data.length === 0) {
       return { code: -1, message: '牌不存在' }
     }
-    return formatDetail(res2.data[0], isReversed)
+    return {
+      code: 0,
+      data: formatDetail(res2.data[0], isReversed),
+    }
   }
 
   return {

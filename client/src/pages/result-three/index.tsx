@@ -135,7 +135,7 @@ const ResultThreePage: FC = () => {
 
   const handleRetry = () => {
     useDivinationStore.getState().reset()
-    Taro.navigateTo({ url: ROUTES.QUESTION_SELECT })
+    Taro.redirectTo({ url: ROUTES.QUESTION_SELECT })
   }
 
   if (isLoading) {
@@ -193,6 +193,7 @@ const ResultThreePage: FC = () => {
               className="result-three-page__error-retry"
               onClick={() => {
                 calledRef.current = false
+                setInterpretationError('')
                 setIsLoading(true)
                 setIsTimeout(false)
               }}

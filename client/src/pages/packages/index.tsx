@@ -76,10 +76,15 @@ const PackagesPage: FC = () => {
       }
     } catch (err: any) {
       console.error('[DEBUG] 支付失败:', err.message)
-      // 用户取消支付或支付失败
-      Taro.redirectTo({
-        url: `${ROUTES.PAYMENT_RESULT}?success=false`,
-      })
+      // 区分用户取消和支付系统失败
+      const isCancel = err.errMsg?.includes('cancel')
+      if (isCancel) {
+        Taro.showToast({ title: '支付已取消', icon: 'none' })
+      } else {
+        Taro.redirectTo({
+          url: `${ROUTES.PAYMENT_RESULT}?success=false`,
+        })
+      }
     } finally {
       setIsPaying(false)
     }

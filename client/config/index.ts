@@ -114,7 +114,6 @@ const config: UserConfig<'webpack5'> = {
   h5: {
     publicPath: '/',
     staticDirectory: 'static',
-    esnextModules: ['taro-ui'],
     postcss: {
       autoprefixer: {
         enable: true,

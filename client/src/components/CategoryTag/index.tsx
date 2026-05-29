@@ -9,8 +9,6 @@ import './index.scss'
  */
 
 interface CategoryTagProps {
-  /** 分类 key */
-  category: string
   /** 分类名称 */
   label: string
   /** 分类图标 */

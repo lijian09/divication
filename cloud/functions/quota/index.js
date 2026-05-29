@@ -94,44 +94,43 @@ async function getQuota(openid) {
 }
 
 /**
- * 扣减配额
+ * 扣减配额（原子操作，防竞态）
  * 优先消耗免费次数 → 消耗付费次数
+ * 使用条件更新：where({ field: _.gt(0) }) + _.inc(-1)
  */
 async function deductQuota(openid, spreadType) {
   const isSingle = spreadType === 'single'
   const freeField = isSingle ? 'free_single_remaining' : 'free_three_remaining'
   const paidField = isSingle ? 'paid_single_remaining' : 'paid_three_remaining'
 
-  // 先查当前配额
-  const quotaRes = await db.collection('quotas')
-    .where({ _openid: openid })
-    .limit(1)
-    .get()
+  // 原子扣免费：仅当 freeField > 0 时更新
+  const freeResult = await db.collection('quotas')
+    .where({
+      _openid: openid,
+      [freeField]: _.gt(0),
+    })
+    .update({
+      data: { [freeField]: _.inc(-1) },
+    })
 
-  if (quotaRes.data.length === 0) {
-    return { code: -1, message: '配额不存在' }
-  }
-
-  const quota = quotaRes.data[0]
-
-  // 优先扣免费
-  if ((quota[freeField] || 0) > 0) {
-    await db.collection('quotas')
-      .where({ _openid: openid })
-      .update({ data: { [freeField]: _.inc(-1) } })
+  if (freeResult.stats.updated > 0) {
     return { code: 0, data: { type: 'free' } }
   }
 
-  // 扣付费
-  if ((quota[paidField] || 0) > 0) {
-    await db.collection('quotas')
-      .where({ _openid: openid })
-      .update({
-        data: {
-          [paidField]: _.inc(-1),
-          [isSingle ? 'total_paid_single_used' : 'total_paid_three_used']: _.inc(1),
-        },
-      })
+  // 原子扣付费：仅当 paidField > 0 时更新
+  const paidResult = await db.collection('quotas')
+    .where({
+      _openid: openid,
+      [paidField]: _.gt(0),
+    })
+    .update({
+      data: {
+        [paidField]: _.inc(-1),
+        [isSingle ? 'total_paid_single_used' : 'total_paid_three_used']: _.inc(1),
+      },
+    })
+
+  if (paidResult.stats.updated > 0) {
     return { code: 0, data: { type: 'paid' } }
   }
 
