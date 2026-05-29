@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80" width="240" height="80">
+  <defs>
+    <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F0D68A;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#D4A843;stop-opacity:1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 星形符号 -->
+  <g transform="translate(30, 40)">
+    <!-- 外圈光环 -->
+    <circle cx="0" cy="0" r="22" fill="none" stroke="url(#logo-grad)" stroke-width="1" opacity="0.4"/>
+    <!-- 八芒星 -->
+    <polygon points="0,-18 4,-6 16,-12 8,-2 18,0 8,4 16,14 4,8 0,20 -4,8 -16,14 -8,4 -18,0 -8,-2 -16,-12 -4,-6"
+             fill="url(#logo-grad)" opacity="0.9"/>
+    <!-- 中心亮点 -->
+    <circle cx="0" cy="0" r="4" fill="#FFFFFF" opacity="0.8"/>
+  </g>
+
+  <!-- 灵谕文字 -->
+  <text x="75" y="36" font-family="'Microsoft YaHei', 'PingFang SC', 'Noto Sans SC', sans-serif"
+        font-size="28" font-weight="700" fill="url(#logo-grad)" letter-spacing="6">
+    灵谕
+  </text>
+
+  <!-- 副标题 -->
+  <text x="75" y="56" font-family="Georgia, 'Times New Roman', serif"
+        font-size="11" fill="#A8A3B8" letter-spacing="3" opacity="0.8">
+    LINGYU TAROT
+  </text>
+
+  <!-- 装饰线 -->
+  <line x1="75" y1="62" x2="200" y2="62" stroke="#D4A843" stroke-width="0.5" opacity="0.3"/>
+</svg>

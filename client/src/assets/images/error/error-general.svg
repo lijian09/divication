@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <radialGradient id="eg2-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#E53935;stop-opacity:0.06"/>
+      <stop offset="100%" style="stop-color:#E53935;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="200" height="200" fill="url(#eg2-glow)"/>
+
+  <!-- 大问号 -->
+  <g transform="translate(100, 75)">
+    <!-- 圆形背景 -->
+    <circle cx="0" cy="0" r="38" fill="none" stroke="#A8A3B8" stroke-width="1" opacity="0.2"/>
+
+    <!-- 问号 -->
+    <text x="0" y="12" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
+          font-size="52" font-weight="bold" fill="#A8A3B8" opacity="0.5">?</text>
+
+    <!-- 装饰小问号 -->
+    <text x="-28" y="-15" text-anchor="middle" font-family="Georgia, serif"
+          font-size="14" fill="#6B6580" opacity="0.3">?</text>
+    <text x="30" y="0" text-anchor="middle" font-family="Georgia, serif"
+          font-size="12" fill="#6B6580" opacity="0.25">?</text>
+    <text x="-20" y="30" text-anchor="middle" font-family="Georgia, serif"
+          font-size="10" fill="#6B6580" opacity="0.2">?</text>
+  </g>
+
+  <!-- 提示文字 -->
+  <text x="100" y="145" text-anchor="middle" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif"
+        font-size="13" fill="#A8A3B8" opacity="0.7">
+    出现未知错误
+  </text>
+  <text x="100" y="165" text-anchor="middle" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif"
+        font-size="11" fill="#6B6580" opacity="0.5">
+    请返回重试或联系客服
+  </text>
+</svg>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 81 81" width="81" height="81">
+  <g fill="none" stroke="#6B6580" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- 卡片底 -->
+    <rect x="18" y="14" width="32" height="52" rx="3"/>
+    <!-- 卡片面（稍偏移叠放效果） -->
+    <rect x="26" y="16" width="32" height="52" rx="3"/>
+    <!-- 星形符号 -->
+    <polygon points="42,32 45,40 53,40 47,45 49,53 42,49 35,53 37,45 31,40 39,40"
+             stroke-width="1.5"/>
+  </g>
+</svg>

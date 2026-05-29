@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 81 81" width="81" height="81">
+  <g fill="none" stroke="#6B6580" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- 屋顶 -->
+    <path d="M40.5 16L14 38h8v25h37V38h8L40.5 16z"/>
+    <!-- 门 -->
+    <rect x="33" y="45" width="15" height="18" rx="1.5"/>
+    <!-- 门把手 -->
+    <circle cx="44" cy="55" r="1.5" fill="#6B6580"/>
+  </g>
+</svg>

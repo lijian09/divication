@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <radialGradient id="et-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#E53935;stop-opacity:0.06"/>
+      <stop offset="100%" style="stop-color:#E53935;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="200" height="200" fill="url(#et-glow)"/>
+
+  <!-- 时钟 -->
+  <g transform="translate(100, 80)">
+    <!-- 外圈 -->
+    <circle cx="0" cy="0" r="35" fill="none" stroke="#A8A3B8" stroke-width="2" opacity="0.6"/>
+    <!-- 内圈 -->
+    <circle cx="0" cy="0" r="30" fill="none" stroke="#A8A3B8" stroke-width="0.5" opacity="0.3"/>
+
+    <!-- 刻度 -->
+    <line x1="0" y1="-28" x2="0" y2="-24" stroke="#A8A3B8" stroke-width="1.5" opacity="0.5"/>
+    <line x1="28" y1="0" x2="24" y2="0" stroke="#A8A3B8" stroke-width="1.5" opacity="0.5"/>
+    <line x1="0" y1="28" x2="0" y2="24" stroke="#A8A3B8" stroke-width="1.5" opacity="0.5"/>
+    <line x1="-28" y1="0" x2="-24" y2="0" stroke="#A8A3B8" stroke-width="1.5" opacity="0.5"/>
+
+    <!-- 时针 -->
+    <line x1="0" y1="0" x2="-8" y2="-18" stroke="#A8A3B8" stroke-width="2.5" stroke-linecap="round" opacity="0.7"/>
+    <!-- 分针 -->
+    <line x1="0" y1="0" x2="12" y2="-10" stroke="#A8A3B8" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+    <!-- 中心点 -->
+    <circle cx="0" cy="0" r="3" fill="#E53935" opacity="0.7"/>
+
+    <!-- 超时标记 - 感叹号 -->
+    <circle cx="22" cy="22" r="10" fill="#E53935" opacity="0.8"/>
+    <line x1="22" y1="17" x2="22" y2="23" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="22" cy="26" r="1" fill="#FFFFFF"/>
+  </g>
+
+  <!-- 提示文字 -->
+  <text x="100" y="150" text-anchor="middle" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif"
+        font-size="13" fill="#A8A3B8" opacity="0.7">
+    请求超时
+  </text>
+  <text x="100" y="170" text-anchor="middle" font-family="'Microsoft YaHei', 'PingFang SC', sans-serif"
+        font-size="11" fill="#6B6580" opacity="0.5">
+    服务器响应时间过长
+  </text>
+</svg>
