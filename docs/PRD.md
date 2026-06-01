@@ -460,12 +460,12 @@
 
 | 措施 | 说明 |
 |------|------|
-| 接口鉴权 | JWT Token，有效期 7 天，支持无感刷新 |
-| 数据传输 | 全链路 HTTPS |
-| 敏感数据 | 用户手机号等敏感信息加密存储（AES-256） |
-| 防刷策略 | 同一微信 ID 每日免费次数硬上限；付费接口限流（10 次/分钟） |
-| 支付安全 | 签名验证 + 回调验签 + 幂等处理 |
-| 内容安全 | AI 输出经过敏感词过滤 + 人工抽检 |
+| 接口鉴权 | 微信云开发自定义登录态（OPENID），云数据库 _openid 字段隔离 |
+| 数据传输 | 全链路 HTTPS（微信云开发内置） |
+| 敏感数据 | API Key 存储在云函数环境变量中 |
+| 防刷策略 | 同一微信 ID 每日免费次数硬上限；配额扣减使用原子操作防竞态 |
+| 支付安全 | 微信支付签名验证 + 回调验签 |
+| 内容安全 | AI 输出经过敏感词过滤（7 组规则）+ 免责声明自动拼接 |
 
 ### 4.4 可用性
 
@@ -558,50 +558,51 @@
 
 ---
 
-## 6. 接口设计概要
+## 6. 接口设计概要（云函数）
 
-### 6.1 用户相关
+### 6.1 用户相关 — `login` 云函数
 
-| 路由 | 方法 | 说明 |
-|------|------|------|
-| `/api/auth/wx-login` | POST | 微信授权登录，返回 JWT |
-| `/api/auth/refresh` | POST | 刷新 Token |
-| `/api/user/profile` | GET | 获取用户信息 |
-| `/api/user/profile` | PUT | 更新昵称/头像 |
-| `/api/user/agreement` | POST | 提交免责协议同意记录 |
+| action | 说明 |
+|--------|------|
+| `login` | 微信登录，获取 openid，新用户自动初始化配额 |
+| `acceptAgreement` | 确认免责协议 |
+| `deleteAccount` | 注销账号，清理所有用户数据 |
 
-### 6.2 占卜相关
+### 6.2 占卜相关 — `divination` 云函数
 
-| 路由 | 方法 | 说明 |
-|------|------|------|
-| `/api/divination/start` | POST | 发起占卜（检查配额 → 扣减 → 返回牌面） |
-| `/api/divination/interpret` | POST | 请求 AI 解读（流式返回） |
-| `/api/divination/history` | GET | 获取历史记录列表（分页） |
-| `/api/divination/history/:id` | GET | 获取单条记录详情 |
-| `/api/divination/regenerate/:id` | POST | 重新生成解读（消耗 1 次配额） |
+| action | 说明 |
+|--------|------|
+| `draw` | 抽牌（Fisher-Yates 洗牌 + 随机正逆位 + 配额扣减） |
+| `getHistory` | 获取历史记录列表（分页） |
+| `getDetail` | 获取单条占卜记录详情 |
 
-### 6.3 支付相关
+### 6.3 AI 解读 — `ai-interpret` 云函数
 
-| 路由 | 方法 | 说明 |
-|------|------|------|
-| `/api/payment/packages` | GET | 获取套餐列表 |
-| `/api/payment/create` | POST | 创建支付订单，返回 prepay 参数 |
-| `/api/payment/callback` | POST | 微信支付回调（验签 + 配额发放） |
-| `/api/payment/query/:id` | GET | 查询订单状态 |
+| action | 说明 |
+|--------|------|
+| `interpret` | AI 解读（Claude → GPT → 预设模板三级降级 + 缓存） |
 
-### 6.4 内容相关
+### 6.3 支付相关 — `order` 云函数
 
-| 路由 | 方法 | 说明 |
-|------|------|------|
-| `/api/cards` | GET | 获取全部牌义列表 |
-| `/api/cards/:id` | GET | 获取单张牌义详情 |
-| `/api/feedback` | POST | 提交意见反馈 |
+| action | 说明 |
+|--------|------|
+| `getPackages` | 获取套餐列表 |
+| `createOrder` | 创建订单 + 微信支付统一下单 |
+| `payCallback` | 支付回调（配额发放 + 订单状态更新） |
 
-### 6.5 配额相关
+### 6.4 牌义相关 — `card` 云函数
 
-| 路由 | 方法 | 说明 |
-|------|------|------|
-| `/api/quota` | GET | 获取当前用户配额信息 |
+| action | 说明 |
+|--------|------|
+| `list` | 获取牌义列表（支持 arcana_type/suit 筛选） |
+| `detail` | 获取单张牌义详情（按正逆位格式化） |
+
+### 6.5 配额相关 — `quota` 云函数
+
+| action | 说明 |
+|--------|------|
+| `getQuota` | 获取当前用户配额信息（含每日重置） |
+| `deductQuota` | 扣减配额（原子操作，免费优先） |
 
 ---
 
@@ -611,32 +612,33 @@
 
 | 页面名 | 路径 | 说明 |
 |--------|------|------|
-| 启动页 | `/pages/splash/index` | 品牌展示 + 静默登录 |
+| 首页 | `/pages/home/index` | 品牌展示 + 今日运势 + 快速入口 |
 | 引导页 | `/pages/onboarding/index` | 新手引导（3 张幻灯片） |
-| 免责协议 | `/pages/agreement/index` | 首次免责协议确认 |
-| 首页 | `/pages/home/index` | 开始占卜入口 + 今日运势入口 |
-| 问题选择 | `/pages/question/index` | 分类 + 自定义问题输入 |
-| 牌阵选择 | `/pages/spread/index` | 单牌 / 三牌阵选择 |
-| 抽牌 | `/pages/draw/index` | 洗牌 → 选牌 → 翻牌 |
-| 解读结果 | `/pages/interpretation/index` | AI 解读展示 |
-| 牌义列表 | `/pages/cards/index` | 78 张牌义列表 |
-| 牌义详情 | `/pages/cards/detail` | 单张牌义详情 |
-| 付费套餐 | `/pages/packages/index` | 套餐选择 + 微信支付 |
+| 问题选择 | `/pages/question-select/index` | 分类 + 自定义问题输入 |
+| 牌阵选择 | `/pages/spread-select/index` | 单牌 / 三牌阵选择 |
+| 洗牌 | `/pages/shuffle/index` | 洗牌动画（手势交互） |
+| 选牌 | `/pages/pick-card/index` | 牌堆选牌（点击揭露） |
+| 翻牌 | `/pages/reveal/index` | 翻牌揭晓（3D 动画） |
+| 结果-单牌 | `/pages/result-single/index` | 单牌 AI 解读 |
+| 结果-三牌阵 | `/pages/result-three/index` | 三牌阵 AI 解读 |
+| 历史记录 | `/pages/history-list/index` | 占卜历史列表 |
+| 历史详情 | `/pages/history-detail/index` | 单条历史详情 |
 | 个人中心 | `/pages/profile/index` | 用户信息 + 功能入口 |
-| 历史记录 | `/pages/history/index` | 占卜历史列表 |
-| 历史详情 | `/pages/history/detail` | 单条历史详情 |
-| 意见反馈 | `/pages/feedback/index` | 反馈表单 |
-| 关于我们 | `/pages/about/index` | 版本信息 + 协议入口 |
-| 用户协议 | `/pages/agreement/user` | 用户协议全文 |
-| 隐私政策 | `/pages/agreement/privacy` | 隐私政策全文 |
+| 付费套餐 | `/pages/packages/index` | 套餐选择 + 微信支付 |
+| 支付结果 | `/pages/payment-result/index` | 支付成功/失败 |
+| 设置 | `/pages/settings/index` | 关于我们 + 注销账号 |
+| 加载页 | `/pages/loading/index` | 加载状态 |
+| 错误页 | `/pages/error/index` | 错误兜底 |
 
 ### 7.2 底部 Tab 栏
 
 | Tab | 图标 | 路径 |
 |-----|------|------|
-| 首页 | 塔罗牌图标 | `/pages/home/index` |
-| 牌义库 | 书本图标 | `/pages/cards/index` |
-| 我的 | 人物图标 | `/pages/profile/index` |
+| 首页 | tab-home.png | `/pages/home/index` |
+| 抽牌 | tab-draw.png | `/pages/home/index` |
+| 我的 | tab-profile.png | `/pages/profile/index` |
+
+> 注：免责协议通过首页 DisclaimerModal 弹窗实现，非独立页面
 
 ### 7.3 导航关系
 

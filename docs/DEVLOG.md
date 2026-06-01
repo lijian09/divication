@@ -271,3 +271,4 @@
 | `feat` | F-601 牌面图片上架 | 2026-05-28 | 78 张 SVG 占位图（22 大阿尔卡纳+56 小阿尔卡纳），符合品牌色彩规范，cards.json image_url 已更新 |
 | `feat` | UI 资源生成 | 2026-05-29 | 17 个 SVG 资源（TabBar 图标 6 个+品牌 2 个+引导页 3 个+空状态 2 个+错误状态 4 个）+ 6 个 PNG TabBar 图标 |
 | `fix` | 代码审查修复 | 2026-05-29 | 修复配额检查逻辑（加入付费配额）、PayWallModal 套餐与云函数统一、card 云函数返回格式、ShuffleDeck 内存泄漏、配额扣减竞态条件（原子操作）、清理 5 个未使用文件、清理未使用 import、支付取消/失败区分 |
+| `docs` | 文档同步更新 | 2026-05-29 | architecture.md 重写为云开发架构、database.md 重写为云数据库设计、PRD.md 接口/路由/安全描述更新、ui-design-spec.md TabBar 规范更新 |
